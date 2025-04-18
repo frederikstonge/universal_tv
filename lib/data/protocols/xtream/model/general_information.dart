@@ -1,30 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:json_annotation/json_annotation.dart';
 import '../model/server_info.dart';
 import '../model/user_info.dart';
 
-part 'general_information.g.dart';
+part 'general_information.mapper.dart';
 
-/// Represents general information about the Xtream Code.
-@JsonSerializable()
 @MappableClass(caseStyle: CaseStyle.snakeCase)
-class XTremeCodeGeneralInformation {
-  /// Creates a new instance of [XTremeCodeGeneralInformation].
+class XTremeCodeGeneralInformation with XTremeCodeGeneralInformationMappable {
+  final XTremeCodeUserInfo? userInfo;
+  final XTremeCodeServerInfo? serverInfo;
+
   XTremeCodeGeneralInformation({required this.userInfo, required this.serverInfo});
-
-  /// Creates a new instance of [XTremeCodeGeneralInformation] from a JSON
-  /// object.
-  factory XTremeCodeGeneralInformation.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeGeneralInformationFromJson(json);
-
-  /// The user information.
-  @JsonKey(name: 'user_info')
-  final XTremeCodeUserInfo userInfo;
-
-  /// The server information.
-  @JsonKey(name: 'server_info')
-  final XTremeCodeServerInfo serverInfo;
-
-  /// Converts this instance into a JSON object.
-  Map<String, dynamic> toJson() => _$XTremeCodeGeneralInformationToJson(this);
 }

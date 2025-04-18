@@ -1,30 +1,14 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:json_annotation/json_annotation.dart';
-import '../utils/json_helper.dart';
 
-part 'series_info.g.dart';
+part 'series_info.mapper.dart';
 
-/// Represents the information about a series in Xtream Code.
-@JsonSerializable()
 @MappableClass(caseStyle: CaseStyle.snakeCase)
-class XTremeCodeSeriesInfo {
-  /// Creates a new instance of [XTremeCodeSeriesInfo].
-  XTremeCodeSeriesInfo({required this.seasons, required this.info, required this.episodes});
-
-  /// Creates a new instance of [XTremeCodeSeriesInfo] from a JSON object.
-  factory XTremeCodeSeriesInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeSeriesInfoFromJson(json);
-
-  /// The seasons of the series.
+class XTremeCodeSeriesInfo with XTremeCodeSeriesInfoMappable {
   final List<XTremeCodeSeason>? seasons;
-
-  /// The information about the series.
-  final XTremeCodeInfo info;
-
-  /// The episodes of the series, grouped by season.
+  final XTremeCodeInfo? info;
   final Map<String, List<XTremeCodeEpisode>>? episodes;
 
-  /// Converts this instance into a JSON object.
-  Map<String, dynamic> toJson() => _$XTremeCodeSeriesInfoToJson(this);
+  XTremeCodeSeriesInfo({required this.seasons, required this.info, required this.episodes});
 }
 
 /// Represents a season in Xtream Code.
