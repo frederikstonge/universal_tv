@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,6 +6,7 @@ part 'server_info.g.dart';
 
 /// Represents the server information in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeServerInfo {
   /// Creates a new instance of [XTremeCodeServerInfo].
   XTremeCodeServerInfo({
@@ -22,8 +24,7 @@ class XTremeCodeServerInfo {
   });
 
   /// Creates a new instance of [XTremeCodeServerInfo] from a JSON object.
-  factory XTremeCodeServerInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeServerInfoFromJson(json);
+  factory XTremeCodeServerInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeServerInfoFromJson(json);
 
   /// The XUI of the server.
   @JsonKey(fromJson: dynamicToBool)

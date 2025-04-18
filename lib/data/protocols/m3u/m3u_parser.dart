@@ -17,8 +17,7 @@ class M3uParser {
   /// Parse a document represented by the [source]
   ///
   /// [source] a string value of the full document.
-  static Future<List<M3uGenericEntry>> parse(String source) async =>
-      M3uParser()._parse(source);
+  static Future<List<M3uGenericEntry>> parse(String source) async => M3uParser()._parse(source);
 
   /// Internally used after the header is parsed.
   FileTypeHeader? _fileType;
@@ -65,8 +64,7 @@ class M3uParser {
           _parseLine(line);
           break;
         }
-        _playlist.add(M3uGenericEntry.fromEntryInformation(
-            information: _currentInfoEntry!, link: line));
+        _playlist.add(M3uGenericEntry.fromEntryInformation(information: _currentInfoEntry!, link: line));
         _currentInfoEntry = null;
         _nextLineExpected = LineParsedType.info;
         break;
@@ -80,8 +78,7 @@ class M3uParser {
       case FileTypeHeader.m3uPlus:
         return _regexParse(line);
       default:
-        throw InvalidFormatException(InvalidFormatType.other,
-            originalValue: line);
+        throw InvalidFormatException(InvalidFormatType.other, originalValue: line);
     }
   }
 

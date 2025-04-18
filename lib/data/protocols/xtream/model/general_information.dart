@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../model/server_info.dart';
 import '../model/user_info.dart';
@@ -6,12 +7,10 @@ part 'general_information.g.dart';
 
 /// Represents general information about the Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeGeneralInformation {
   /// Creates a new instance of [XTremeCodeGeneralInformation].
-  XTremeCodeGeneralInformation({
-    required this.userInfo,
-    required this.serverInfo,
-  });
+  XTremeCodeGeneralInformation({required this.userInfo, required this.serverInfo});
 
   /// Creates a new instance of [XTremeCodeGeneralInformation] from a JSON
   /// object.

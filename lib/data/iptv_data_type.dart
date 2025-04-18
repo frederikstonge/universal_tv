@@ -1,6 +1,1 @@
-enum IPTVDataType {
-  live,
-  movie,
-  series,
-  vod,
-}
+enum IPTVDataType { live, movie, series, vod }

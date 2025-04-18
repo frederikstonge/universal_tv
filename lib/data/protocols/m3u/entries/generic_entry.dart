@@ -8,17 +8,12 @@ class M3uGenericEntry {
   /// [title] of the track/stream
   /// [attributes] custom attributes, can be null
   /// [link] the link to the source of the track/stream
-  M3uGenericEntry(
-      {required this.title, required this.attributes, required this.link});
+  M3uGenericEntry({required this.title, required this.attributes, required this.link});
 
   /// Constructor from an [EntryInformation] that only hold the title
   /// and attributes of a track/stream
-  factory M3uGenericEntry.fromEntryInformation(
-          {required EntryInformation information, required String link}) =>
-      M3uGenericEntry(
-          title: information.title,
-          attributes: information.attributes,
-          link: link);
+  factory M3uGenericEntry.fromEntryInformation({required EntryInformation information, required String link}) =>
+      M3uGenericEntry(title: information.title, attributes: information.attributes, link: link);
 
   /// Hold the information about the track.
   /// This is a raw string there are some formats specific to playlists, but
@@ -35,6 +30,5 @@ class M3uGenericEntry {
 
   /// Simple representation of the object on a string.
   @override
-  String toString() =>
-      'Title: $title Link:$link hasAttributes:${attributes.isNotEmpty}';
+  String toString() => 'Title: $title Link:$link hasAttributes:${attributes.isNotEmpty}';
 }

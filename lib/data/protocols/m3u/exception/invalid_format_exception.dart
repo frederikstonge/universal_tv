@@ -2,9 +2,7 @@
 /// due to invalid Header format of a file.
 class InvalidFormatException implements Exception {
   /// Creates the exception with the given parameters.
-  InvalidFormatException(this.formatType,
-      {this.originalValue, this.customMessage})
-      : super();
+  InvalidFormatException(this.formatType, {this.originalValue, this.customMessage}) : super();
 
   /// Type of Error
   InvalidFormatType formatType;
@@ -47,5 +45,5 @@ enum InvalidFormatType {
   header,
 
   /// Other kind of information, usually the link of the stream
-  other
+  other,
 }

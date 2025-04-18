@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,6 +6,7 @@ part 'user_info.g.dart';
 
 /// Represents the user information in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeUserInfo {
   /// Creates a new instance of [XTremeCodeUserInfo].
   XTremeCodeUserInfo({
@@ -22,8 +24,7 @@ class XTremeCodeUserInfo {
   });
 
   /// Creates a new instance of [XTremeCodeUserInfo] from a JSON object.
-  factory XTremeCodeUserInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeUserInfoFromJson(json);
+  factory XTremeCodeUserInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeUserInfoFromJson(json);
 
   /// The username of the user.
   String? username;

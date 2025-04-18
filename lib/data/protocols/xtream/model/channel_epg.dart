@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,13 +6,13 @@ part 'channel_epg.g.dart';
 
 /// Represents a channel's EPG (Electronic Program Guide).
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeChannelEpg {
   /// Creates a new instance of [XTremeCodeChannelEpg].
   XTremeCodeChannelEpg({required this.epgListings});
 
   /// Creates a new instance of [XTremeCodeChannelEpg] from a JSON object.
-  factory XTremeCodeChannelEpg.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeChannelEpgFromJson(json);
+  factory XTremeCodeChannelEpg.fromJson(Map<String, dynamic> json) => _$XTremeCodeChannelEpgFromJson(json);
 
   /// A list of EPG listings for this channel.
   @JsonKey(name: 'epg_listings')
@@ -23,6 +24,7 @@ class XTremeCodeChannelEpg {
 
 /// Represents a single EPG (Electronic Program Guide) listing.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeEpgListing {
   /// Creates a new instance of [XTremeCodeEpgListing].
   XTremeCodeEpgListing({
@@ -40,8 +42,7 @@ class XTremeCodeEpgListing {
   });
 
   /// Creates a new instance of [XTremeCodeEpgListing] from a JSON object.
-  factory XTremeCodeEpgListing.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeEpgListingFromJson(json);
+  factory XTremeCodeEpgListing.fromJson(Map<String, dynamic> json) => _$XTremeCodeEpgListingFromJson(json);
 
   /// The ID of the EPG listing.
   @JsonKey(fromJson: dynamicToIntConverter)

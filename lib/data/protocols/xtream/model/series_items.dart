@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -15,6 +16,7 @@ part 'series_items.g.dart';
 /// // Use the seriesItem object to access and manipulate series item data.
 /// ```
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeSeriesItem {
   /// Creates a [XTremeCodeSeriesItem] instance
   XTremeCodeSeriesItem({
@@ -41,8 +43,7 @@ class XTremeCodeSeriesItem {
   });
 
   /// Creates a [XTremeCodeSeriesItem] instance from a JSON map.
-  factory XTremeCodeSeriesItem.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeSeriesItemFromJson(json);
+  factory XTremeCodeSeriesItem.fromJson(Map<String, dynamic> json) => _$XTremeCodeSeriesItemFromJson(json);
 
   /// The number of the series item.
   @JsonKey(fromJson: dynamicToIntConverter)

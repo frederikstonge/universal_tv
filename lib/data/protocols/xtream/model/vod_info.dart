@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,16 +6,13 @@ part 'vod_info.g.dart';
 
 /// Represents the VOD (Video On Demand) information in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeVodInfo {
   /// Creates a new instance of [XTremeCodeVodInfo].
-  XTremeCodeVodInfo({
-    required this.info,
-    required this.movieData,
-  });
+  XTremeCodeVodInfo({required this.info, required this.movieData});
 
   /// Creates a new instance of [XTremeCodeVodInfo] from a JSON object.
-  factory XTremeCodeVodInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeVodInfoFromJson(json);
+  factory XTremeCodeVodInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeVodInfoFromJson(json);
 
   /// The information about the VOD.
   final XTremeCodeInfoVod info;
@@ -29,6 +27,7 @@ class XTremeCodeVodInfo {
 
 /// Represents the VOD (Video On Demand) information in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeInfoVod {
   /// Creates a new instance of [XTremeCodeInfoVod].
   XTremeCodeInfoVod({
@@ -61,8 +60,7 @@ class XTremeCodeInfoVod {
   });
 
   /// Creates a new instance of [XTremeCodeInfoVod] from a JSON object.
-  factory XTremeCodeInfoVod.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeInfoVodFromJson(json);
+  factory XTremeCodeInfoVod.fromJson(Map<String, dynamic> json) => _$XTremeCodeInfoVodFromJson(json);
 
   /// The URL of the movie on Kinopoisk.
   @JsonKey(name: 'kinopoisk_url')
@@ -162,6 +160,7 @@ class XTremeCodeInfoVod {
 
 /// Represents the movie data in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeMovieData {
   /// Creates a new instance of [XTremeCodeMovieData].
   XTremeCodeMovieData({
@@ -178,8 +177,7 @@ class XTremeCodeMovieData {
   });
 
   /// Creates a new instance of [XTremeCodeMovieData] from a JSON object.
-  factory XTremeCodeMovieData.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeMovieDataFromJson(json);
+  factory XTremeCodeMovieData.fromJson(Map<String, dynamic> json) => _$XTremeCodeMovieDataFromJson(json);
 
   /// The stream ID of the movie.
   @JsonKey(name: 'stream_id', fromJson: dynamicToIntConverter)

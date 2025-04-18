@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,13 +6,13 @@ part 'channel_epg_table.g.dart';
 
 /// Represents a table of EPG (Electronic Program Guide) channels.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeChannelEpgTable {
   /// Creates a new instance of [XTremeCodeChannelEpgTable].
   XTremeCodeChannelEpgTable({required this.epgListings});
 
   /// Creates a new instance of [XTremeCodeChannelEpgTable] from a JSON object.
-  factory XTremeCodeChannelEpgTable.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeChannelEpgTableFromJson(json);
+  factory XTremeCodeChannelEpgTable.fromJson(Map<String, dynamic> json) => _$XTremeCodeChannelEpgTableFromJson(json);
 
   /// A list of EPG listings for this table.
   @JsonKey(name: 'epg_listings')
@@ -23,6 +24,7 @@ class XTremeCodeChannelEpgTable {
 
 /// Represents a single EPG (Electronic Program Guide) listing in a table.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeEpgListingTable {
   /// Creates a new instance of [XTremeCodeEpgListingTable].
   XTremeCodeEpgListingTable({
@@ -41,8 +43,7 @@ class XTremeCodeEpgListingTable {
   });
 
   /// Creates a new instance of [XTremeCodeEpgListingTable] from a JSON object.
-  factory XTremeCodeEpgListingTable.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeEpgListingTableFromJson(json);
+  factory XTremeCodeEpgListingTable.fromJson(Map<String, dynamic> json) => _$XTremeCodeEpgListingTableFromJson(json);
 
   /// The ID of the EPG listing.
   @JsonKey(fromJson: dynamicToIntConverter)

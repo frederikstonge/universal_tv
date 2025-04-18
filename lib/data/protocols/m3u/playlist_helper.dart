@@ -7,18 +7,18 @@ class PlaylistHelper {
   /// [attributeName] name of the attribute to merge for
   /// [defaultAttribute] when the attribute is not found category
   /// to merge properties.
-  static Map<String, List<M3uGenericEntry>> sortedCategories(
-          {required List<M3uGenericEntry> entries,
-          required String attributeName,
-          String defaultAttribute = 'other'}) =>
-      entries.fold(<String, List<M3uGenericEntry>>{}, (acc, current) {
-        final property = current.attributes[attributeName] ?? defaultAttribute;
+  static Map<String, List<M3uGenericEntry>> sortedCategories({
+    required List<M3uGenericEntry> entries,
+    required String attributeName,
+    String defaultAttribute = 'other',
+  }) => entries.fold(<String, List<M3uGenericEntry>>{}, (acc, current) {
+    final property = current.attributes[attributeName] ?? defaultAttribute;
 
-        if (!acc.containsKey(property)) {
-          acc[property] = [current];
-        } else {
-          acc[property]!.add(current);
-        }
-        return acc;
-      });
+    if (!acc.containsKey(property)) {
+      acc[property] = [current];
+    } else {
+      acc[property]!.add(current);
+    }
+    return acc;
+  });
 }

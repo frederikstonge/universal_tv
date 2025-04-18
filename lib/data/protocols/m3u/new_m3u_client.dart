@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:universal_tv/data/epg_parser.dart';
-import 'package:universal_tv/data/models/epg.dart';
-import 'package:universal_tv/data/protocols/m3u/exception/invalid_format_exception.dart';
 
 import '../../base_iptv_client.dart';
+import '../../epg_parser.dart';
 import '../../iptv_data_type.dart';
+import '../../models/epg/epg.dart';
+import 'exception/invalid_format_exception.dart';
 
 class NewM3uClient extends BaseIptvClient {
   final List<Uri> m3ulinks;
@@ -21,21 +21,17 @@ class NewM3uClient extends BaseIptvClient {
   }
 
   @override
-  Future getData({
-    required IPTVDataType type,
-    String? category,
-    String? query,
-  }) {
+  Future getData({required IPTVDataType type, String? category, String? query}) {
     // TODO: implement getData
     throw UnimplementedError();
   }
 
   @override
-  Future<EPG?> getEpg() async {
+  Future<ElectronicProgramGuide?> getEpg() async {
     if (epgLink == null) {
       return null;
     }
-    
+
     final response = await dio.getUri(epgLink!);
     if (response.statusCode == 200) {
       final xmlString = response.data;
@@ -44,8 +40,7 @@ class NewM3uClient extends BaseIptvClient {
     } else {
       throw InvalidFormatException(
         InvalidFormatType.other,
-        customMessage:
-            'Failed to fetch XMLTV data. Server responded with status code ${response.statusCode}.',
+        customMessage: 'Failed to fetch XMLTV data. Server responded with status code ${response.statusCode}.',
       );
     }
   }

@@ -7,5 +7,5 @@ enum LineParsedType {
   info,
 
   /// [source] is the link to the Stream/Track.
-  source
+  source,
 }

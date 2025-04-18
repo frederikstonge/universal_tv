@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,17 +6,13 @@ part 'series_info.g.dart';
 
 /// Represents the information about a series in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeSeriesInfo {
   /// Creates a new instance of [XTremeCodeSeriesInfo].
-  XTremeCodeSeriesInfo({
-    required this.seasons,
-    required this.info,
-    required this.episodes,
-  });
+  XTremeCodeSeriesInfo({required this.seasons, required this.info, required this.episodes});
 
   /// Creates a new instance of [XTremeCodeSeriesInfo] from a JSON object.
-  factory XTremeCodeSeriesInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeSeriesInfoFromJson(json);
+  factory XTremeCodeSeriesInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeSeriesInfoFromJson(json);
 
   /// The seasons of the series.
   final List<XTremeCodeSeason>? seasons;
@@ -32,6 +29,7 @@ class XTremeCodeSeriesInfo {
 
 /// Represents a season in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeSeason {
   /// Creates a new instance of [XTremeCodeSeason].
   XTremeCodeSeason({
@@ -47,8 +45,7 @@ class XTremeCodeSeason {
   });
 
   /// Creates a new instance of [XTremeCodeSeason] from a JSON object.
-  factory XTremeCodeSeason.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeSeasonFromJson(json);
+  factory XTremeCodeSeason.fromJson(Map<String, dynamic> json) => _$XTremeCodeSeasonFromJson(json);
 
   /// The air date of the season.
   @JsonKey(name: 'air_date', fromJson: dateTimeFromString)
@@ -89,6 +86,7 @@ class XTremeCodeSeason {
 
 /// Represents the information about a series in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeInfo {
   /// Creates a new instance of [XTremeCodeInfo].
   XTremeCodeInfo({
@@ -112,8 +110,7 @@ class XTremeCodeInfo {
   });
 
   /// Creates a new instance of [XTremeCodeInfo] from a JSON object.
-  factory XTremeCodeInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeInfoFromJson(json);
+  factory XTremeCodeInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeInfoFromJson(json);
 
   /// The name of the series.
   final String? name;
@@ -181,6 +178,7 @@ class XTremeCodeInfo {
 
 /// Represents an episode in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeEpisode {
   /// Creates a new instance of [XTremeCodeEpisode].
   XTremeCodeEpisode({
@@ -197,8 +195,7 @@ class XTremeCodeEpisode {
   });
 
   /// Creates a new instance of [XTremeCodeEpisode] from a JSON object.
-  factory XTremeCodeEpisode.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeEpisodeFromJson(json);
+  factory XTremeCodeEpisode.fromJson(Map<String, dynamic> json) => _$XTremeCodeEpisodeFromJson(json);
 
   /// The ID of the episode.
   @JsonKey(fromJson: dynamicToIntConverter)
@@ -243,6 +240,7 @@ class XTremeCodeEpisode {
 
 /// Represents the information about an episode in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeEpisodeInfo {
   /// Creates a new instance of [XTremeCodeEpisodeInfo].
   XTremeCodeEpisodeInfo({
@@ -259,8 +257,7 @@ class XTremeCodeEpisodeInfo {
   });
 
   /// Creates a new instance of [XTremeCodeEpisodeInfo] from a JSON object.
-  factory XTremeCodeEpisodeInfo.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeEpisodeInfoFromJson(json);
+  factory XTremeCodeEpisodeInfo.fromJson(Map<String, dynamic> json) => _$XTremeCodeEpisodeInfoFromJson(json);
 
   /// The ID of the episode in The Movie Database (TMDb).
   @JsonKey(name: 'tmdb_id', fromJson: dynamicToIntConverter)

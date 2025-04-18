@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,17 +6,13 @@ part 'category.g.dart';
 
 /// Represents a category in XTremeCode.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeCategory {
   /// Creates a new instance of [XTremeCodeCategory].
-  XTremeCodeCategory({
-    required this.categoryId,
-    required this.categoryName,
-    required this.parentId,
-  });
+  XTremeCodeCategory({required this.categoryId, required this.categoryName, required this.parentId});
 
   /// Creates a new instance of [XTremeCodeCategory] from a JSON map.
-  factory XTremeCodeCategory.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeCategoryFromJson(json);
+  factory XTremeCodeCategory.fromJson(Map<String, dynamic> json) => _$XTremeCodeCategoryFromJson(json);
 
   /// The ID of the category.
   @JsonKey(name: 'category_id', fromJson: dynamicToIntConverter)

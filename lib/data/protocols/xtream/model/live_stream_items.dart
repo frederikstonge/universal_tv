@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,6 +6,7 @@ part 'live_stream_items.g.dart';
 
 /// Represents a live stream item in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeLiveStreamItem {
   /// Creates a new instance of [XTremeCodeLiveStreamItem].
   XTremeCodeLiveStreamItem({
@@ -25,8 +27,7 @@ class XTremeCodeLiveStreamItem {
   });
 
   /// Creates a new instance of [XTremeCodeLiveStreamItem] from a JSON object.
-  factory XTremeCodeLiveStreamItem.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeLiveStreamItemFromJson(json);
+  factory XTremeCodeLiveStreamItem.fromJson(Map<String, dynamic> json) => _$XTremeCodeLiveStreamItemFromJson(json);
 
   /// The number of the live stream item.
   @JsonKey(fromJson: dynamicToIntConverter)

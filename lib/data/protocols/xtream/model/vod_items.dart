@@ -1,3 +1,4 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../utils/json_helper.dart';
 
@@ -5,6 +6,7 @@ part 'vod_items.g.dart';
 
 /// Represents a VOD (Video On Demand) item in Xtream Code.
 @JsonSerializable()
+@MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeVodItem {
   /// Creates a new instance of [XTremeCodeVodItem].
   XTremeCodeVodItem({
@@ -26,8 +28,7 @@ class XTremeCodeVodItem {
   });
 
   /// Creates a new instance of [XTremeCodeVodItem] from a JSON object.
-  factory XTremeCodeVodItem.fromJson(Map<String, dynamic> json) =>
-      _$XTremeCodeVodItemFromJson(json);
+  factory XTremeCodeVodItem.fromJson(Map<String, dynamic> json) => _$XTremeCodeVodItemFromJson(json);
 
   /// The ID of the stream of the VOD item.
   @JsonKey(name: 'stream_id', fromJson: dynamicToIntConverter)

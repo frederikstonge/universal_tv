@@ -17,9 +17,7 @@ DateTime? dateTimeFromEpochSeconds(dynamic seconds) {
     epochSeconds = seconds.toInt();
   }
 
-  return epochSeconds == null
-      ? null
-      : DateTime.fromMillisecondsSinceEpoch(epochSeconds * 1000);
+  return epochSeconds == null ? null : DateTime.fromMillisecondsSinceEpoch(epochSeconds * 1000);
 }
 
 /// Converts a string in ISO 8601 format to a [DateTime].
