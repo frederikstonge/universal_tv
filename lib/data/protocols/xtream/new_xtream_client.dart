@@ -59,7 +59,7 @@ class NewXtreamClient extends BaseIptvClient {
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
-      return XTremeCodeGeneralInformation.fromJson(parsed);
+      return XTremeCodeGeneralInformationMapper.fromMap(parsed);
     } else {
       throw XTreamCodeClientException('''
         Failed to retrieve GeneralInformation. Server responded with 
@@ -98,7 +98,7 @@ class NewXtreamClient extends BaseIptvClient {
       final parsed = json.decode(response.data);
       return (parsed is List ? parsed : <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map<XTremeCodeLiveStreamItem>(XTremeCodeLiveStreamItem.fromJson)
+          .map<XTremeCodeLiveStreamItem>(XTremeCodeLiveStreamItemMapper.fromMap)
           .toList();
     } else {
       throw XTreamCodeClientException('''
@@ -120,7 +120,7 @@ class NewXtreamClient extends BaseIptvClient {
       final parsed = json.decode(response.data);
       return (parsed is List ? parsed : <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map<XTremeCodeVodItem>(XTremeCodeVodItem.fromJson)
+          .map<XTremeCodeVodItem>(XTremeCodeVodItemMapper.fromMap)
           .toList();
     } else {
       throw XTreamCodeClientException('''
@@ -137,7 +137,7 @@ class NewXtreamClient extends BaseIptvClient {
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
-      return XTremeCodeVodInfo.fromJson(parsed);
+      return XTremeCodeVodInfoMapper.fromMap(parsed);
     } else {
       throw XTreamCodeClientException('''
         Failed to retrieve VOD Info from action $action.
@@ -158,7 +158,7 @@ class NewXtreamClient extends BaseIptvClient {
       final parsed = json.decode(response.data);
       return (parsed is List ? parsed : <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map<XTremeCodeSeriesItem>(XTremeCodeSeriesItem.fromJson)
+          .map<XTremeCodeSeriesItem>(XTremeCodeSeriesItemMapper.fromMap)
           .toList();
     } else {
       throw XTreamCodeClientException('''
@@ -175,7 +175,7 @@ class NewXtreamClient extends BaseIptvClient {
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
-      return XTremeCodeSeriesInfo.fromJson(parsed);
+      return XTremeCodeSeriesInfoMapper.fromMap(parsed);
     } else {
       throw XTreamCodeClientException('''
         Failed to retrieve Series Info from action $action.
@@ -199,7 +199,7 @@ class NewXtreamClient extends BaseIptvClient {
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
-      return XTremeCodeChannelEpg.fromJson(parsed);
+      return XTremeCodeChannelEpgMapper.fromMap(parsed);
     } else {
       throw XTreamCodeClientException('''
         Failed to retrieve EPG from action $action for channel_id $streamId
@@ -215,7 +215,7 @@ class NewXtreamClient extends BaseIptvClient {
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
-      return XTremeCodeChannelEpgTable.fromJson(parsed);
+      return XTremeCodeChannelEpgTableMapper.fromMap(parsed);
     } else {
       throw XTreamCodeClientException('''
         Failed to retrieve EPG Table from action $action for channel_id ${item.streamId}
@@ -232,7 +232,7 @@ class NewXtreamClient extends BaseIptvClient {
       final parsed = json.decode(response.data);
       return (parsed is List ? parsed : <dynamic>[])
           .cast<Map<String, dynamic>>()
-          .map<XTremeCodeCategory>(XTremeCodeCategory.fromJson)
+          .map<XTremeCodeCategory>(XTremeCodeCategoryMapper.fromMap)
           .toList();
     } else {
       throw XTreamCodeClientException('''
