@@ -5,8 +5,8 @@ import 'package:fvp/fvp.dart' as fvp;
 import 'package:video_player/video_player.dart';
 
 import 'data/protocols/m3u/entries/generic_entry.dart';
-import 'data/protocols/m3u/m3u_nullsafe.dart';
-import 'data/protocols/m3u/m3u_parser.dart';
+import 'data/protocols/m3u/m3u.dart';
+import 'data/protocols/m3u/playlist_helper.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,11 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
     final dio = Dio();
     final uri = Uri.parse(m3uLink);
     final response = await dio.getUri(uri);
-    final playlist = await M3uParser.parse(response.data.toString());
-    final categories = sortedCategories(entries: playlist, attributeName: 'group-title');
+    final playlist = M3u(response.data.toString());
+    final categories = PlaylistHelper.sortedCategories(entries: playlist.playlist, attributeName: 'group-title');
 
     setState(() {
-      this.playlist = playlist;
+      this.playlist = playlist.playlist;
       this.categories = categories;
     });
   }

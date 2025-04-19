@@ -17,6 +17,7 @@ import 'model/series_items.dart';
 import 'model/vod_info.dart';
 import 'model/vod_items.dart';
 
+/// https://github.com/engenex/xtream-codes-api-v2
 class NewXtreamClient extends BaseIptvClient {
   /// protocol, host, port and path are important
   final Uri baseUrl;

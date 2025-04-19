@@ -4,8 +4,8 @@ import '../../base_iptv_client.dart';
 import '../../epg_parser.dart';
 import '../../iptv_data_type.dart';
 import '../../models/epg/epg.dart';
-import 'exception/invalid_format_exception.dart';
 
+/// https://github.com/HamzaBhf00/m3u-tags-iptv
 class NewM3uClient extends BaseIptvClient {
   final List<Uri> m3ulinks;
   final Uri? epgLink;
@@ -37,11 +37,8 @@ class NewM3uClient extends BaseIptvClient {
       final xmlString = response.data;
       final parser = EpgParser();
       return parser.parse(xmlString);
-    } else {
-      throw InvalidFormatException(
-        InvalidFormatType.other,
-        customMessage: 'Failed to fetch XMLTV data. Server responded with status code ${response.statusCode}.',
-      );
     }
+
+    return null;
   }
 }

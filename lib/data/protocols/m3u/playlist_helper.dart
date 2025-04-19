@@ -10,7 +10,7 @@ class PlaylistHelper {
   static Map<String, List<M3uGenericEntry>> sortedCategories({
     required List<M3uGenericEntry> entries,
     required String attributeName,
-    String defaultAttribute = 'other',
+    String defaultAttribute = 'group-title',
   }) => entries.fold(<String, List<M3uGenericEntry>>{}, (acc, current) {
     final property = current.attributes[attributeName] ?? defaultAttribute;
 
