@@ -1,4 +1,5 @@
 PODS:
+  - flutter_mimir (0.0.1)
   - FlutterMacOS (1.0.0)
   - fvp (0.31.2):
     - Flutter
@@ -16,6 +17,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - flutter_mimir (from `Flutter/ephemeral/.symlinks/plugins/flutter_mimir/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - fvp (from `Flutter/ephemeral/.symlinks/plugins/fvp/darwin`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
@@ -27,6 +29,8 @@ SPEC REPOS:
     - mdk
 
 EXTERNAL SOURCES:
+  flutter_mimir:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_mimir/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   fvp:
@@ -39,6 +43,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/video_player_avfoundation/darwin
 
 SPEC CHECKSUMS:
+  flutter_mimir: abc5575f7deea72a2716fb3a75295984681dfd87
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   fvp: 89275776efede62b7fde1762afa518974e6d6750
   mdk: a726c85fd49c002b83d586b278d452f387750889

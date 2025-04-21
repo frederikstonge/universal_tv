@@ -1,4 +1,4 @@
-import 'entries/generic_entry.dart';
+import 'models/generic_entry.dart';
 
 /// Helper functions around categories and extra properties on playlist files.
 class PlaylistHelper {

@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-import 'entries/generic_entry.dart';
 import 'entry_information.dart';
 import 'file_type_header.dart';
+import 'models/generic_entry.dart';
 
-class M3u {
+class M3uParser {
   FileTypeHeader? _fileType;
   EntryInformation? _currentInfoEntry;
 
   late final Map<String, String> metadata;
   late final List<M3uGenericEntry> playlist;
 
-  M3u(String source) {
+  M3uParser(String source) {
     _parse(source);
   }
 

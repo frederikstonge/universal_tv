@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import '../model/server_info.dart';
-import '../model/user_info.dart';
+import 'server_info.dart';
+import 'user_info.dart';
 
 part 'general_information.mapper.dart';
 

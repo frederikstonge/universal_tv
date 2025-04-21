@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-import '../../base_iptv_client.dart';
-import '../../epg_parser.dart';
-import '../../iptv_data_type.dart';
-import '../../models/epg/epg.dart';
+import '../epg/epg_parser.dart';
+import '../epg/models/epg.dart';
 import 'exception/xtream_code_client_exception.dart';
 import 'model/category.dart';
 import 'model/channel_epg.dart';
@@ -18,7 +16,7 @@ import 'model/vod_info.dart';
 import 'model/vod_items.dart';
 
 /// https://github.com/engenex/xtream-codes-api-v2
-class NewXtreamClient extends BaseIptvClient {
+class XtreamClient {
   /// protocol, host, port and path are important
   final Uri baseUrl;
   final String username;
@@ -26,23 +24,10 @@ class NewXtreamClient extends BaseIptvClient {
 
   final Dio dio = Dio();
 
-  NewXtreamClient({required this.baseUrl, required this.username, required this.password});
+  XtreamClient({required this.baseUrl, required this.username, required this.password});
 
-  @override
-  Future initialize() {
-    // TODO: implement initialize
-    throw UnimplementedError();
-  }
-
-  @override
-  Future getData({required IPTVDataType type, String? category, String? query}) {
-    // TODO: implement getData
-    throw UnimplementedError();
-  }
-
-  @override
   Future<ElectronicProgramGuide?> getEpg() async {
-    final response = await dio.getUri(_createEpgUrl());
+    final response = await dio.getUri(createEpgUrl());
     if (response.statusCode == 200) {
       final xmlString = response.data;
       final parser = EpgParser();
@@ -56,7 +41,7 @@ class NewXtreamClient extends BaseIptvClient {
 
   /// Authenticates the user and retrieves server & user information.
   Future<XTremeCodeGeneralInformation> serverInformation() async {
-    final response = await dio.getUri(_createBaseUrl());
+    final response = await dio.getUri(createBaseUrl());
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
@@ -93,7 +78,7 @@ class NewXtreamClient extends BaseIptvClient {
     if (category != null) {
       action = '$action&category_id=${category.categoryId}';
     }
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data);
@@ -115,7 +100,7 @@ class NewXtreamClient extends BaseIptvClient {
     if (category != null) {
       action = '$action&category_id=${category.categoryId}';
     }
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data);
@@ -134,7 +119,7 @@ class NewXtreamClient extends BaseIptvClient {
   /// Retrieves information about a specific VOD item.
   Future<XTremeCodeVodInfo> vodInfo(XTremeCodeVodItem vod) async {
     final action = 'get_vod_info&vod_id=${vod.streamId}';
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
@@ -153,7 +138,7 @@ class NewXtreamClient extends BaseIptvClient {
     if (category != null) {
       action = '$action&category_id=${category.categoryId}';
     }
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data);
@@ -172,7 +157,7 @@ class NewXtreamClient extends BaseIptvClient {
   /// Retrieves information about a specific series item.
   Future<XTremeCodeSeriesInfo> seriesInfo(XTremeCodeSeriesItem series) async {
     final action = 'get_series_info&series_id=${series.seriesId}';
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
@@ -196,7 +181,7 @@ class NewXtreamClient extends BaseIptvClient {
     if (limit != null) {
       action = '$action&limit=$limit';
     }
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
@@ -212,7 +197,7 @@ class NewXtreamClient extends BaseIptvClient {
   /// Retrieves EPG table for a specific live stream item.
   Future<XTremeCodeChannelEpgTable> channelEpgTable(XTremeCodeLiveStreamItem item) async {
     final action = 'get_simple_data_table&stream_id=${item.streamId}';
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data) as Map<String, dynamic>;
@@ -227,7 +212,7 @@ class NewXtreamClient extends BaseIptvClient {
 
   /// Common method for retrieving categories based on the given action.
   Future<List<XTremeCodeCategory>> _categories(String action) async {
-    final response = await dio.getUri(_createBaseUrl(queryParameters: {'action': action}));
+    final response = await dio.getUri(createBaseUrl(queryParameters: {'action': action}));
 
     if (response.statusCode == 200) {
       final parsed = json.decode(response.data);
@@ -270,7 +255,7 @@ class NewXtreamClient extends BaseIptvClient {
     return newUri;
   }
 
-  Uri _createBaseUrl({Map<String, String>? queryParameters}) {
+  Uri createBaseUrl({Map<String, String>? queryParameters}) {
     final newUri = Uri.parse(baseUrl.toString());
     newUri.pathSegments.addAll({'player_api.php'});
     newUri.queryParameters.addAll({'username': username, 'password': password, ...?queryParameters});
@@ -278,7 +263,7 @@ class NewXtreamClient extends BaseIptvClient {
     return newUri;
   }
 
-  Uri _createEpgUrl() {
+  Uri createEpgUrl() {
     final newUri = Uri.parse(baseUrl.toString());
     newUri.pathSegments.addAll({'xmltv.php'});
     newUri.queryParameters.addAll({'username': username, 'password': password});

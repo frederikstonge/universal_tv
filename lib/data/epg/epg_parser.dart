@@ -1,5 +1,5 @@
 import 'package:xml/xml.dart';
-import 'models/epg/epg.dart';
+import 'models/epg.dart';
 
 /// Parses EPG (Electronic Program Guide) data from XML format.
 class EpgParser {
