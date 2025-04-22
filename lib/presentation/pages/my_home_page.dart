@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final dio = Dio();
     final uri = Uri.parse(m3uLink);
     final response = await dio.getUri(uri);
-    final playlist = M3uParser(response.data.toString());
+    final playlist = M3uParser.parse(response.data.toString());
     final categories = PlaylistHelper.sortedCategories(entries: playlist.playlist, attributeName: 'group-title');
 
     setState(() {

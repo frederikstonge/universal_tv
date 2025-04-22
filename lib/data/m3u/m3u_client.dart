@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../epg/models/electronic_program_guide.dart';
 import 'm3u_parser.dart';
+import 'models/m3u_data.dart';
 
 /// https://github.com/HamzaBhf00/m3u-tags-iptv
 class M3uClient {
@@ -12,14 +13,14 @@ class M3uClient {
 
   M3uClient({required this.m3ulinks, this.epgLink = const []});
 
-  Future<List<M3uParser>> getAllStreams() async {
-    final List<M3uParser> allStreams = [];
+  Future<List<M3uData>> getAllStreams() async {
+    final List<M3uData> allStreams = [];
     for (var m3uLink in m3ulinks) {
       try {
         final response = await dio.get(m3uLink.toString());
         if (response.statusCode == 200) {
-          final m3uParser = M3uParser(response.data);
-          allStreams.add(m3uParser);
+          final m3uData = M3uParser.parse(response.data);
+          allStreams.add(m3uData);
         }
       } catch (_) {}
     }

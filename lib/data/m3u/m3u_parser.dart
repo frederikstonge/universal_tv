@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'entry_information.dart';
 import 'file_type_header.dart';
+import 'models/entry_information.dart';
 import 'models/generic_entry.dart';
+import 'models/m3u_data.dart';
 
 class M3uParser {
   FileTypeHeader? _fileType;
   EntryInformation? _currentInfoEntry;
 
-  late final Map<String, String> metadata;
-  late final List<M3uGenericEntry> playlist;
+  final Map<String, String> _metadata = {};
+  final List<M3uGenericEntry> _playlist = [];
 
-  M3uParser(String source) {
-    _parse(source);
+  static M3uData parse(String source) {
+    return M3uParser()._parse(source);
   }
 
-  void _parse(String source) {
-    metadata = {};
-    playlist = [];
+  M3uData _parse(String source) {
     LineSplitter.split(source).forEach(_parseLine);
+    return M3uData(metadata: _metadata, playlist: _playlist);
   }
 
   void _parseLine(String line) {
@@ -27,7 +27,7 @@ class M3uParser {
     }
 
     if (_currentInfoEntry != null) {
-      playlist.add(M3uGenericEntry.fromEntryInformation(information: _currentInfoEntry!, link: line));
+      _playlist.add(M3uGenericEntry.fromEntryInformation(information: _currentInfoEntry!, link: line));
       _currentInfoEntry = null;
       return;
     }
@@ -44,7 +44,7 @@ class M3uParser {
 
     if (line.startsWith('#EXT-X-')) {
       final split = line.split(':');
-      metadata[split[0].substring(7)] = split[1];
+      _metadata[split[0].substring(7)] = split[1];
       return;
     }
 

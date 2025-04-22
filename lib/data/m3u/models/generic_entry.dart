@@ -1,4 +1,4 @@
-import '../entry_information.dart';
+import 'entry_information.dart';
 
 class M3uGenericEntry {
   final String title;
