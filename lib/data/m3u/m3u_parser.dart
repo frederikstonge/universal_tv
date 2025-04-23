@@ -17,8 +17,12 @@ class M3uParser {
   }
 
   M3uData _parse(String source) {
-    LineSplitter.split(source).forEach(_parseLine);
-    return M3uData(metadata: _metadata, playlist: _playlist);
+    final lines = LineSplitter.split(source);
+    for (final line in lines) {
+      _parseLine(line);
+    }
+
+    return M3uData(fileType: _fileType!, metadata: _metadata, playlist: _playlist);
   }
 
   void _parseLine(String line) {

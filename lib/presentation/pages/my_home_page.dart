@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/m3u/m3u_parser.dart';
+import '../../data/m3u/models/attribute.dart';
 import '../../data/m3u/models/generic_entry.dart';
 import '../../data/m3u/playlist_helper.dart';
 
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final uri = Uri.parse(m3uLink);
     final response = await dio.getUri(uri);
     final playlist = M3uParser.parse(response.data.toString());
-    final categories = PlaylistHelper.sortedCategories(entries: playlist.playlist, attributeName: 'group-title');
+    final categories = PlaylistHelper.sortedCategories(entries: playlist.playlist, attributes: Attribute.GROUP);
 
     setState(() {
       this.playlist = playlist.playlist;
