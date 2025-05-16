@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../data/m3u/m3u_parser.dart';
-import '../../data/m3u/models/attribute.dart';
-import '../../data/m3u/models/generic_entry.dart';
-import '../../data/m3u/playlist_helper.dart';
+import '../../services/m3u/m3u_parser.dart';
+import '../../services/m3u/models/attribute.dart';
+import '../../services/m3u/models/generic_entry.dart';
+import '../../services/m3u/playlist_helper.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -67,69 +67,71 @@ class _MyHomePageState extends State<MyHomePage> {
                     expandedPanels[categories!.keys.elementAt(panelIndex)] = isExpanded;
                   }),
               children:
-                  categories?.entries
-                      .map(
-                        (e) => ExpansionPanel(
-                          isExpanded: expandedPanels[e.key] ?? false,
-                          headerBuilder: (context, isExpanded) => Text(e.key),
-                          body: ListView.builder(
-                            itemCount: e.value.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final entry = e.value[index];
-                              final logo =
-                                  entry.attributes.entries.where((e) => e.key == 'tvg-logo').firstOrNull?.value;
-                              return ListTile(
-                                leading:
-                                    logo != null
-                                        ? CachedNetworkImage(
-                                          height: 40,
-                                          width: 40,
-                                          cacheKey: logo,
-                                          imageUrl: logo,
-                                          progressIndicatorBuilder:
-                                              (context, url, downloadProgress) =>
-                                                  CircularProgressIndicator(value: downloadProgress.progress),
-                                          errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
-                                        )
-                                        : null,
-                                trailing: const Icon(Icons.play_arrow),
-                                title: Text(entry.title),
-                                onTap: () async {
-                                  try {
-                                    if (videoPlayerController != null) {
-                                      await videoPlayerController!.pause();
-                                      await videoPlayerController!.dispose();
-                                      videoPlayerController = null;
-                                    }
+                  categories?.entries.map((e) {
+                    final isExpanded = expandedPanels[e.key] ?? false;
+                    return ExpansionPanel(
+                      isExpanded: isExpanded,
+                      headerBuilder: (context, isExpanded) => Text(e.key),
+                      body:
+                          isExpanded
+                              ? ListView.builder(
+                                itemCount: e.value.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final entry = e.value[index];
+                                  final logo =
+                                      entry.attributes.entries.where((e) => e.key == 'tvg-logo').firstOrNull?.value;
+                                  return ListTile(
+                                    leading:
+                                        logo != null
+                                            ? CachedNetworkImage(
+                                              height: 40,
+                                              width: 40,
+                                              cacheKey: logo,
+                                              imageUrl: logo,
+                                              progressIndicatorBuilder:
+                                                  (context, url, downloadProgress) =>
+                                                      CircularProgressIndicator(value: downloadProgress.progress),
+                                              errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                                            )
+                                            : null,
+                                    trailing: const Icon(Icons.play_arrow),
+                                    title: Text(entry.title),
+                                    onTap: () async {
+                                      try {
+                                        if (videoPlayerController != null) {
+                                          await videoPlayerController!.pause();
+                                          await videoPlayerController!.dispose();
+                                          videoPlayerController = null;
+                                        }
 
-                                    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(entry.link));
-                                    await videoPlayerController!.initialize();
-                                    await videoPlayerController!.play();
-                                    setState(() {
-                                      selectedEntry = entry;
-                                    });
-                                    scrollController.jumpTo(0);
-                                  } catch (e) {
-                                    if (context.mounted) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(const SnackBar(content: Text('Error playing video')));
-                                    }
+                                        videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(entry.link));
+                                        await videoPlayerController!.initialize();
+                                        await videoPlayerController!.play();
+                                        setState(() {
+                                          selectedEntry = entry;
+                                        });
+                                        scrollController.jumpTo(0);
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(const SnackBar(content: Text('Error playing video')));
+                                        }
 
-                                    videoPlayerController = null;
-                                    setState(() {
-                                      selectedEntry = null;
-                                    });
-                                  }
+                                        videoPlayerController = null;
+                                        setState(() {
+                                          selectedEntry = null;
+                                        });
+                                      }
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                          ),
-                        ),
-                      )
-                      .toList() ??
+                              )
+                              : const SizedBox.shrink(),
+                    );
+                  }).toList() ??
                   [],
             ),
           ],
