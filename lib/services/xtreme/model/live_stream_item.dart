@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-part 'live_stream_items.mapper.dart';
+part 'live_stream_item.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeLiveStreamItem with XTremeCodeLiveStreamItemMappable {

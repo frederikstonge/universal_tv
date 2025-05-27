@@ -9,11 +9,11 @@ import 'model/category.dart';
 import 'model/channel_epg.dart';
 import 'model/channel_epg_table.dart';
 import 'model/general_information.dart';
-import 'model/live_stream_items.dart';
+import 'model/live_stream_item.dart';
 import 'model/series_info.dart';
-import 'model/series_items.dart';
+import 'model/series_item.dart';
 import 'model/vod_info.dart';
-import 'model/vod_items.dart';
+import 'model/vod_item.dart';
 
 /// https://github.com/engenex/xtream-codes-api-v2
 class XtreamClient {
@@ -228,29 +228,24 @@ class XtreamClient {
     }
   }
 
-  Uri createStreamUrl(int id, {List<String> allowedInputFormat = const ['ts']}) {
+  Uri createStreamUrl(int id, {String inputFormat = 'ts'}) {
     final newUri = Uri.parse(baseUrl.toString());
     // TODO: Remove live if not working
-    newUri.pathSegments.addAll({
-      'live',
-      username,
-      password,
-      '$id.${allowedInputFormat.firstWhere((format) => format == 'ts', orElse: () => allowedInputFormat.first)}',
-    });
+    newUri.pathSegments.addAll({'live', username, password, '$id.$inputFormat'});
 
     return newUri;
   }
 
-  Uri createMovieUrl(int id, String containerExtension) {
+  Uri createMovieUrl(int id, String inputFormat) {
     final newUri = Uri.parse(baseUrl.toString());
-    newUri.pathSegments.addAll({'movie', username, password, '$id.$containerExtension'});
+    newUri.pathSegments.addAll({'movie', username, password, '$id.$inputFormat'});
 
     return newUri;
   }
 
-  Uri createSeriesUrl(int id, String containerExtension) {
+  Uri createSeriesUrl(int id, String inputFormat) {
     final newUri = Uri.parse(baseUrl.toString());
-    newUri.pathSegments.addAll({'series', username, password, '$id.$containerExtension'});
+    newUri.pathSegments.addAll({'series', username, password, '$id.$inputFormat'});
 
     return newUri;
   }

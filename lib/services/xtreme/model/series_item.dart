@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-part 'series_items.mapper.dart';
+part 'series_item.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeSeriesItem with XTremeCodeSeriesItemMappable {

@@ -1,6 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-part 'vod_items.mapper.dart';
+part 'vod_item.mapper.dart';
 
 @MappableClass(caseStyle: CaseStyle.snakeCase)
 class XTremeCodeVodItem with XTremeCodeVodItemMappable {
