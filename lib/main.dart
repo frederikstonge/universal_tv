@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:fvp/fvp.dart' as fvp;
+import 'package:media_kit/media_kit.dart';
 
 import 'bootstrapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  fvp.registerWith();
+  MediaKit.ensureInitialized();
   runApp(const Bootstrapper());
 }
