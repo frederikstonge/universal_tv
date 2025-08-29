@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
+import 'models/iptv_entry.dart';
 import 'presentation/pages/home_page.dart';
 import 'presentation/pages/player_page.dart';
 import 'presentation/pages/search_page.dart';
@@ -40,9 +41,8 @@ class App extends StatelessWidget {
             path: '/player',
             name: 'player',
             builder: (context, state) {
-              final source = state.uri.queryParameters['source'];
-              final playlist = state.uri.queryParametersAll['playlist'];
-              return PlayerPage(source: source, playlist: playlist);
+              final entry = IptvEntryMapper.fromJson(state.extra.toString());
+              return PlayerPage(entry: entry);
             },
           ),
         ],

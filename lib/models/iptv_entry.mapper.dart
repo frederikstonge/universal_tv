@@ -25,34 +25,40 @@ class IptvEntryMapper extends ClassMapperBase<IptvEntry> {
   static const Field<IptvEntry, String> _f$id = Field('id', _$id);
   static String _$name(IptvEntry v) => v.name;
   static const Field<IptvEntry, String> _f$name = Field('name', _$name);
-  static String _$title(IptvEntry v) => v.title;
-  static const Field<IptvEntry, String> _f$title = Field('title', _$title);
-  static String _$url(IptvEntry v) => v.url;
-  static const Field<IptvEntry, String> _f$url = Field('url', _$url);
   static IptvType _$type(IptvEntry v) => v.type;
   static const Field<IptvEntry, IptvType> _f$type = Field('type', _$type);
-  static List<String> _$categories(IptvEntry v) => v.categories;
+  static String? _$logoUrl(IptvEntry v) => v.logoUrl;
+  static const Field<IptvEntry, String> _f$logoUrl =
+      Field('logoUrl', _$logoUrl);
+  static List<String>? _$categories(IptvEntry v) => v.categories;
   static const Field<IptvEntry, List<String>> _f$categories =
       Field('categories', _$categories);
+  static String _$url(IptvEntry v) => v.url;
+  static const Field<IptvEntry, String> _f$url = Field('url', _$url);
+  static String? _$epgId(IptvEntry v) => v.epgId;
+  static const Field<IptvEntry, String> _f$epgId =
+      Field('epgId', _$epgId, opt: true);
 
   @override
   final MappableFields<IptvEntry> fields = const {
     #id: _f$id,
     #name: _f$name,
-    #title: _f$title,
-    #url: _f$url,
     #type: _f$type,
+    #logoUrl: _f$logoUrl,
     #categories: _f$categories,
+    #url: _f$url,
+    #epgId: _f$epgId,
   };
 
   static IptvEntry _instantiate(DecodingData data) {
     return IptvEntry(
         id: data.dec(_f$id),
         name: data.dec(_f$name),
-        title: data.dec(_f$title),
-        url: data.dec(_f$url),
         type: data.dec(_f$type),
-        categories: data.dec(_f$categories));
+        logoUrl: data.dec(_f$logoUrl),
+        categories: data.dec(_f$categories),
+        url: data.dec(_f$url),
+        epgId: data.dec(_f$epgId));
   }
 
   @override
@@ -106,14 +112,15 @@ extension IptvEntryValueCopy<$R, $Out> on ObjectCopyWith<$R, IptvEntry, $Out> {
 
 abstract class IptvEntryCopyWith<$R, $In extends IptvEntry, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categories;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get categories;
   $R call(
       {String? id,
       String? name,
-      String? title,
-      String? url,
       IptvType? type,
-      List<String>? categories});
+      String? logoUrl,
+      List<String>? categories,
+      String? url,
+      String? epgId});
   IptvEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -126,33 +133,40 @@ class _IptvEntryCopyWithImpl<$R, $Out>
   late final ClassMapperBase<IptvEntry> $mapper =
       IptvEntryMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categories =>
-      ListCopyWith($value.categories, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(categories: v));
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
+      get categories => $value.categories != null
+          ? ListCopyWith(
+              $value.categories!,
+              (v, t) => ObjectCopyWith(v, $identity, t),
+              (v) => call(categories: v))
+          : null;
   @override
   $R call(
           {String? id,
           String? name,
-          String? title,
-          String? url,
           IptvType? type,
-          List<String>? categories}) =>
+          Object? logoUrl = $none,
+          Object? categories = $none,
+          String? url,
+          Object? epgId = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (name != null) #name: name,
-        if (title != null) #title: title,
-        if (url != null) #url: url,
         if (type != null) #type: type,
-        if (categories != null) #categories: categories
+        if (logoUrl != $none) #logoUrl: logoUrl,
+        if (categories != $none) #categories: categories,
+        if (url != null) #url: url,
+        if (epgId != $none) #epgId: epgId
       }));
   @override
   IptvEntry $make(CopyWithData data) => IptvEntry(
       id: data.get(#id, or: $value.id),
       name: data.get(#name, or: $value.name),
-      title: data.get(#title, or: $value.title),
-      url: data.get(#url, or: $value.url),
       type: data.get(#type, or: $value.type),
-      categories: data.get(#categories, or: $value.categories));
+      logoUrl: data.get(#logoUrl, or: $value.logoUrl),
+      categories: data.get(#categories, or: $value.categories),
+      url: data.get(#url, or: $value.url),
+      epgId: data.get(#epgId, or: $value.epgId));
 
   @override
   IptvEntryCopyWith<$R2, IptvEntry, $Out2> $chain<$R2, $Out2>(

@@ -1,10 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:muxa_xtream/muxa_xtream.dart';
 
-import '../services/m3u/models/attribute.dart';
-import '../services/m3u/models/generic_entry.dart';
-import '../services/xtream/model/live_stream_item.dart';
-import '../services/xtream/model/series_item.dart';
-import '../services/xtream/model/vod_item.dart';
+import '../extensions/map_extensions.dart';
+import '../generated/imdb_api/models/imdbapi_title.dart';
 import 'iptv_type.dart';
 
 part 'iptv_entry.mapper.dart';
@@ -13,69 +11,75 @@ part 'iptv_entry.mapper.dart';
 class IptvEntry with IptvEntryMappable {
   final String id;
   final String name;
-  final String title;
-  final String url;
   final IptvType type;
-  final List<String> categories;
+  final String? logoUrl;
+  final List<String>? categories;
+  final String? epgId;
+  final String url;
 
   IptvEntry({
     required this.id,
     required this.name,
-    required this.title,
-    required this.url,
     required this.type,
+    required this.logoUrl,
     required this.categories,
+    required this.url,
+    this.epgId,
   });
 
-  factory IptvEntry.fromM3uEntry(M3uGenericEntry m3uEntry) {
+  /// https://github.com/HamzaBhf00/m3u-tags-iptv
+  factory IptvEntry.fromM3uEntry(XtM3uEntry m3uEntry, {ImdbapiTitle? imdbResponse}) {
     final type = IptvType.values.firstWhere(
-      (item) => item.name == (m3uEntry.attributes[Attribute.CONTENT_TYPE] ?? m3uEntry.attributes[Attribute.TYPE]),
+      (e) => e.name == m3uEntry.attrs.safeGet('tvg-type'),
       orElse: () => IptvType.unknown,
     );
 
     return IptvEntry(
-      id: m3uEntry.attributes[Attribute.ID] ?? m3uEntry.attributes[Attribute.NAME] ?? m3uEntry.title,
-      name: m3uEntry.attributes[Attribute.NAME] ?? m3uEntry.attributes[Attribute.ID] ?? m3uEntry.title,
-      title: m3uEntry.title,
-      url: m3uEntry.link,
+      id: m3uEntry.tvgId ?? m3uEntry.name,
+      name: m3uEntry.name,
+      url: m3uEntry.url,
       type: type,
-      categories: m3uEntry.attributes.entries
-          .where((attribute) => Attribute.GROUP.contains(attribute.key) && attribute.value?.isNotEmpty == true)
-          .map((e) => e.value!)
-          .toList(),
+      logoUrl: type == IptvType.live || imdbResponse == null ? m3uEntry.logoUrl : imdbResponse.primaryImage?.url,
+      categories: type == IptvType.live || imdbResponse == null
+          ? [
+              if (m3uEntry.groupTitle != null) ...[m3uEntry.groupTitle!],
+            ]
+          : imdbResponse.genres?.toList(),
+      epgId: m3uEntry.tvgId,
     );
   }
 
-  factory IptvEntry.fromXTremeVodItem(VodItem vodItem, String url, List<String> categories) {
+  factory IptvEntry.fromXTremeVodItem(XtVodItem vodItem, String url) {
     return IptvEntry(
-      id: vodItem.streamId!.toString(),
-      name: vodItem.name!,
-      title: vodItem.title!,
+      id: vodItem.streamId.toString(),
+      name: vodItem.name,
       url: url,
+      logoUrl: vodItem.posterUrl,
       type: IptvType.movies,
-      categories: categories,
+      categories: [vodItem.categoryId],
     );
   }
 
-  factory IptvEntry.fromXTremeSeriesItem(SeriesItem seriesItem, String url, List<String> categories) {
+  factory IptvEntry.fromXTremeSeriesItem(XtSeriesItem seriesItem, String url) {
     return IptvEntry(
-      id: seriesItem.seriesId!.toString(),
-      name: seriesItem.name!,
-      title: seriesItem.title!,
+      id: seriesItem.seriesId.toString(),
+      name: seriesItem.name,
       url: url,
+      logoUrl: seriesItem.posterUrl,
       type: IptvType.tvshows,
-      categories: categories,
+      categories: [seriesItem.categoryId],
     );
   }
 
-  factory IptvEntry.fromXTremeLiveStreamItem(LiveStreamItem liveStreamItem, String url, List<String> categories) {
+  factory IptvEntry.fromXTremeLiveStreamItem(XtLiveChannel liveStreamItem, String url) {
     return IptvEntry(
-      id: liveStreamItem.streamId!.toString(),
-      name: liveStreamItem.name!,
-      title: liveStreamItem.name!,
+      id: liveStreamItem.streamId.toString(),
+      name: liveStreamItem.name,
       url: url,
+      logoUrl: liveStreamItem.logoUrl,
       type: IptvType.live,
-      categories: categories,
+      categories: [liveStreamItem.categoryId],
+      epgId: liveStreamItem.epgChannelId,
     );
   }
 }

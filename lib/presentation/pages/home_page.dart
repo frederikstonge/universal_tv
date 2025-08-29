@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../services/m3u/m3u_parser.dart';
-import '../../services/m3u/models/attribute.dart';
-import '../../services/m3u/models/generic_entry.dart';
-import '../../services/m3u/playlist_helper.dart';
+import '../../helpers/category_helper.dart';
+import '../../models/iptv_entry.dart';
+import '../../services/m3u/m3u_client.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,10 +16,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static const String m3uLink = String.fromEnvironment('M3ULINK');
+  late M3uClient m3uClient = M3uClient(m3ulink: Uri.parse(m3uLink));
 
-  List<M3uGenericEntry>? playlist;
-  Map<String, List<M3uGenericEntry>>? categories;
-  M3uGenericEntry? selectedEntry;
+  List<IptvEntry>? playlist;
+  Map<String, List<IptvEntry>>? categories;
+  IptvEntry? selectedEntry;
   Map<String, bool> expandedPanels = {};
 
   @override
@@ -36,14 +35,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future init() async {
-    final dio = Dio();
-    final uri = Uri.parse(m3uLink);
-    final response = await dio.getUri(uri);
-    final playlist = M3uParser.parse(response.data.toString());
-    final categories = PlaylistHelper.sortedCategories(entries: playlist.playlist, attributes: Attribute.GROUP);
+    final response = await m3uClient.getAllStreams();
+    final playlist = response.map((i) => IptvEntry.fromM3uEntry(i)).toList();
+    final categories = CategoryHelper.sortedCategories(entries: playlist);
 
     setState(() {
-      this.playlist = playlist.playlist;
+      this.playlist = playlist;
       this.categories = categories;
     });
   }
@@ -52,48 +49,68 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return FScaffold(
       header: FHeader(title: const Text('Home')),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FAccordion(
-              children:
-                  categories?.entries.take(10).map((e) {
-                    return FAccordionItem(
-                      title: Text(e.key),
-                      child: ListView.builder(
-                        itemCount: e.value.take(10).length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          final entry = e.value[index];
-                          final logo = entry.attributes.entries.where((e) => e.key == 'tvg-logo').firstOrNull?.value;
-                          return FTile(
-                            prefix: logo != null
-                                ? CachedNetworkImage(
-                                    height: 40,
-                                    width: 40,
-                                    cacheKey: logo,
-                                    imageUrl: logo,
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        FProgress(value: downloadProgress.progress),
-                                    errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+      child: ListView.separated(
+        itemCount: categories?.entries.length ?? 0,
+        separatorBuilder: (context, index) => const FDivider(),
+        itemBuilder: (context, index) {
+          final category = categories!.entries.elementAt(index);
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FHeader.nested(title: Text(category.key), titleAlignment: AlignmentGeometry.centerLeft),
+              SizedBox(
+                height: 180,
+                child: ListView.builder(
+                  itemCount: category.value.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final entry = category.value[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FTappable(
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: FCard(
+                            image: entry.logoUrl != null
+                                ? Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CachedNetworkImage(
+                                        height: 40,
+                                        width: 40,
+                                        cacheKey: entry.logoUrl,
+                                        imageUrl: entry.logoUrl!,
+                                        alignment: Alignment.center,
+                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                            FProgress(value: downloadProgress.progress),
+                                        errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                                      ),
+                                    ],
                                   )
                                 : null,
-                            suffix: const Icon(FIcons.play),
-                            title: Text(entry.title),
-                            onPress: () async {
-                              await GoRouter.of(context).pushNamed('player', queryParameters: {'source': entry.link});
-                            },
-                          );
+                            title: Text(entry.name, maxLines: 2, overflow: TextOverflow.ellipsis),
+                            child: Expanded(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [const Icon(FIcons.play)],
+                              ),
+                            ),
+                          ),
+                        ),
+                        onPress: () async {
+                          await GoRouter.of(context).pushNamed('player', extra: entry.toJson());
                         },
                       ),
                     );
-                  }).toList() ??
-                  [],
-            ),
-          ],
-        ),
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

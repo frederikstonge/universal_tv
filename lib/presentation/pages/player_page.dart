@@ -4,11 +4,12 @@ import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
-class PlayerPage extends StatefulWidget {
-  final String? source;
-  final List<String>? playlist;
+import '../../models/iptv_entry.dart';
 
-  const PlayerPage({super.key, required this.source, required this.playlist});
+class PlayerPage extends StatefulWidget {
+  final IptvEntry entry;
+
+  const PlayerPage({super.key, required this.entry});
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -22,12 +23,7 @@ class _PlayerPageState extends State<PlayerPage> {
   void initState() {
     player = Player();
     videoController = VideoController(player);
-    if (widget.playlist != null && widget.playlist!.isNotEmpty) {
-      player.open(Playlist(widget.playlist!.map((e) => Media(e)).toList()));
-    } else {
-      player.open(Media(widget.source!));
-    }
-
+    player.open(Media(widget.entry.url));
     super.initState();
   }
 
