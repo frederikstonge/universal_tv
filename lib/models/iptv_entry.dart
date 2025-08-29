@@ -40,6 +40,7 @@ class IptvEntry with IptvEntryMappable {
       url: m3uEntry.url,
       type: type,
       logoUrl: type == IptvType.live || imdbResponse == null ? m3uEntry.logoUrl : imdbResponse.primaryImage?.url,
+      // for tvshow, m3uEntry.groupTitle will contain the name of the tvshow.
       categories: type == IptvType.live || imdbResponse == null
           ? [
               if (m3uEntry.groupTitle != null) ...[m3uEntry.groupTitle!],
