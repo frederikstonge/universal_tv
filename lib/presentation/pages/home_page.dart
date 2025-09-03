@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../helpers/category_helper.dart';
 import '../../models/iptv_entry.dart';
 import '../../services/m3u/m3u_client.dart';
+import '../components/entry_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,18 +20,11 @@ class _HomePageState extends State<HomePage> {
 
   List<IptvEntry>? playlist;
   Map<String, List<IptvEntry>>? categories;
-  IptvEntry? selectedEntry;
-  Map<String, bool> expandedPanels = {};
 
   @override
   void initState() {
     init();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Future init() async {
@@ -47,71 +40,37 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FScaffold(
-      header: FHeader(title: const Text('Home')),
-      child: ListView.separated(
-        itemCount: categories?.entries.length ?? 0,
-        separatorBuilder: (context, index) => const FDivider(),
-        itemBuilder: (context, index) {
-          final category = categories!.entries.elementAt(index);
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FHeader.nested(title: Text(category.key), titleAlignment: AlignmentGeometry.centerLeft),
-              SizedBox(
-                height: 180,
-                child: ListView.builder(
-                  itemCount: category.value.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    final entry = category.value[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FTappable(
-                        child: AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: FCard(
-                            image: entry.logoUrl != null
-                                ? Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CachedNetworkImage(
-                                        height: 40,
-                                        width: 40,
-                                        cacheKey: entry.logoUrl,
-                                        imageUrl: entry.logoUrl!,
-                                        alignment: Alignment.center,
-                                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                            FProgress(value: downloadProgress.progress),
-                                        errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
-                                      ),
-                                    ],
-                                  )
-                                : null,
-                            title: Text(entry.name, maxLines: 2, overflow: TextOverflow.ellipsis),
-                            child: Expanded(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [const Icon(FIcons.play)],
-                              ),
-                            ),
-                          ),
-                        ),
-                        onPress: () async {
-                          await GoRouter.of(context).pushNamed('player', extra: entry.toJson());
-                        },
-                      ),
-                    );
-                  },
-                ),
+    return ListView.separated(
+      itemCount: categories?.entries.length ?? 0,
+      separatorBuilder: (context, index) => const FDivider(),
+      itemBuilder: (context, index) {
+        final category = categories!.entries.elementAt(index);
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FHeader.nested(title: Text(category.key), titleAlignment: AlignmentGeometry.centerLeft),
+            SizedBox(
+              height: 320,
+              child: ListView.builder(
+                itemCount: category.value.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final entry = category.value[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: EntryCard(
+                      entry: entry,
+                      onTap: () async {
+                        await GoRouter.of(context).pushNamed('player', extra: entry.toJson());
+                      },
+                    ),
+                  );
+                },
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

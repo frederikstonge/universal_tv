@@ -14,33 +14,36 @@ class MainShell extends StatelessWidget {
     final breakpoints = context.theme.breakpoints;
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width <= breakpoints.sm;
-    return FScaffold(
-      childPad: false,
-      footer: isMobile
-          ? FBottomNavigationBar(
-              index: navigationShell.currentIndex,
-              onChange: (value) => navigationShell.goBranch(value),
-              children: items.entries
-                  .map((e) => FBottomNavigationBarItem(icon: Icon(e.value), label: Text(e.key)))
-                  .toList(),
-            )
-          : null,
-      sidebar: isMobile
-          ? null
-          : FSidebar(
-              header: FHeader.nested(title: Text('Universal TV')),
-              children: items.entries
-                  .mapIndexed(
-                    (i, e) => FSidebarItem(
-                      icon: Icon(e.value),
-                      label: Text(e.key),
-                      selected: navigationShell.currentIndex == i,
-                      onPress: () => navigationShell.goBranch(i),
-                    ),
-                  )
-                  .toList(),
-            ),
-      child: navigationShell,
+    return FocusScope(
+      child: FScaffold(
+        childPad: false,
+        footer: isMobile
+            ? FBottomNavigationBar(
+                index: navigationShell.currentIndex,
+                onChange: (value) => navigationShell.goBranch(value),
+                children: items.entries
+                    .map((e) => FBottomNavigationBarItem(icon: Icon(e.value), label: Text(e.key)))
+                    .toList(),
+              )
+            : null,
+        sidebar: isMobile
+            ? null
+            : FSidebar(
+                autofocus: true,
+                header: FHeader.nested(title: Text('Universal TV')),
+                children: items.entries
+                    .mapIndexed(
+                      (i, e) => FSidebarItem(
+                        icon: Icon(e.value),
+                        label: Text(e.key),
+                        selected: navigationShell.currentIndex == i,
+                        onPress: () => navigationShell.goBranch(i),
+                      ),
+                    )
+                    .toList(),
+              ),
+        child: navigationShell,
+      ),
     );
   }
 }
