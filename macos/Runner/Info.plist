@@ -28,7 +28,5 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>keychain-access-groups</key>
-	<array/>
 </dict>
 </plist>

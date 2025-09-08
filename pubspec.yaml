@@ -18,7 +18,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  flutter_secure_storage_x: ^11.3.0
   forui: ^0.15.1
   forui_assets: ^0.15.0
   go_router: ^16.2.0
