@@ -1,10 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:muxa_xtream/muxa_xtream.dart';
 
-import '../../helpers/category_helper.dart';
-import '../../models/iptv_entry.dart';
-import '../../services/m3u/m3u_client.dart';
+import '../../blocs/settings/iptv_provider.dart';
+import '../../generated/imdb_api/imdb_api.swagger.dart';
+import '../../repositories/m3u_repository.dart';
 import '../components/entry_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,21 +19,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static const String m3uLink = String.fromEnvironment('M3ULINK');
-  late M3uClient m3uClient = M3uClient(m3ulink: Uri.parse(m3uLink));
+  late M3uRepository m3uClient = M3uRepository(
+    provider: M3uIptvProvider(name: 'test', urls: [Uri.parse(m3uLink)]),
+    dio: Dio(),
+    imdbApi: context.read<ImdbApi>(),
+  );
 
-  List<IptvEntry>? playlist;
-  Map<String, List<IptvEntry>>? categories;
+  List<XtSeriesItem>? playlist;
+  List<XtCategory>? categories;
 
   @override
   void initState() {
-    init();
+    m3uClient.load().then((value) => init());
     super.initState();
   }
 
   Future init() async {
-    final response = await m3uClient.getAllStreams();
-    final playlist = response.map((i) => IptvEntry.fromM3uEntry(i)).toList();
-    final categories = CategoryHelper.sortedCategories(entries: playlist);
+    final response = await m3uClient.getSeries();
+    final playlist = response.toList();
+    final categories = await m3uClient.getSeriesCategories();
 
     setState(() {
       this.playlist = playlist;
@@ -41,27 +48,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: categories?.entries.length ?? 0,
+      itemCount: categories?.length ?? 0,
       separatorBuilder: (context, index) => const FDivider(),
       itemBuilder: (context, index) {
-        final category = categories!.entries.elementAt(index);
+        final category = categories![index];
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FHeader.nested(title: Text(category.key), titleAlignment: AlignmentGeometry.centerLeft),
+            FHeader.nested(title: Text(category.name), titleAlignment: AlignmentGeometry.centerLeft),
             SizedBox(
               height: 320,
               child: ListView.builder(
-                itemCount: category.value.length,
+                itemCount: playlist!.where((e) => e.categoryId == category.id).length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final entry = category.value[index];
+                  final entry = playlist!.where((e) => e.categoryId == category.id).elementAt(index);
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: EntryCard(
-                      entry: entry,
+                      series: entry,
                       onTap: () async {
-                        await GoRouter.of(context).pushNamed('player', extra: entry.toJson());
+                        await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
                       },
                     ),
                   );

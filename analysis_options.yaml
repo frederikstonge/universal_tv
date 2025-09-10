@@ -51,4 +51,4 @@ formatter:
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
-  exclude: [ build/**, lib/**.freezed.dart, lib/**.g.dart ]
+  exclude: [ build/**, lib/**.mapper.dart, lib/**.g.dart, lib/generated/** ]

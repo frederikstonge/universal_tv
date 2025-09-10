@@ -1,1 +1,0 @@
-kiota generate -l dart -d assets/imdb_api.yaml -c ImdbApi -o lib/generated/imdb_api

@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-
-import '../../models/iptv_entry.dart';
+import 'package:muxa_xtream/muxa_xtream.dart';
 
 class EntryCard extends StatefulWidget {
-  final IptvEntry entry;
+  final XtSeriesItem? series;
   final Function() onTap;
 
-  const EntryCard({super.key, required this.entry, required this.onTap});
+  const EntryCard({super.key, required this.series, required this.onTap});
 
   @override
   State<EntryCard> createState() => _EntryCardState();
@@ -30,7 +29,7 @@ class _EntryCardState extends State<EntryCard> {
                   ? style.decoration.copyWith(border: Border.all(width: 3, color: FTheme.of(context).colors.primary))
                   : style.decoration,
             ),
-            image: widget.entry.logoUrl != null
+            image: widget.series?.posterUrl != null
                 ? Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -38,8 +37,8 @@ class _EntryCardState extends State<EntryCard> {
                       CachedNetworkImage(
                         height: 40,
                         width: 40,
-                        cacheKey: widget.entry.logoUrl,
-                        imageUrl: widget.entry.logoUrl!,
+                        cacheKey: widget.series!.posterUrl!,
+                        imageUrl: widget.series!.posterUrl!,
                         alignment: Alignment.center,
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             FProgress(value: downloadProgress.progress),
@@ -49,8 +48,8 @@ class _EntryCardState extends State<EntryCard> {
                   )
                 : null,
             title: Text(
-              widget.entry.name,
-              maxLines: widget.entry.logoUrl != null ? 2 : 4,
+              widget.series!.name,
+              maxLines: widget.series!.posterUrl != null ? 2 : 4,
               overflow: TextOverflow.ellipsis,
             ),
             child: Expanded(

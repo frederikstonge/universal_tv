@@ -1,11 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:microsoft_kiota_bundle/microsoft_kiota_bundle.dart';
-import 'package:tiny_db/tiny_db.dart';
 
 import 'app.dart';
 import 'blocs/settings/settings_cubit.dart';
-import 'generated/imdb_api/imdb_api.dart';
+import 'generated/imdb_api/imdb_api.swagger.dart';
 
 class Bootstrapper extends StatelessWidget {
   const Bootstrapper({super.key});
@@ -16,12 +14,7 @@ class Bootstrapper extends StatelessWidget {
       create: (context) => SettingsCubit(),
       child: MultiRepositoryProvider(
         providers: [
-          RepositoryProvider(create: (context) => TinyDb(MemoryStorage()), dispose: (value) => value.close()),
-          RepositoryProvider(
-            create: (context) =>
-                ImdbApi(DefaultRequestAdapter(authProvider: AnonymousAuthenticationProvider()))
-                  ..withUrl('https://api.imdbapi.dev/'),
-          ),
+          RepositoryProvider(create: (context) => ImdbApi.create(baseUrl: Uri.parse('https://api.imdbapi.dev/'))),
         ],
         child: const App(),
       ),

@@ -4,12 +4,8 @@ import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
-import '../../models/iptv_entry.dart';
-
 class PlayerPage extends StatefulWidget {
-  final IptvEntry entry;
-
-  const PlayerPage({super.key, required this.entry});
+  const PlayerPage({super.key});
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -23,7 +19,7 @@ class _PlayerPageState extends State<PlayerPage> {
   void initState() {
     player = Player();
     videoController = VideoController(player);
-    player.open(Media(widget.entry.url));
+    player.open(Media(''));
     super.initState();
   }
 

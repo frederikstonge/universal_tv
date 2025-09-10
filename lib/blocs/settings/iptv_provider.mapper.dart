@@ -1,6 +1,5 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -80,10 +79,8 @@ class IptvProviderMapper extends ClassMapperBase<IptvProvider> {
   static String _$name(IptvProvider v) => v.name;
   static const Field<IptvProvider, String> _f$name = Field('name', _$name);
   static IptvProviderType _$type(IptvProvider v) => v.type;
-  static const Field<IptvProvider, IptvProviderType> _f$type = Field(
-    'type',
-    _$type,
-  );
+  static const Field<IptvProvider, IptvProviderType> _f$type =
+      Field('type', _$type);
 
   @override
   final MappableFields<IptvProvider> fields = const {
@@ -94,10 +91,7 @@ class IptvProviderMapper extends ClassMapperBase<IptvProvider> {
 
   static IptvProvider _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-      'IptvProvider',
-      'type',
-      '${data.value['type']}',
-    );
+        'IptvProvider', 'type', '${data.value['type']}');
   }
 
   @override
@@ -142,22 +136,14 @@ class M3uIptvProviderMapper extends SubClassMapperBase<M3uIptvProvider> {
   static String _$name(M3uIptvProvider v) => v.name;
   static const Field<M3uIptvProvider, String> _f$name = Field('name', _$name);
   static List<Uri> _$urls(M3uIptvProvider v) => v.urls;
-  static const Field<M3uIptvProvider, List<Uri>> _f$urls = Field(
-    'urls',
-    _$urls,
-  );
+  static const Field<M3uIptvProvider, List<Uri>> _f$urls =
+      Field('urls', _$urls);
   static String _$id(M3uIptvProvider v) => v.id;
-  static const Field<M3uIptvProvider, String> _f$id = Field(
-    'id',
-    _$id,
-    mode: FieldMode.member,
-  );
+  static const Field<M3uIptvProvider, String> _f$id =
+      Field('id', _$id, mode: FieldMode.member);
   static IptvProviderType _$type(M3uIptvProvider v) => v.type;
-  static const Field<M3uIptvProvider, IptvProviderType> _f$type = Field(
-    'type',
-    _$type,
-    mode: FieldMode.member,
-  );
+  static const Field<M3uIptvProvider, IptvProviderType> _f$type =
+      Field('type', _$type, mode: FieldMode.member);
 
   @override
   final MappableFields<M3uIptvProvider> fields = const {
@@ -198,38 +184,30 @@ mixin M3uIptvProviderMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return M3uIptvProviderMapper.ensureInitialized().encodeMap<M3uIptvProvider>(
-      this as M3uIptvProvider,
-    );
+    return M3uIptvProviderMapper.ensureInitialized()
+        .encodeMap<M3uIptvProvider>(this as M3uIptvProvider);
   }
 
   M3uIptvProviderCopyWith<M3uIptvProvider, M3uIptvProvider, M3uIptvProvider>
-  get copyWith =>
-      _M3uIptvProviderCopyWithImpl<M3uIptvProvider, M3uIptvProvider>(
-        this as M3uIptvProvider,
-        $identity,
-        $identity,
-      );
+      get copyWith =>
+          _M3uIptvProviderCopyWithImpl<M3uIptvProvider, M3uIptvProvider>(
+              this as M3uIptvProvider, $identity, $identity);
   @override
   String toString() {
-    return M3uIptvProviderMapper.ensureInitialized().stringifyValue(
-      this as M3uIptvProvider,
-    );
+    return M3uIptvProviderMapper.ensureInitialized()
+        .stringifyValue(this as M3uIptvProvider);
   }
 
   @override
   bool operator ==(Object other) {
-    return M3uIptvProviderMapper.ensureInitialized().equalsValue(
-      this as M3uIptvProvider,
-      other,
-    );
+    return M3uIptvProviderMapper.ensureInitialized()
+        .equalsValue(this as M3uIptvProvider, other);
   }
 
   @override
   int get hashCode {
-    return M3uIptvProviderMapper.ensureInitialized().hashValue(
-      this as M3uIptvProvider,
-    );
+    return M3uIptvProviderMapper.ensureInitialized()
+        .hashValue(this as M3uIptvProvider);
   }
 }
 
@@ -245,8 +223,7 @@ abstract class M3uIptvProviderCopyWith<$R, $In extends M3uIptvProvider, $Out>
   @override
   $R call({String? name, List<Uri>? urls});
   M3uIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _M3uIptvProviderCopyWithImpl<$R, $Out>
@@ -259,27 +236,21 @@ class _M3uIptvProviderCopyWithImpl<$R, $Out>
       M3uIptvProviderMapper.ensureInitialized();
   @override
   ListCopyWith<$R, Uri, ObjectCopyWith<$R, Uri, Uri>> get urls => ListCopyWith(
-    $value.urls,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(urls: v),
-  );
+      $value.urls,
+      (v, t) => ObjectCopyWith(v, $identity, t),
+      (v) => call(urls: v));
   @override
-  $R call({String? name, List<Uri>? urls}) => $apply(
-    FieldCopyWithData({
-      if (name != null) #name: name,
-      if (urls != null) #urls: urls,
-    }),
-  );
+  $R call({String? name, List<Uri>? urls}) => $apply(FieldCopyWithData(
+      {if (name != null) #name: name, if (urls != null) #urls: urls}));
   @override
   M3uIptvProvider $make(CopyWithData data) => M3uIptvProvider(
-    name: data.get(#name, or: $value.name),
-    urls: data.get(#urls, or: $value.urls),
-  );
+      name: data.get(#name, or: $value.name),
+      urls: data.get(#urls, or: $value.urls));
 
   @override
   M3uIptvProviderCopyWith<$R2, M3uIptvProvider, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _M3uIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _M3uIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
@@ -298,34 +269,22 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
   final String id = 'XtreamIptvProvider';
 
   static String _$name(XtreamIptvProvider v) => v.name;
-  static const Field<XtreamIptvProvider, String> _f$name = Field(
-    'name',
-    _$name,
-  );
+  static const Field<XtreamIptvProvider, String> _f$name =
+      Field('name', _$name);
   static Uri _$url(XtreamIptvProvider v) => v.url;
   static const Field<XtreamIptvProvider, Uri> _f$url = Field('url', _$url);
   static String _$userName(XtreamIptvProvider v) => v.userName;
-  static const Field<XtreamIptvProvider, String> _f$userName = Field(
-    'userName',
-    _$userName,
-  );
+  static const Field<XtreamIptvProvider, String> _f$userName =
+      Field('userName', _$userName);
   static String _$password(XtreamIptvProvider v) => v.password;
-  static const Field<XtreamIptvProvider, String> _f$password = Field(
-    'password',
-    _$password,
-  );
+  static const Field<XtreamIptvProvider, String> _f$password =
+      Field('password', _$password);
   static String _$id(XtreamIptvProvider v) => v.id;
-  static const Field<XtreamIptvProvider, String> _f$id = Field(
-    'id',
-    _$id,
-    mode: FieldMode.member,
-  );
+  static const Field<XtreamIptvProvider, String> _f$id =
+      Field('id', _$id, mode: FieldMode.member);
   static IptvProviderType _$type(XtreamIptvProvider v) => v.type;
-  static const Field<XtreamIptvProvider, IptvProviderType> _f$type = Field(
-    'type',
-    _$type,
-    mode: FieldMode.member,
-  );
+  static const Field<XtreamIptvProvider, IptvProviderType> _f$type =
+      Field('type', _$type, mode: FieldMode.member);
 
   @override
   final MappableFields<XtreamIptvProvider> fields = const {
@@ -347,11 +306,10 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
 
   static XtreamIptvProvider _instantiate(DecodingData data) {
     return XtreamIptvProvider(
-      name: data.dec(_f$name),
-      url: data.dec(_f$url),
-      userName: data.dec(_f$userName),
-      password: data.dec(_f$password),
-    );
+        name: data.dec(_f$name),
+        url: data.dec(_f$url),
+        userName: data.dec(_f$userName),
+        password: data.dec(_f$password));
   }
 
   @override
@@ -377,59 +335,42 @@ mixin XtreamIptvProviderMappable {
         .encodeMap<XtreamIptvProvider>(this as XtreamIptvProvider);
   }
 
-  XtreamIptvProviderCopyWith<
-    XtreamIptvProvider,
-    XtreamIptvProvider,
-    XtreamIptvProvider
-  >
-  get copyWith =>
-      _XtreamIptvProviderCopyWithImpl<XtreamIptvProvider, XtreamIptvProvider>(
-        this as XtreamIptvProvider,
-        $identity,
-        $identity,
-      );
+  XtreamIptvProviderCopyWith<XtreamIptvProvider, XtreamIptvProvider,
+          XtreamIptvProvider>
+      get copyWith => _XtreamIptvProviderCopyWithImpl<XtreamIptvProvider,
+          XtreamIptvProvider>(this as XtreamIptvProvider, $identity, $identity);
   @override
   String toString() {
-    return XtreamIptvProviderMapper.ensureInitialized().stringifyValue(
-      this as XtreamIptvProvider,
-    );
+    return XtreamIptvProviderMapper.ensureInitialized()
+        .stringifyValue(this as XtreamIptvProvider);
   }
 
   @override
   bool operator ==(Object other) {
-    return XtreamIptvProviderMapper.ensureInitialized().equalsValue(
-      this as XtreamIptvProvider,
-      other,
-    );
+    return XtreamIptvProviderMapper.ensureInitialized()
+        .equalsValue(this as XtreamIptvProvider, other);
   }
 
   @override
   int get hashCode {
-    return XtreamIptvProviderMapper.ensureInitialized().hashValue(
-      this as XtreamIptvProvider,
-    );
+    return XtreamIptvProviderMapper.ensureInitialized()
+        .hashValue(this as XtreamIptvProvider);
   }
 }
 
 extension XtreamIptvProviderValueCopy<$R, $Out>
     on ObjectCopyWith<$R, XtreamIptvProvider, $Out> {
   XtreamIptvProviderCopyWith<$R, XtreamIptvProvider, $Out>
-  get $asXtreamIptvProvider => $base.as(
-    (v, t, t2) => _XtreamIptvProviderCopyWithImpl<$R, $Out>(v, t, t2),
-  );
+      get $asXtreamIptvProvider => $base.as(
+          (v, t, t2) => _XtreamIptvProviderCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class XtreamIptvProviderCopyWith<
-  $R,
-  $In extends XtreamIptvProvider,
-  $Out
->
-    implements IptvProviderCopyWith<$R, $In, $Out> {
+abstract class XtreamIptvProviderCopyWith<$R, $In extends XtreamIptvProvider,
+    $Out> implements IptvProviderCopyWith<$R, $In, $Out> {
   @override
   $R call({String? name, Uri? url, String? userName, String? password});
   XtreamIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _XtreamIptvProviderCopyWithImpl<$R, $Out>
@@ -442,26 +383,23 @@ class _XtreamIptvProviderCopyWithImpl<$R, $Out>
       XtreamIptvProviderMapper.ensureInitialized();
   @override
   $R call({String? name, Uri? url, String? userName, String? password}) =>
-      $apply(
-        FieldCopyWithData({
-          if (name != null) #name: name,
-          if (url != null) #url: url,
-          if (userName != null) #userName: userName,
-          if (password != null) #password: password,
-        }),
-      );
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (url != null) #url: url,
+        if (userName != null) #userName: userName,
+        if (password != null) #password: password
+      }));
   @override
   XtreamIptvProvider $make(CopyWithData data) => XtreamIptvProvider(
-    name: data.get(#name, or: $value.name),
-    url: data.get(#url, or: $value.url),
-    userName: data.get(#userName, or: $value.userName),
-    password: data.get(#password, or: $value.password),
-  );
+      name: data.get(#name, or: $value.name),
+      url: data.get(#url, or: $value.url),
+      userName: data.get(#userName, or: $value.userName),
+      password: data.get(#password, or: $value.password));
 
   @override
   XtreamIptvProviderCopyWith<$R2, XtreamIptvProvider, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _XtreamIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _XtreamIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class EpgIptvProviderMapper extends SubClassMapperBase<EpgIptvProvider> {
@@ -484,17 +422,11 @@ class EpgIptvProviderMapper extends SubClassMapperBase<EpgIptvProvider> {
   static Uri _$url(EpgIptvProvider v) => v.url;
   static const Field<EpgIptvProvider, Uri> _f$url = Field('url', _$url);
   static String _$id(EpgIptvProvider v) => v.id;
-  static const Field<EpgIptvProvider, String> _f$id = Field(
-    'id',
-    _$id,
-    mode: FieldMode.member,
-  );
+  static const Field<EpgIptvProvider, String> _f$id =
+      Field('id', _$id, mode: FieldMode.member);
   static IptvProviderType _$type(EpgIptvProvider v) => v.type;
-  static const Field<EpgIptvProvider, IptvProviderType> _f$type = Field(
-    'type',
-    _$type,
-    mode: FieldMode.member,
-  );
+  static const Field<EpgIptvProvider, IptvProviderType> _f$type =
+      Field('type', _$type, mode: FieldMode.member);
 
   @override
   final MappableFields<EpgIptvProvider> fields = const {
@@ -535,38 +467,30 @@ mixin EpgIptvProviderMappable {
   }
 
   Map<String, dynamic> toMap() {
-    return EpgIptvProviderMapper.ensureInitialized().encodeMap<EpgIptvProvider>(
-      this as EpgIptvProvider,
-    );
+    return EpgIptvProviderMapper.ensureInitialized()
+        .encodeMap<EpgIptvProvider>(this as EpgIptvProvider);
   }
 
   EpgIptvProviderCopyWith<EpgIptvProvider, EpgIptvProvider, EpgIptvProvider>
-  get copyWith =>
-      _EpgIptvProviderCopyWithImpl<EpgIptvProvider, EpgIptvProvider>(
-        this as EpgIptvProvider,
-        $identity,
-        $identity,
-      );
+      get copyWith =>
+          _EpgIptvProviderCopyWithImpl<EpgIptvProvider, EpgIptvProvider>(
+              this as EpgIptvProvider, $identity, $identity);
   @override
   String toString() {
-    return EpgIptvProviderMapper.ensureInitialized().stringifyValue(
-      this as EpgIptvProvider,
-    );
+    return EpgIptvProviderMapper.ensureInitialized()
+        .stringifyValue(this as EpgIptvProvider);
   }
 
   @override
   bool operator ==(Object other) {
-    return EpgIptvProviderMapper.ensureInitialized().equalsValue(
-      this as EpgIptvProvider,
-      other,
-    );
+    return EpgIptvProviderMapper.ensureInitialized()
+        .equalsValue(this as EpgIptvProvider, other);
   }
 
   @override
   int get hashCode {
-    return EpgIptvProviderMapper.ensureInitialized().hashValue(
-      this as EpgIptvProvider,
-    );
+    return EpgIptvProviderMapper.ensureInitialized()
+        .hashValue(this as EpgIptvProvider);
   }
 }
 
@@ -581,8 +505,7 @@ abstract class EpgIptvProviderCopyWith<$R, $In extends EpgIptvProvider, $Out>
   @override
   $R call({String? name, Uri? url});
   EpgIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  );
+      Then<$Out2, $R2> t);
 }
 
 class _EpgIptvProviderCopyWithImpl<$R, $Out>
@@ -594,21 +517,15 @@ class _EpgIptvProviderCopyWithImpl<$R, $Out>
   late final ClassMapperBase<EpgIptvProvider> $mapper =
       EpgIptvProviderMapper.ensureInitialized();
   @override
-  $R call({String? name, Uri? url}) => $apply(
-    FieldCopyWithData({
-      if (name != null) #name: name,
-      if (url != null) #url: url,
-    }),
-  );
+  $R call({String? name, Uri? url}) => $apply(FieldCopyWithData(
+      {if (name != null) #name: name, if (url != null) #url: url}));
   @override
   EpgIptvProvider $make(CopyWithData data) => EpgIptvProvider(
-    name: data.get(#name, or: $value.name),
-    url: data.get(#url, or: $value.url),
-  );
+      name: data.get(#name, or: $value.name),
+      url: data.get(#url, or: $value.url));
 
   @override
   EpgIptvProviderCopyWith<$R2, EpgIptvProvider, $Out2> $chain<$R2, $Out2>(
-    Then<$Out2, $R2> t,
-  ) => _EpgIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+          Then<$Out2, $R2> t) =>
+      _EpgIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
-
