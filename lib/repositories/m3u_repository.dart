@@ -34,7 +34,9 @@ class M3uRepository extends StreamBaseRepository {
     final imdbTitles = entries
         .where(
           (e) =>
-              (e.type == IptvType.movies || e.type == IptvType.tvshows) && (e.tvgId != null || e.safeTvgName != null),
+              (e.type == IptvType.movies || e.type == IptvType.tvshows) &&
+              (e.tvgId != null || e.safeTvgName != null) &&
+              ((e.tvgId ?? e.safeTvgName)?.startsWith('tt') ?? false),
         )
         .map((e) => e.tvgId ?? e.safeTvgName)
         .whereType<String>()
