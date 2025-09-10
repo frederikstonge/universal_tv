@@ -1,9 +1,10 @@
 import 'package:muxa_xtream/muxa_xtream.dart';
 
 import '../blocs/settings/iptv_provider.dart';
-import 'base_repository.dart';
+import 'stream_base_repository.dart';
+import 'xmltv_base_repository.dart';
 
-class XtreamRepository extends BaseRepository {
+class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   final XtreamIptvProvider provider;
   late final XtreamPortal portal;
   late final XtreamCredentials credentials;
@@ -16,7 +17,22 @@ class XtreamRepository extends BaseRepository {
   }
 
   @override
-  Future<void> load() async {}
+  Future<void> load() async {
+    final health = await client.ping();
+    if (!health.ok) {
+      throw Exception('Failed to connect to Xtream server ${provider.name}: ${health.statusCode}');
+    }
+  }
+
+  @override
+  Future<List<XtXmltvEvent>> getXmltv() async {
+    final capabilities = await client.capabilities();
+    if (capabilities.supportsXmltv) {
+      return await client.getXmltv().toList();
+    }
+
+    return [];
+  }
 
   @override
   Future<List<XtCategory>> getLiveCategories() async => client.getLiveCategories();

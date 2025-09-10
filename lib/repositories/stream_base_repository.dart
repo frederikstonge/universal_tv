@@ -1,6 +1,6 @@
 import 'package:muxa_xtream/muxa_xtream.dart';
 
-abstract class BaseRepository {
+abstract class StreamBaseRepository {
   Future<void> load();
   Future<List<XtCategory>> getLiveCategories();
   Future<List<XtCategory>> getVodCategories();

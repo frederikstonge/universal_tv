@@ -8,9 +8,9 @@ import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
 import '../extensions/m3u_entry_extensions.dart';
 import '../generated/imdb_api/imdb_api.swagger.dart';
-import 'base_repository.dart';
+import 'stream_base_repository.dart';
 
-class M3uRepository extends BaseRepository {
+class M3uRepository extends StreamBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
   final ImdbApi imdbApi;
@@ -40,17 +40,6 @@ class M3uRepository extends BaseRepository {
         .whereType<String>()
         .toSet()
         .toList();
-
-    // for (final imdbTitle in imdbTitles) {
-    //   try {
-    //     final result = await imdbApi.titles.byTitleId(imdbTitle).getAsync();
-    //     if (result != null) {
-    //       imdbEntries.add(result);
-    //     }
-    //   } catch (e) {
-    //     // ignore errors from imdb api
-    //   }
-    // }
 
     final pageSize = 5;
     for (var i = 0; i < (imdbTitles.length / pageSize).ceil(); i++) {
