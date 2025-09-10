@@ -187,7 +187,7 @@ class M3uRepository extends StreamBaseRepository {
           .groupListsBy((s) => s.seasonNumber)
           .map(
             (s, e) => MapEntry(
-              s ?? 0,
+              s,
               e.map((episode) {
                 final episodeImdbEntry = episodesInfo.body?.episodes?.firstWhereOrNull(
                   (ep) =>
@@ -198,8 +198,8 @@ class M3uRepository extends StreamBaseRepository {
                 return XtEpisode(
                   id: entries.indexOf(episode),
                   title: episodeImdbEntry?.title ?? episode.name,
-                  season: episode.seasonNumber ?? (seasons?.keys.toList().indexOf(episodeImdbEntry?.season) ?? 0),
-                  episode: episode.episodeNumber ?? 0,
+                  season: episode.seasonNumber,
+                  episode: episode.episodeNumber,
                   duration: episodeImdbEntry?.runtimeSeconds != null
                       ? Duration(seconds: episodeImdbEntry!.runtimeSeconds!)
                       : null,
