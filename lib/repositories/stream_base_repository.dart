@@ -1,16 +1,21 @@
 import 'package:muxa_xtream/muxa_xtream.dart';
 
-abstract class StreamBaseRepository {
-  Future<void> load();
-  Future<List<XtCategory>> getLiveCategories();
-  Future<List<XtCategory>> getVodCategories();
-  Future<List<XtCategory>> getSeriesCategories();
-  Future<List<XtLiveChannel>> getLiveStreams();
-  Future<List<XtVodItem>> getVodStreams();
-  Future<List<XtSeriesItem>> getSeries();
+import '../models/category.dart';
+import '../models/live_channel.dart';
+import '../models/movie_item.dart';
+import '../models/tv_show_item.dart';
+import 'base_repository.dart';
+
+abstract class StreamBaseRepository implements BaseRepository {
+  Future<List<Category>> getLiveCategories();
+  Future<List<Category>> getVodCategories();
+  Future<List<Category>> getSeriesCategories();
+  Future<List<LiveChannel>> getLiveStreams();
+  Future<List<MovieItem>> getVodStreams();
+  Future<List<TvShowItem>> getSeries();
   Future<XtSeriesDetails> getSeriesInfo(int seriesId);
   Future<XtVodDetails> getVodInfo(int vodId);
-  String getLiveUrl(int streamId);
-  String getVodUrl(int streamId);
-  String getSeriesUrl(int episodeId);
+  Future<String> getLiveUrl(int streamId);
+  Future<String> getVodUrl(int streamId);
+  Future<String> getSeriesUrl(int episodeId);
 }

@@ -797,6 +797,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: "92aa3841d083cc4b0f4709b5c74fd6409a3e6ba833ffc7dc6a8fee096366acf5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   pool:
     dependency: transitive
     description:
@@ -845,6 +853,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.6"
+  reaxdb_dart:
+    dependency: "direct main"
+    description:
+      name: reaxdb_dart
+      sha256: "2aa9c902d4a100c4ca28761d74bf60890b611749e00b411db70bb43d64196912"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   recase:
     dependency: transitive
     description:

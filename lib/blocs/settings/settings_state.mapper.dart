@@ -21,7 +21,7 @@ class SettingsStateMapper extends ClassMapperBase<SettingsState> {
   @override
   final String id = 'SettingsState';
 
-  static List<IptvProvider>? _$providers(SettingsState v) => v.providers;
+  static List<IptvProvider> _$providers(SettingsState v) => v.providers;
   static const Field<SettingsState, List<IptvProvider>> _f$providers =
       Field('providers', _$providers, opt: true, def: const []);
 
@@ -87,8 +87,8 @@ extension SettingsStateValueCopy<$R, $Out>
 
 abstract class SettingsStateCopyWith<$R, $In extends SettingsState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, IptvProvider,
-      ObjectCopyWith<$R, IptvProvider, IptvProvider>>? get providers;
+  ListCopyWith<$R, IptvProvider, ObjectCopyWith<$R, IptvProvider, IptvProvider>>
+      get providers;
   $R call({List<IptvProvider>? providers});
   SettingsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -102,17 +102,12 @@ class _SettingsStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SettingsState> $mapper =
       SettingsStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, IptvProvider,
-          ObjectCopyWith<$R, IptvProvider, IptvProvider>>?
-      get providers => $value.providers != null
-          ? ListCopyWith(
-              $value.providers!,
-              (v, t) => ObjectCopyWith(v, $identity, t),
-              (v) => call(providers: v))
-          : null;
+  ListCopyWith<$R, IptvProvider, ObjectCopyWith<$R, IptvProvider, IptvProvider>>
+      get providers => ListCopyWith($value.providers,
+          (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(providers: v));
   @override
-  $R call({Object? providers = $none}) => $apply(
-      FieldCopyWithData({if (providers != $none) #providers: providers}));
+  $R call({List<IptvProvider>? providers}) =>
+      $apply(FieldCopyWithData({if (providers != null) #providers: providers}));
   @override
   SettingsState $make(CopyWithData data) =>
       SettingsState(providers: data.get(#providers, or: $value.providers));

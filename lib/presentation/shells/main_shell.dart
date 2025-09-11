@@ -10,7 +10,13 @@ class MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = {'Home': FIcons.house, 'Search': FIcons.search, 'Settings': FIcons.settings};
+    final items = {
+      'Movies': FIcons.tvMinimal,
+      'TV Shows': FIcons.tvMinimalPlay,
+      'Live TV': FIcons.tv,
+      'Search': FIcons.search,
+      'Settings': FIcons.settings,
+    };
     final breakpoints = context.theme.breakpoints;
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width <= breakpoints.sm;
@@ -30,7 +36,7 @@ class MainShell extends StatelessWidget {
             ? null
             : FSidebar(
                 autofocus: true,
-                header: FHeader.nested(title: Text('Universal TV')),
+                header: FHeader.nested(title: Text('UniversalTV')),
                 children: items.entries
                     .mapIndexed(
                       (i, e) => FSidebarItem(

@@ -29,8 +29,8 @@ class IptvProviderTypeMapper extends EnumMapper<IptvProviderType> {
         return IptvProviderType.m3u;
       case r'xtream':
         return IptvProviderType.xtream;
-      case r'epg':
-        return IptvProviderType.epg;
+      case r'xmltv':
+        return IptvProviderType.xmltv;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -43,8 +43,8 @@ class IptvProviderTypeMapper extends EnumMapper<IptvProviderType> {
         return r'm3u';
       case IptvProviderType.xtream:
         return r'xtream';
-      case IptvProviderType.epg:
-        return r'epg';
+      case IptvProviderType.xmltv:
+        return r'xmltv';
     }
   }
 }
@@ -65,7 +65,7 @@ class IptvProviderMapper extends ClassMapperBase<IptvProvider> {
       MapperContainer.globals.use(_instance = IptvProviderMapper._());
       M3uIptvProviderMapper.ensureInitialized();
       XtreamIptvProviderMapper.ensureInitialized();
-      EpgIptvProviderMapper.ensureInitialized();
+      XmltvIptvProviderMapper.ensureInitialized();
       IptvProviderTypeMapper.ensureInitialized();
     }
     return _instance!;
@@ -402,34 +402,34 @@ class _XtreamIptvProviderCopyWithImpl<$R, $Out>
       _XtreamIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
-class EpgIptvProviderMapper extends SubClassMapperBase<EpgIptvProvider> {
-  EpgIptvProviderMapper._();
+class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
+  XmltvIptvProviderMapper._();
 
-  static EpgIptvProviderMapper? _instance;
-  static EpgIptvProviderMapper ensureInitialized() {
+  static XmltvIptvProviderMapper? _instance;
+  static XmltvIptvProviderMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = EpgIptvProviderMapper._());
+      MapperContainer.globals.use(_instance = XmltvIptvProviderMapper._());
       IptvProviderMapper.ensureInitialized().addSubMapper(_instance!);
     }
     return _instance!;
   }
 
   @override
-  final String id = 'EpgIptvProvider';
+  final String id = 'XmltvIptvProvider';
 
-  static String _$name(EpgIptvProvider v) => v.name;
-  static const Field<EpgIptvProvider, String> _f$name = Field('name', _$name);
-  static Uri _$url(EpgIptvProvider v) => v.url;
-  static const Field<EpgIptvProvider, Uri> _f$url = Field('url', _$url);
-  static String _$id(EpgIptvProvider v) => v.id;
-  static const Field<EpgIptvProvider, String> _f$id =
+  static String _$name(XmltvIptvProvider v) => v.name;
+  static const Field<XmltvIptvProvider, String> _f$name = Field('name', _$name);
+  static Uri _$url(XmltvIptvProvider v) => v.url;
+  static const Field<XmltvIptvProvider, Uri> _f$url = Field('url', _$url);
+  static String _$id(XmltvIptvProvider v) => v.id;
+  static const Field<XmltvIptvProvider, String> _f$id =
       Field('id', _$id, mode: FieldMode.member);
-  static IptvProviderType _$type(EpgIptvProvider v) => v.type;
-  static const Field<EpgIptvProvider, IptvProviderType> _f$type =
+  static IptvProviderType _$type(XmltvIptvProvider v) => v.type;
+  static const Field<XmltvIptvProvider, IptvProviderType> _f$type =
       Field('type', _$type, mode: FieldMode.member);
 
   @override
-  final MappableFields<EpgIptvProvider> fields = const {
+  final MappableFields<XmltvIptvProvider> fields = const {
     #name: _f$name,
     #url: _f$url,
     #id: _f$id,
@@ -439,93 +439,95 @@ class EpgIptvProviderMapper extends SubClassMapperBase<EpgIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'epg';
+  final dynamic discriminatorValue = 'xmltv';
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
 
-  static EpgIptvProvider _instantiate(DecodingData data) {
-    return EpgIptvProvider(name: data.dec(_f$name), url: data.dec(_f$url));
+  static XmltvIptvProvider _instantiate(DecodingData data) {
+    return XmltvIptvProvider(name: data.dec(_f$name), url: data.dec(_f$url));
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static EpgIptvProvider fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<EpgIptvProvider>(map);
+  static XmltvIptvProvider fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<XmltvIptvProvider>(map);
   }
 
-  static EpgIptvProvider fromJson(String json) {
-    return ensureInitialized().decodeJson<EpgIptvProvider>(json);
+  static XmltvIptvProvider fromJson(String json) {
+    return ensureInitialized().decodeJson<XmltvIptvProvider>(json);
   }
 }
 
-mixin EpgIptvProviderMappable {
+mixin XmltvIptvProviderMappable {
   String toJson() {
-    return EpgIptvProviderMapper.ensureInitialized()
-        .encodeJson<EpgIptvProvider>(this as EpgIptvProvider);
+    return XmltvIptvProviderMapper.ensureInitialized()
+        .encodeJson<XmltvIptvProvider>(this as XmltvIptvProvider);
   }
 
   Map<String, dynamic> toMap() {
-    return EpgIptvProviderMapper.ensureInitialized()
-        .encodeMap<EpgIptvProvider>(this as EpgIptvProvider);
+    return XmltvIptvProviderMapper.ensureInitialized()
+        .encodeMap<XmltvIptvProvider>(this as XmltvIptvProvider);
   }
 
-  EpgIptvProviderCopyWith<EpgIptvProvider, EpgIptvProvider, EpgIptvProvider>
+  XmltvIptvProviderCopyWith<XmltvIptvProvider, XmltvIptvProvider,
+          XmltvIptvProvider>
       get copyWith =>
-          _EpgIptvProviderCopyWithImpl<EpgIptvProvider, EpgIptvProvider>(
-              this as EpgIptvProvider, $identity, $identity);
+          _XmltvIptvProviderCopyWithImpl<XmltvIptvProvider, XmltvIptvProvider>(
+              this as XmltvIptvProvider, $identity, $identity);
   @override
   String toString() {
-    return EpgIptvProviderMapper.ensureInitialized()
-        .stringifyValue(this as EpgIptvProvider);
+    return XmltvIptvProviderMapper.ensureInitialized()
+        .stringifyValue(this as XmltvIptvProvider);
   }
 
   @override
   bool operator ==(Object other) {
-    return EpgIptvProviderMapper.ensureInitialized()
-        .equalsValue(this as EpgIptvProvider, other);
+    return XmltvIptvProviderMapper.ensureInitialized()
+        .equalsValue(this as XmltvIptvProvider, other);
   }
 
   @override
   int get hashCode {
-    return EpgIptvProviderMapper.ensureInitialized()
-        .hashValue(this as EpgIptvProvider);
+    return XmltvIptvProviderMapper.ensureInitialized()
+        .hashValue(this as XmltvIptvProvider);
   }
 }
 
-extension EpgIptvProviderValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, EpgIptvProvider, $Out> {
-  EpgIptvProviderCopyWith<$R, EpgIptvProvider, $Out> get $asEpgIptvProvider =>
-      $base.as((v, t, t2) => _EpgIptvProviderCopyWithImpl<$R, $Out>(v, t, t2));
+extension XmltvIptvProviderValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, XmltvIptvProvider, $Out> {
+  XmltvIptvProviderCopyWith<$R, XmltvIptvProvider, $Out>
+      get $asXmltvIptvProvider => $base
+          .as((v, t, t2) => _XmltvIptvProviderCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
-abstract class EpgIptvProviderCopyWith<$R, $In extends EpgIptvProvider, $Out>
-    implements IptvProviderCopyWith<$R, $In, $Out> {
+abstract class XmltvIptvProviderCopyWith<$R, $In extends XmltvIptvProvider,
+    $Out> implements IptvProviderCopyWith<$R, $In, $Out> {
   @override
   $R call({String? name, Uri? url});
-  EpgIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+  XmltvIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
 
-class _EpgIptvProviderCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, EpgIptvProvider, $Out>
-    implements EpgIptvProviderCopyWith<$R, EpgIptvProvider, $Out> {
-  _EpgIptvProviderCopyWithImpl(super.value, super.then, super.then2);
+class _XmltvIptvProviderCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, XmltvIptvProvider, $Out>
+    implements XmltvIptvProviderCopyWith<$R, XmltvIptvProvider, $Out> {
+  _XmltvIptvProviderCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<EpgIptvProvider> $mapper =
-      EpgIptvProviderMapper.ensureInitialized();
+  late final ClassMapperBase<XmltvIptvProvider> $mapper =
+      XmltvIptvProviderMapper.ensureInitialized();
   @override
   $R call({String? name, Uri? url}) => $apply(FieldCopyWithData(
       {if (name != null) #name: name, if (url != null) #url: url}));
   @override
-  EpgIptvProvider $make(CopyWithData data) => EpgIptvProvider(
+  XmltvIptvProvider $make(CopyWithData data) => XmltvIptvProvider(
       name: data.get(#name, or: $value.name),
       url: data.get(#url, or: $value.url));
 
   @override
-  EpgIptvProviderCopyWith<$R2, EpgIptvProvider, $Out2> $chain<$R2, $Out2>(
+  XmltvIptvProviderCopyWith<$R2, XmltvIptvProvider, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _EpgIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
+      _XmltvIptvProviderCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

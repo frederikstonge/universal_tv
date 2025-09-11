@@ -6,7 +6,7 @@ part 'settings_state.mapper.dart';
 
 @MappableClass()
 class SettingsState with SettingsStateMappable {
-  final List<IptvProvider>? providers;
+  final List<IptvProvider> providers;
 
   SettingsState({this.providers = const []});
 }

@@ -1,6 +1,9 @@
-import 'package:muxa_xtream/muxa_xtream.dart';
+import '../models/xmltv_base.dart';
+import '../models/xmltv_programme.dart';
+import 'base_repository.dart';
 
-abstract class XmltvBaseRepository {
-  Future<void> load();
-  Future<List<XtXmltvEvent>> getXmltv();
+abstract class XmltvBaseRepository implements BaseRepository {
+  Future<List<XmltvBase>> getXmltv();
+
+  Future<List<XmltvProgramme>> getShortEpg();
 }

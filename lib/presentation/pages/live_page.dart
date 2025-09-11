@@ -10,17 +10,17 @@ import '../../generated/imdb_api/imdb_api.swagger.dart';
 import '../../repositories/m3u_repository.dart';
 import '../components/entry_card.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class LivePage extends StatefulWidget {
+  const LivePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<LivePage> createState() => _LivePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  static const String m3uLink = String.fromEnvironment('M3ULINK');
+class _LivePageState extends State<LivePage> {
+  static const String m3uLinks = String.fromEnvironment('M3ULINKS');
   late M3uRepository m3uClient = M3uRepository(
-    provider: M3uIptvProvider(name: 'test', urls: [Uri.parse(m3uLink)]),
+    provider: M3uIptvProvider(name: 'test', urls: m3uLinks.split(',').map((l) => Uri.parse(l)).toList()),
     dio: Dio(),
     imdbApi: context.read<ImdbApi>(),
   );

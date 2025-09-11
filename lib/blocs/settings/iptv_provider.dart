@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 part 'iptv_provider.mapper.dart';
 
 @MappableEnum()
-enum IptvProviderType { m3u, xtream, epg }
+enum IptvProviderType { m3u, xtream, xmltv }
 
 @MappableClass(discriminatorKey: 'type')
 abstract class IptvProvider with IptvProviderMappable {
@@ -32,9 +32,10 @@ class XtreamIptvProvider extends IptvProvider with XtreamIptvProviderMappable {
     : super(id: const Uuid().v4(), type: IptvProviderType.xtream);
 }
 
-@MappableClass(discriminatorValue: 'epg')
-class EpgIptvProvider extends IptvProvider with EpgIptvProviderMappable {
+@MappableClass(discriminatorValue: 'xmltv')
+class XmltvIptvProvider extends IptvProvider with XmltvIptvProviderMappable {
   final Uri url;
 
-  EpgIptvProvider({required super.name, required this.url}) : super(id: const Uuid().v4(), type: IptvProviderType.epg);
+  XmltvIptvProvider({required super.name, required this.url})
+    : super(id: const Uuid().v4(), type: IptvProviderType.xmltv);
 }
