@@ -20,6 +20,8 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
   @override
   final String id = 'M3uEntry';
 
+  static int _$id(M3uEntry v) => v.id;
+  static const Field<M3uEntry, int> _f$id = Field('id', _$id);
   static String _$url(M3uEntry v) => v.url;
   static const Field<M3uEntry, String> _f$url = Field('url', _$url);
   static String _$name(M3uEntry v) => v.name;
@@ -42,6 +44,7 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
 
   @override
   final MappableFields<M3uEntry> fields = const {
+    #id: _f$id,
     #url: _f$url,
     #name: _f$name,
     #tvgId: _f$tvgId,
@@ -53,6 +56,7 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
 
   static M3uEntry _instantiate(DecodingData data) {
     return M3uEntry(
+        id: data.dec(_f$id),
         url: data.dec(_f$url),
         name: data.dec(_f$name),
         tvgId: data.dec(_f$tvgId),
@@ -115,7 +119,8 @@ abstract class M3uEntryCopyWith<$R, $In extends M3uEntry, $Out>
   MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
       get attributes;
   $R call(
-      {String? url,
+      {int? id,
+      String? url,
       String? name,
       String? tvgId,
       String? groupTitle,
@@ -141,7 +146,8 @@ class _M3uEntryCopyWithImpl<$R, $Out>
           (v) => call(attributes: v));
   @override
   $R call(
-          {String? url,
+          {int? id,
+          String? url,
           String? name,
           Object? tvgId = $none,
           Object? groupTitle = $none,
@@ -149,6 +155,7 @@ class _M3uEntryCopyWithImpl<$R, $Out>
           Map<String, String>? attributes,
           String? providerName}) =>
       $apply(FieldCopyWithData({
+        if (id != null) #id: id,
         if (url != null) #url: url,
         if (name != null) #name: name,
         if (tvgId != $none) #tvgId: tvgId,
@@ -159,6 +166,7 @@ class _M3uEntryCopyWithImpl<$R, $Out>
       }));
   @override
   M3uEntry $make(CopyWithData data) => M3uEntry(
+      id: data.get(#id, or: $value.id),
       url: data.get(#url, or: $value.url),
       name: data.get(#name, or: $value.name),
       tvgId: data.get(#tvgId, or: $value.tvgId),

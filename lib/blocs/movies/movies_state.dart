@@ -1,11 +1,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+
+import '../../models/movie_item.dart';
 
 part 'movies_state.mapper.dart';
 
 @MappableClass()
 class MoviesState with MoviesStateMappable {
-  final List<XtVodItem>? items;
+  final List<MovieItem>? items;
 
   MoviesState({this.items = const []});
 }

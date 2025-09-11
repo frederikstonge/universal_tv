@@ -5,10 +5,10 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
 
-import '../../blocs/settings/iptv_provider.dart';
-import '../../generated/imdb_api/imdb_api.swagger.dart';
-import '../../repositories/m3u_repository.dart';
-import '../components/entry_card.dart';
+import '../../../blocs/settings/iptv_provider.dart';
+import '../../../generated/imdb_api/imdb_api.swagger.dart';
+import '../../../repositories/m3u_repository.dart';
+import '../../components/entry_card.dart';
 
 class LivePage extends StatefulWidget {
   const LivePage({super.key});

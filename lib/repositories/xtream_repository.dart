@@ -40,39 +40,6 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<List<XmltvBase>> getXmltv() async {
-    final capabilities = await client.capabilities();
-    if (capabilities.supportsXmltv) {
-      final items = await client.getXmltv().toList();
-      return items
-          .map((e) {
-            if (e is XtXmltvChannel) {
-              return XmltvChannel.fromXtXmltvChannel(e, provider.name);
-            } else if (e is XtXmltvProgramme) {
-              return XmltvProgramme.fromXtXmltvProgramme(e, provider.name);
-            }
-
-            return null;
-          })
-          .whereType<XmltvBase>()
-          .toList();
-    }
-
-    return [];
-  }
-
-  @override
-  Future<List<XmltvProgramme>> getShortEpg() async {
-    final capabilities = await client.capabilities();
-    if (capabilities.supportsShortEpg) {
-      final items = await client.getShortEpg();
-      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name)).toList();
-    }
-
-    return [];
-  }
-
-  @override
   Future<List<Category>> getLiveCategories() async {
     final categories = await client.getLiveCategories();
     return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
@@ -113,6 +80,39 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
 
   @override
   Future<XtVodDetails> getVodInfo(int vodId) async => client.getVodInfo(vodId);
+
+  @override
+  Future<List<XmltvBase>> getXmltv() async {
+    final capabilities = await client.capabilities();
+    if (capabilities.supportsXmltv) {
+      final items = await client.getXmltv().toList();
+      return items
+          .map((e) {
+            if (e is XtXmltvChannel) {
+              return XmltvChannel.fromXtXmltvChannel(e, provider.name);
+            } else if (e is XtXmltvProgramme) {
+              return XmltvProgramme.fromXtXmltvProgramme(e, provider.name);
+            }
+
+            return null;
+          })
+          .whereType<XmltvBase>()
+          .toList();
+    }
+
+    return [];
+  }
+
+  @override
+  Future<List<XmltvProgramme>> getShortEpg() async {
+    final capabilities = await client.capabilities();
+    if (capabilities.supportsShortEpg) {
+      final items = await client.getShortEpg();
+      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name)).toList();
+    }
+
+    return [];
+  }
 
   @override
   Future<String> getLiveUrl(int streamId) async => liveUrl(portal, credentials, streamId).toString();

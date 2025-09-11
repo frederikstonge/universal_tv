@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
 import 'package:reaxdb_dart/reaxdb_dart.dart';
 
 import '../blocs/settings/iptv_provider.dart';
+import '../blocs/settings/settings_cubit.dart';
 import '../generated/imdb_api/imdb_api.swagger.dart';
 import '../models/category.dart';
 import '../models/live_channel.dart';
@@ -18,11 +21,17 @@ import '../repositories/xtream_repository.dart';
 class IptvService {
   final Dio dio;
   final ImdbApi imdbApi;
+  final SettingsCubit settingsCubit;
   SimpleReaxDB? db;
+  StreamSubscription? _settingsSubscription;
 
   final List<BaseRepository> _repositories = [];
 
-  IptvService({required this.dio, required this.imdbApi});
+  IptvService({required this.dio, required this.imdbApi, required this.settingsCubit}) {
+    _settingsSubscription = settingsCubit.stream.listen((data) async {
+      await load(data.providers);
+    });
+  }
 
   Future<void> initialize(List<IptvProvider> providers) async {
     db ??= await SimpleReaxDB.open('unversal_tv');
@@ -57,6 +66,7 @@ class IptvService {
   }
 
   Future<void> dispose() async {
+    await _settingsSubscription?.cancel();
     await db!.clear();
     await db?.close();
     db = null;

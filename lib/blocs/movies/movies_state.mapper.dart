@@ -13,6 +13,7 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   static MoviesStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MoviesStateMapper._());
+      MovieItemMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -20,8 +21,8 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   @override
   final String id = 'MoviesState';
 
-  static List<XtVodItem>? _$items(MoviesState v) => v.items;
-  static const Field<MoviesState, List<XtVodItem>> _f$items =
+  static List<MovieItem>? _$items(MoviesState v) => v.items;
+  static const Field<MoviesState, List<MovieItem>> _f$items =
       Field('items', _$items, opt: true, def: const []);
 
   @override
@@ -85,9 +86,9 @@ extension MoviesStateValueCopy<$R, $Out>
 
 abstract class MoviesStateCopyWith<$R, $In extends MoviesState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, XtVodItem, ObjectCopyWith<$R, XtVodItem, XtVodItem>>?
+  ListCopyWith<$R, MovieItem, MovieItemCopyWith<$R, MovieItem, MovieItem>>?
       get items;
-  $R call({List<XtVodItem>? items});
+  $R call({List<MovieItem>? items});
   MoviesStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -100,10 +101,10 @@ class _MoviesStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MoviesState> $mapper =
       MoviesStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, XtVodItem, ObjectCopyWith<$R, XtVodItem, XtVodItem>>?
+  ListCopyWith<$R, MovieItem, MovieItemCopyWith<$R, MovieItem, MovieItem>>?
       get items => $value.items != null
-          ? ListCopyWith($value.items!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(items: v))
+          ? ListCopyWith($value.items!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(items: v))
           : null;
   @override
   $R call({Object? items = $none}) =>

@@ -13,6 +13,7 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
   static LiveStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = LiveStateMapper._());
+      LiveChannelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -20,8 +21,8 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
   @override
   final String id = 'LiveState';
 
-  static List<XtLiveChannel>? _$items(LiveState v) => v.items;
-  static const Field<LiveState, List<XtLiveChannel>> _f$items =
+  static List<LiveChannel>? _$items(LiveState v) => v.items;
+  static const Field<LiveState, List<LiveChannel>> _f$items =
       Field('items', _$items, opt: true, def: const []);
 
   @override
@@ -84,9 +85,9 @@ extension LiveStateValueCopy<$R, $Out> on ObjectCopyWith<$R, LiveState, $Out> {
 
 abstract class LiveStateCopyWith<$R, $In extends LiveState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, XtLiveChannel,
-      ObjectCopyWith<$R, XtLiveChannel, XtLiveChannel>>? get items;
-  $R call({List<XtLiveChannel>? items});
+  ListCopyWith<$R, LiveChannel,
+      LiveChannelCopyWith<$R, LiveChannel, LiveChannel>>? get items;
+  $R call({List<LiveChannel>? items});
   LiveStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -99,11 +100,11 @@ class _LiveStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LiveState> $mapper =
       LiveStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, XtLiveChannel,
-          ObjectCopyWith<$R, XtLiveChannel, XtLiveChannel>>?
+  ListCopyWith<$R, LiveChannel,
+          LiveChannelCopyWith<$R, LiveChannel, LiveChannel>>?
       get items => $value.items != null
-          ? ListCopyWith($value.items!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(items: v))
+          ? ListCopyWith($value.items!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(items: v))
           : null;
   @override
   $R call({Object? items = $none}) =>

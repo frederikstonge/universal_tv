@@ -13,6 +13,7 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
   static TvShowsStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TvShowsStateMapper._());
+      TvShowItemMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -20,8 +21,8 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
   @override
   final String id = 'TvShowsState';
 
-  static List<XtSeriesItem>? _$items(TvShowsState v) => v.items;
-  static const Field<TvShowsState, List<XtSeriesItem>> _f$items =
+  static List<TvShowItem>? _$items(TvShowsState v) => v.items;
+  static const Field<TvShowsState, List<TvShowItem>> _f$items =
       Field('items', _$items, opt: true, def: const []);
 
   @override
@@ -86,9 +87,9 @@ extension TvShowsStateValueCopy<$R, $Out>
 
 abstract class TvShowsStateCopyWith<$R, $In extends TvShowsState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, XtSeriesItem,
-      ObjectCopyWith<$R, XtSeriesItem, XtSeriesItem>>? get items;
-  $R call({List<XtSeriesItem>? items});
+  ListCopyWith<$R, TvShowItem, TvShowItemCopyWith<$R, TvShowItem, TvShowItem>>?
+      get items;
+  $R call({List<TvShowItem>? items});
   TvShowsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -101,11 +102,10 @@ class _TvShowsStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TvShowsState> $mapper =
       TvShowsStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, XtSeriesItem,
-          ObjectCopyWith<$R, XtSeriesItem, XtSeriesItem>>?
+  ListCopyWith<$R, TvShowItem, TvShowItemCopyWith<$R, TvShowItem, TvShowItem>>?
       get items => $value.items != null
-          ? ListCopyWith($value.items!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(items: v))
+          ? ListCopyWith($value.items!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(items: v))
           : null;
   @override
   $R call({Object? items = $none}) =>
