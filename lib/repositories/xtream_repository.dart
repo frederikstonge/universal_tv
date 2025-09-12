@@ -82,6 +82,29 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   Future<XtVodDetails> getVodInfo(int vodId) async => client.getVodInfo(vodId);
 
   @override
+  Future<bool> supportsShortEpg() async {
+    final capabilities = await client.capabilities();
+    return capabilities.supportsShortEpg;
+  }
+
+  @override
+  Future<bool> supportsXmltv() async {
+    final capabilities = await client.capabilities();
+    return capabilities.supportsXmltv;
+  }
+
+  @override
+  Future<List<XmltvProgramme>> getShortEpg() async {
+    final capabilities = await client.capabilities();
+    if (capabilities.supportsShortEpg) {
+      final items = await client.getShortEpg();
+      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name)).toList();
+    }
+
+    return [];
+  }
+
+  @override
   Future<List<XmltvBase>> getXmltv() async {
     final capabilities = await client.capabilities();
     if (capabilities.supportsXmltv) {
@@ -98,27 +121,6 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
           })
           .whereType<XmltvBase>()
           .toList();
-    }
-
-    return [];
-  }
-
-  Future<bool> supportsShortEpg() async {
-    final capabilities = await client.capabilities();
-    return capabilities.supportsShortEpg;
-  }
-
-  Future<bool> supportsXmltv() async {
-    final capabilities = await client.capabilities();
-    return capabilities.supportsXmltv;
-  }
-
-  @override
-  Future<List<XmltvProgramme>> getShortEpg() async {
-    final capabilities = await client.capabilities();
-    if (capabilities.supportsShortEpg) {
-      final items = await client.getShortEpg();
-      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name)).toList();
     }
 
     return [];
