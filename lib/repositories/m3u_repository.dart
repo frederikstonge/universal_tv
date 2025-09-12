@@ -293,21 +293,21 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<String> getLiveUrl(int streamId) async {
+  Future<String> getLiveUrl(int streamId, {String? extension}) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$streamId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     return entry.url;
   }
 
   @override
-  Future<String> getVodUrl(int streamId) async {
+  Future<String> getVodUrl(int streamId, {String? extension}) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$streamId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     return entry.url;
   }
 
   @override
-  Future<String> getSeriesUrl(int episodeId) async {
+  Future<String> getSeriesUrl(int episodeId, {String? extension}) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$episodeId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     return entry.url;

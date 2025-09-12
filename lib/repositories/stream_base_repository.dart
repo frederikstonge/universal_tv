@@ -15,7 +15,7 @@ abstract class StreamBaseRepository implements BaseRepository {
   Future<List<TvShowItem>> getSeries();
   Future<XtSeriesDetails> getSeriesInfo(int seriesId);
   Future<XtVodDetails> getVodInfo(int vodId);
-  Future<String> getLiveUrl(int streamId);
-  Future<String> getVodUrl(int streamId);
-  Future<String> getSeriesUrl(int episodeId);
+  Future<String> getLiveUrl(int streamId, {String? extension});
+  Future<String> getVodUrl(int streamId, {String? extension});
+  Future<String> getSeriesUrl(int episodeId, {String? extension});
 }

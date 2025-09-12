@@ -127,11 +127,14 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<String> getLiveUrl(int streamId) async => liveUrl(portal, credentials, streamId).toString();
+  Future<String> getLiveUrl(int streamId, {String? extension}) async =>
+      liveUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getSeriesUrl(int episodeId) async => seriesUrl(portal, credentials, episodeId).toString();
+  Future<String> getSeriesUrl(int episodeId, {String? extension}) async =>
+      seriesUrl(portal, credentials, episodeId, extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getVodUrl(int streamId) async => vodUrl(portal, credentials, streamId).toString();
+  Future<String> getVodUrl(int streamId, {String? extension}) async =>
+      vodUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
 }
