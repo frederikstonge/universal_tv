@@ -3,7 +3,9 @@ import 'package:muxa_xtream/muxa_xtream.dart';
 import '../blocs/settings/iptv_provider.dart';
 import '../models/category.dart';
 import '../models/live_channel.dart';
+import '../models/movie_details.dart';
 import '../models/movie_item.dart';
+import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
 import '../models/xmltv_base.dart';
 import '../models/xmltv_channel.dart';
@@ -46,13 +48,13 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<List<Category>> getVodCategories() async {
+  Future<List<Category>> getMovieCategories() async {
     final categories = await client.getVodCategories();
     return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
   }
 
   @override
-  Future<List<Category>> getSeriesCategories() async {
+  Future<List<Category>> getTvShowCategories() async {
     final categories = await client.getSeriesCategories();
     return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
   }
@@ -64,22 +66,28 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<List<MovieItem>> getVodStreams() async {
-    final streams = await client.getVodStreams();
-    return streams.map((e) => MovieItem.fromXtVodItem(e, provider.name)).toList();
+  Future<List<MovieItem>> getMovies() async {
+    final movies = await client.getVodStreams();
+    return movies.map((e) => MovieItem.fromXtVodItem(e, provider.name)).toList();
   }
 
   @override
-  Future<List<TvShowItem>> getSeries() async {
-    final series = await client.getSeries();
-    return series.map((e) => TvShowItem.fromXtSeriesItem(e, provider.name)).toList();
+  Future<List<TvShowItem>> getTvShows() async {
+    final tvShows = await client.getSeries();
+    return tvShows.map((e) => TvShowItem.fromXtSeriesItem(e, provider.name)).toList();
   }
 
   @override
-  Future<XtSeriesDetails> getSeriesInfo(int seriesId) async => client.getSeriesInfo(seriesId);
+  Future<TvShowDetails> getTvShowDetails(int seriesId) async {
+    final tvShow = await client.getSeriesInfo(seriesId);
+    return TvShowDetails.fromXtSeriesItem(tvShow, provider.name);
+  }
 
   @override
-  Future<XtVodDetails> getVodInfo(int vodId) async => client.getVodInfo(vodId);
+  Future<MovieDetails> getMovieDetails(int vodId) async {
+    final item = await client.getVodInfo(vodId);
+    return MovieDetails.fromXtVodDetails(item, provider.name);
+  }
 
   @override
   Future<bool> supportsShortEpg() async {
@@ -131,10 +139,10 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
       liveUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getSeriesUrl(int episodeId, {String? extension}) async =>
+  Future<String> getTvShowUrl(int episodeId, {String? extension}) async =>
       seriesUrl(portal, credentials, episodeId, extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getVodUrl(int streamId, {String? extension}) async =>
+  Future<String> getMovieUrl(int streamId, {String? extension}) async =>
       vodUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
 }

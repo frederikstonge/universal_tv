@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
 import 'package:reaxdb_dart/reaxdb_dart.dart';
 
 import '../blocs/settings/iptv_provider.dart';
@@ -10,7 +9,9 @@ import '../blocs/settings/settings_cubit.dart';
 import '../generated/imdb_api/imdb_api.swagger.dart';
 import '../models/category.dart';
 import '../models/live_channel.dart';
+import '../models/movie_details.dart';
 import '../models/movie_item.dart';
+import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
 import '../repositories/base_repository.dart';
 import '../repositories/m3u_repository.dart';
@@ -67,6 +68,8 @@ class IptvService {
 
   Future<void> dispose() async {
     await _settingsSubscription?.cancel();
+    _settingsSubscription = null;
+    await Future.wait(_repositories.map((r) => r.dispose()).toList());
     await db!.clear();
     await db?.close();
     db = null;
@@ -79,16 +82,16 @@ class IptvService {
     return categories.expand((c) => c).toList();
   }
 
-  Future<List<Category>> getVodCategories() async {
+  Future<List<Category>> getMovieCategories() async {
     final categories = await Future.wait(
-      _repositories.whereType<StreamBaseRepository>().map((r) => r.getVodCategories()),
+      _repositories.whereType<StreamBaseRepository>().map((r) => r.getMovieCategories()),
     );
     return categories.expand((c) => c).toList();
   }
 
-  Future<List<Category>> getSeriesCategories() async {
+  Future<List<Category>> getTvShowCategories() async {
     final categories = await Future.wait(
-      _repositories.whereType<StreamBaseRepository>().map((r) => r.getSeriesCategories()),
+      _repositories.whereType<StreamBaseRepository>().map((r) => r.getTvShowCategories()),
     );
     return categories.expand((c) => c).toList();
   }
@@ -98,24 +101,24 @@ class IptvService {
     return channels.expand((c) => c).toList();
   }
 
-  Future<List<MovieItem>> getVodStreams() async {
-    final movies = await Future.wait(_repositories.whereType<StreamBaseRepository>().map((r) => r.getVodStreams()));
+  Future<List<MovieItem>> getMovies() async {
+    final movies = await Future.wait(_repositories.whereType<StreamBaseRepository>().map((r) => r.getMovies()));
     return movies.expand((c) => c).toList();
   }
 
-  Future<List<TvShowItem>> getSeries() async {
-    final series = await Future.wait(_repositories.whereType<StreamBaseRepository>().map((r) => r.getSeries()));
+  Future<List<TvShowItem>> getTvShows() async {
+    final series = await Future.wait(_repositories.whereType<StreamBaseRepository>().map((r) => r.getTvShows()));
     return series.expand((c) => c).toList();
   }
 
-  Future<XtSeriesDetails?> getSeriesInfo(String providerName, int seriesId) async {
+  Future<MovieDetails?> getMovieDetails(String providerName, int vodId) async {
     final repository = _repositories.whereType<StreamBaseRepository>().firstWhereOrNull((r) => r.name == providerName);
-    return await repository?.getSeriesInfo(seriesId);
+    return await repository?.getMovieDetails(vodId);
   }
 
-  Future<XtVodDetails?> getVodInfo(String providerName, int vodId) async {
+  Future<TvShowDetails?> getTvShowDetails(String providerName, int seriesId) async {
     final repository = _repositories.whereType<StreamBaseRepository>().firstWhereOrNull((r) => r.name == providerName);
-    return await repository?.getVodInfo(vodId);
+    return await repository?.getTvShowDetails(seriesId);
   }
 
   Future<String?> getLiveUrl(String providerName, int streamId) async {
@@ -124,15 +127,15 @@ class IptvService {
     return await repository?.getLiveUrl(streamId);
   }
 
-  Future<String?> getVodUrl(String providerName, int streamId) async {
+  Future<String?> getMovieUrl(String providerName, int streamId) async {
     final repository = _repositories.whereType<StreamBaseRepository>().firstWhereOrNull((r) => r.name == providerName);
 
-    return await repository?.getVodUrl(streamId);
+    return await repository?.getMovieUrl(streamId);
   }
 
-  Future<String?> getSeriesUrl(String providerName, int episodeId) async {
+  Future<String?> getTvShowUrl(String providerName, int episodeId) async {
     final repository = _repositories.whereType<StreamBaseRepository>().firstWhereOrNull((r) => r.name == providerName);
 
-    return await repository?.getSeriesUrl(episodeId);
+    return await repository?.getTvShowUrl(episodeId);
   }
 }

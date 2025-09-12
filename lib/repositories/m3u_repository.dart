@@ -11,9 +11,11 @@ import '../extensions/m3u_entry_extensions.dart';
 import '../generated/imdb_api/imdb_api.swagger.dart';
 import '../models/category.dart';
 import '../models/live_channel.dart';
+import '../models/movie_details.dart';
 import '../models/movie_item.dart';
 import '../models/repositories/imdb_entry.dart';
 import '../models/repositories/m3u_entry.dart';
+import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
 import 'stream_base_repository.dart';
 
@@ -93,7 +95,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<Category>> getVodCategories() async {
+  Future<List<Category>> getMovieCategories() async {
     final items = await db.advanced.collection('m3u_${provider.name}').whereEquals('type', IptvType.movies.name).find();
     final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
     final imdbIds = entries.map((e) => e.tvgId ?? e.safeTvgName).whereType<String>().toSet().toList();
@@ -119,7 +121,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<Category>> getSeriesCategories() async {
+  Future<List<Category>> getTvShowCategories() async {
     final items = await db.advanced
         .collection('m3u_${provider.name}')
         .whereEquals('type', IptvType.tvshows.name)
@@ -149,7 +151,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<MovieItem>> getVodStreams() async {
+  Future<List<MovieItem>> getMovies() async {
     final items = await db.advanced.collection('m3u_${provider.name}').whereEquals('type', IptvType.movies.name).find();
     final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
     final imdbIds = entries.map((e) => e.tvgId ?? e.safeTvgName).whereType<String>().toSet().toList();
@@ -172,7 +174,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<TvShowItem>> getSeries() async {
+  Future<List<TvShowItem>> getTvShows() async {
     final items = await db.advanced
         .collection('m3u_${provider.name}')
         .whereEquals('type', IptvType.tvshows.name)
@@ -222,14 +224,14 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<XtVodDetails> getVodInfo(int vodId) async {
+  Future<MovieDetails> getMovieDetails(int vodId) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$vodId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     final imdbId = entry.tvgId ?? entry.safeTvgName;
     final imdbItem = await db.advanced.collection('imdb_${provider.name}').whereEquals('id', imdbId).findOne();
     final imdbEntry = imdbItem != null ? ImdbEntryMapper.fromMap(imdbItem) : null;
 
-    return XtVodDetails(
+    return MovieDetails(
       streamId: vodId,
       name: entry.name,
       plot: imdbEntry?.plot,
@@ -237,11 +239,12 @@ class M3uRepository extends StreamBaseRepository {
       year: imdbEntry?.startYear,
       posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
       duration: imdbEntry?.runtimeSeconds != null ? Duration(seconds: imdbEntry!.runtimeSeconds!) : null,
+      providerName: provider.name,
     );
   }
 
   @override
-  Future<XtSeriesDetails> getSeriesInfo(int seriesId) async {
+  Future<TvShowDetails> getTvShowDetails(int seriesId) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$seriesId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     final items = await db.advanced
@@ -259,7 +262,7 @@ class M3uRepository extends StreamBaseRepository {
     final episodesInfo = await imdbApi.titlesTitleIdEpisodesGet(titleId: imdbId);
     final seasons = episodesInfo.body?.episodes?.groupListsBy((g) => g.season);
 
-    return XtSeriesDetails(
+    return TvShowDetails(
       seriesId: seriesId,
       name: imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? 'Unknown',
       seasons: entries
@@ -274,7 +277,7 @@ class M3uRepository extends StreamBaseRepository {
                       (int.tryParse(ep.season ?? '') ?? seasons?.keys.toList().indexOf(ep.season)) ==
                           episode.seasonNumber,
                 );
-                return XtEpisode(
+                return EpisodeDetails(
                   id: entries.indexOf(episode),
                   title: episodeImdbEntry?.title ?? episode.name,
                   season: episode.seasonNumber,
@@ -283,12 +286,14 @@ class M3uRepository extends StreamBaseRepository {
                       ? Duration(seconds: episodeImdbEntry!.runtimeSeconds!)
                       : null,
                   plot: episodeImdbEntry?.plot,
+                  providerName: provider.name,
                 );
               }).toList(),
             ),
           ),
       plot: imdbEntry?.plot,
       posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
+      providerName: provider.name,
     );
   }
 
@@ -300,14 +305,14 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<String> getVodUrl(int streamId, {String? extension}) async {
+  Future<String> getMovieUrl(int streamId, {String? extension}) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$streamId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     return entry.url;
   }
 
   @override
-  Future<String> getSeriesUrl(int episodeId, {String? extension}) async {
+  Future<String> getTvShowUrl(int episodeId, {String? extension}) async {
     final item = await db.advanced.collection('m3u_${provider.name}:$episodeId').findOne();
     final entry = M3uEntryMapper.fromMap(item!);
     return entry.url;
