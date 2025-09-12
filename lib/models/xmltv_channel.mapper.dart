@@ -32,6 +32,9 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
   static String _$providerName(XmltvChannel v) => v.providerName;
   static const Field<XmltvChannel, String> _f$providerName =
       Field('providerName', _$providerName);
+  static DateTime _$expiration(XmltvChannel v) => v.expiration;
+  static const Field<XmltvChannel, DateTime> _f$expiration =
+      Field('expiration', _$expiration);
 
   @override
   final MappableFields<XmltvChannel> fields = const {
@@ -39,6 +42,7 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
     #displayName: _f$displayName,
     #iconUrl: _f$iconUrl,
     #providerName: _f$providerName,
+    #expiration: _f$expiration,
   };
 
   @override
@@ -53,7 +57,8 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
         id: data.dec(_f$id),
         displayName: data.dec(_f$displayName),
         iconUrl: data.dec(_f$iconUrl),
-        providerName: data.dec(_f$providerName));
+        providerName: data.dec(_f$providerName),
+        expiration: data.dec(_f$expiration));
   }
 
   @override
@@ -111,7 +116,11 @@ abstract class XmltvChannelCopyWith<$R, $In extends XmltvChannel, $Out>
     implements XmltvBaseCopyWith<$R, $In, $Out> {
   @override
   $R call(
-      {String? id, String? displayName, String? iconUrl, String? providerName});
+      {String? id,
+      String? displayName,
+      String? iconUrl,
+      String? providerName,
+      DateTime? expiration});
   XmltvChannelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -128,19 +137,22 @@ class _XmltvChannelCopyWithImpl<$R, $Out>
           {String? id,
           Object? displayName = $none,
           Object? iconUrl = $none,
-          String? providerName}) =>
+          String? providerName,
+          DateTime? expiration}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (displayName != $none) #displayName: displayName,
         if (iconUrl != $none) #iconUrl: iconUrl,
-        if (providerName != null) #providerName: providerName
+        if (providerName != null) #providerName: providerName,
+        if (expiration != null) #expiration: expiration
       }));
   @override
   XmltvChannel $make(CopyWithData data) => XmltvChannel(
       id: data.get(#id, or: $value.id),
       displayName: data.get(#displayName, or: $value.displayName),
       iconUrl: data.get(#iconUrl, or: $value.iconUrl),
-      providerName: data.get(#providerName, or: $value.providerName));
+      providerName: data.get(#providerName, or: $value.providerName),
+      expiration: data.get(#expiration, or: $value.expiration));
 
   @override
   XmltvChannelCopyWith<$R2, XmltvChannel, $Out2> $chain<$R2, $Out2>(

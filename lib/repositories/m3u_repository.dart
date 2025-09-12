@@ -10,6 +10,7 @@ import '../blocs/settings/iptv_provider.dart';
 import '../extensions/m3u_entry_extensions.dart';
 import '../generated/imdb_api/imdb_api.swagger.dart';
 import '../models/category.dart';
+import '../models/episode_details.dart';
 import '../models/live_channel.dart';
 import '../models/movie_details.dart';
 import '../models/movie_item.dart';

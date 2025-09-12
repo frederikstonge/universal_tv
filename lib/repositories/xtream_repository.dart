@@ -106,7 +106,8 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
     final capabilities = await client.capabilities();
     if (capabilities.supportsShortEpg) {
       final items = await client.getShortEpg();
-      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name)).toList();
+      final expiration = DateTime.now().add(provider.epgExpiration);
+      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name, expiration)).toList();
     }
 
     return [];
@@ -117,12 +118,13 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
     final capabilities = await client.capabilities();
     if (capabilities.supportsXmltv) {
       final items = await client.getXmltv().toList();
+      final expiration = DateTime.now().add(provider.epgExpiration);
       return items
           .map((e) {
             if (e is XtXmltvChannel) {
-              return XmltvChannel.fromXtXmltvChannel(e, provider.name);
+              return XmltvChannel.fromXtXmltvChannel(e, provider.name, expiration);
             } else if (e is XtXmltvProgramme) {
-              return XmltvProgramme.fromXtXmltvProgramme(e, provider.name);
+              return XmltvProgramme.fromXtXmltvProgramme(e, provider.name, expiration);
             }
 
             return null;

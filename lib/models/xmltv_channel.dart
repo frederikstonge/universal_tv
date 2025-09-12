@@ -6,20 +6,26 @@ import 'xmltv_base.dart';
 part 'xmltv_channel.mapper.dart';
 
 @MappableClass(discriminatorValue: 'channel')
-class XmltvChannel with XmltvChannelMappable implements XmltvBase {
+class XmltvChannel extends XmltvBase with XmltvChannelMappable {
   final String id;
   final String? displayName;
   final String? iconUrl;
-  final String providerName;
 
-  const XmltvChannel({required this.id, this.displayName, this.iconUrl, required this.providerName});
+  XmltvChannel({
+    required this.id,
+    this.displayName,
+    this.iconUrl,
+    required super.providerName,
+    required super.expiration,
+  });
 
-  factory XmltvChannel.fromXtXmltvChannel(XtXmltvChannel channel, String providerName) {
+  factory XmltvChannel.fromXtXmltvChannel(XtXmltvChannel channel, String providerName, DateTime expiration) {
     return XmltvChannel(
       id: channel.id,
       displayName: channel.displayName,
       iconUrl: channel.iconUrl,
       providerName: providerName,
+      expiration: expiration,
     );
   }
 }

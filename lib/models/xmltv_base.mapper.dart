@@ -20,8 +20,18 @@ class XmltvBaseMapper extends ClassMapperBase<XmltvBase> {
   @override
   final String id = 'XmltvBase';
 
+  static String _$providerName(XmltvBase v) => v.providerName;
+  static const Field<XmltvBase, String> _f$providerName =
+      Field('providerName', _$providerName);
+  static DateTime _$expiration(XmltvBase v) => v.expiration;
+  static const Field<XmltvBase, DateTime> _f$expiration =
+      Field('expiration', _$expiration);
+
   @override
-  final MappableFields<XmltvBase> fields = const {};
+  final MappableFields<XmltvBase> fields = const {
+    #providerName: _f$providerName,
+    #expiration: _f$expiration,
+  };
 
   static XmltvBase _instantiate(DecodingData data) {
     throw MapperException.missingConstructor('XmltvBase');
@@ -47,6 +57,6 @@ mixin XmltvBaseMappable {
 
 abstract class XmltvBaseCopyWith<$R, $In extends XmltvBase, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call();
+  $R call({String? providerName, DateTime? expiration});
   XmltvBaseCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

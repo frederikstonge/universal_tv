@@ -26,14 +26,16 @@ class XmltvRepository extends XmltvBaseRepository {
     final xmltvDataStream = parseXmltv(Stream.value(utf8.encode(value.data!)));
     final xmltvData = await xmltvDataStream.toList();
 
+    final expiration = DateTime.now().add(provider.epgExpiration);
+
     final channels = xmltvData
         .whereType<XtXmltvChannel>()
-        .map((e) => XmltvChannel.fromXtXmltvChannel(e, provider.name))
+        .map((e) => XmltvChannel.fromXtXmltvChannel(e, provider.name, expiration))
         .toList();
 
     final programmes = xmltvData
         .whereType<XtXmltvProgramme>()
-        .map((e) => XmltvProgramme.fromXtXmltvProgramme(e, provider.name))
+        .map((e) => XmltvProgramme.fromXtXmltvProgramme(e, provider.name, expiration))
         .toList();
 
     final List<XmltvBase> data = [...channels, ...programmes];

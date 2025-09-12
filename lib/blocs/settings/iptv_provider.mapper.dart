@@ -296,6 +296,9 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
   static String _$password(XtreamIptvProvider v) => v.password;
   static const Field<XtreamIptvProvider, String> _f$password =
       Field('password', _$password);
+  static Duration _$epgExpiration(XtreamIptvProvider v) => v.epgExpiration;
+  static const Field<XtreamIptvProvider, Duration> _f$epgExpiration =
+      Field('epgExpiration', _$epgExpiration);
   static String _$id(XtreamIptvProvider v) => v.id;
   static const Field<XtreamIptvProvider, String> _f$id =
       Field('id', _$id, mode: FieldMode.member);
@@ -310,6 +313,7 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
     #url: _f$url,
     #userName: _f$userName,
     #password: _f$password,
+    #epgExpiration: _f$epgExpiration,
     #id: _f$id,
     #type: _f$type,
   };
@@ -328,7 +332,8 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
         order: data.dec(_f$order),
         url: data.dec(_f$url),
         userName: data.dec(_f$userName),
-        password: data.dec(_f$password));
+        password: data.dec(_f$password),
+        epgExpiration: data.dec(_f$epgExpiration));
   }
 
   @override
@@ -388,7 +393,12 @@ abstract class XtreamIptvProviderCopyWith<$R, $In extends XtreamIptvProvider,
     $Out> implements IptvProviderCopyWith<$R, $In, $Out> {
   @override
   $R call(
-      {String? name, int? order, Uri? url, String? userName, String? password});
+      {String? name,
+      int? order,
+      Uri? url,
+      String? userName,
+      String? password,
+      Duration? epgExpiration});
   XtreamIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -407,13 +417,15 @@ class _XtreamIptvProviderCopyWithImpl<$R, $Out>
           int? order,
           Uri? url,
           String? userName,
-          String? password}) =>
+          String? password,
+          Duration? epgExpiration}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (order != null) #order: order,
         if (url != null) #url: url,
         if (userName != null) #userName: userName,
-        if (password != null) #password: password
+        if (password != null) #password: password,
+        if (epgExpiration != null) #epgExpiration: epgExpiration
       }));
   @override
   XtreamIptvProvider $make(CopyWithData data) => XtreamIptvProvider(
@@ -421,7 +433,8 @@ class _XtreamIptvProviderCopyWithImpl<$R, $Out>
       order: data.get(#order, or: $value.order),
       url: data.get(#url, or: $value.url),
       userName: data.get(#userName, or: $value.userName),
-      password: data.get(#password, or: $value.password));
+      password: data.get(#password, or: $value.password),
+      epgExpiration: data.get(#epgExpiration, or: $value.epgExpiration));
 
   @override
   XtreamIptvProviderCopyWith<$R2, XtreamIptvProvider, $Out2> $chain<$R2, $Out2>(
@@ -450,6 +463,9 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
   static const Field<XmltvIptvProvider, int> _f$order = Field('order', _$order);
   static Uri _$url(XmltvIptvProvider v) => v.url;
   static const Field<XmltvIptvProvider, Uri> _f$url = Field('url', _$url);
+  static Duration _$epgExpiration(XmltvIptvProvider v) => v.epgExpiration;
+  static const Field<XmltvIptvProvider, Duration> _f$epgExpiration =
+      Field('epgExpiration', _$epgExpiration);
   static String _$id(XmltvIptvProvider v) => v.id;
   static const Field<XmltvIptvProvider, String> _f$id =
       Field('id', _$id, mode: FieldMode.member);
@@ -462,6 +478,7 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
     #name: _f$name,
     #order: _f$order,
     #url: _f$url,
+    #epgExpiration: _f$epgExpiration,
     #id: _f$id,
     #type: _f$type,
   };
@@ -478,7 +495,8 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
     return XmltvIptvProvider(
         name: data.dec(_f$name),
         order: data.dec(_f$order),
-        url: data.dec(_f$url));
+        url: data.dec(_f$url),
+        epgExpiration: data.dec(_f$epgExpiration));
   }
 
   @override
@@ -538,7 +556,7 @@ extension XmltvIptvProviderValueCopy<$R, $Out>
 abstract class XmltvIptvProviderCopyWith<$R, $In extends XmltvIptvProvider,
     $Out> implements IptvProviderCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, int? order, Uri? url});
+  $R call({String? name, int? order, Uri? url, Duration? epgExpiration});
   XmltvIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -552,16 +570,19 @@ class _XmltvIptvProviderCopyWithImpl<$R, $Out>
   late final ClassMapperBase<XmltvIptvProvider> $mapper =
       XmltvIptvProviderMapper.ensureInitialized();
   @override
-  $R call({String? name, int? order, Uri? url}) => $apply(FieldCopyWithData({
+  $R call({String? name, int? order, Uri? url, Duration? epgExpiration}) =>
+      $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (order != null) #order: order,
-        if (url != null) #url: url
+        if (url != null) #url: url,
+        if (epgExpiration != null) #epgExpiration: epgExpiration
       }));
   @override
   XmltvIptvProvider $make(CopyWithData data) => XmltvIptvProvider(
       name: data.get(#name, or: $value.name),
       order: data.get(#order, or: $value.order),
-      url: data.get(#url, or: $value.url));
+      url: data.get(#url, or: $value.url),
+      epgExpiration: data.get(#epgExpiration, or: $value.epgExpiration));
 
   @override
   XmltvIptvProviderCopyWith<$R2, XmltvIptvProvider, $Out2> $chain<$R2, $Out2>(

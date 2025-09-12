@@ -62,6 +62,7 @@ class IptvService {
     }).toList();
 
     if (repositories.isNotEmpty) {
+      await Future.wait(repositories.map((r) => r.load()).toList());
       _repositories.addAll(repositories);
     }
   }
@@ -70,7 +71,6 @@ class IptvService {
     await _settingsSubscription?.cancel();
     _settingsSubscription = null;
     await Future.wait(_repositories.map((r) => r.dispose()).toList());
-    await db!.clear();
     await db?.close();
     db = null;
   }

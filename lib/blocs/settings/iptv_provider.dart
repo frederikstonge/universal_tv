@@ -29,6 +29,7 @@ class XtreamIptvProvider extends IptvProvider with XtreamIptvProviderMappable {
   final Uri url;
   final String userName;
   final String password;
+  final Duration epgExpiration;
 
   XtreamIptvProvider({
     required super.name,
@@ -36,13 +37,15 @@ class XtreamIptvProvider extends IptvProvider with XtreamIptvProviderMappable {
     required this.url,
     required this.userName,
     required this.password,
+    required this.epgExpiration,
   }) : super(id: const Uuid().v4(), type: IptvProviderType.xtream);
 }
 
 @MappableClass(discriminatorValue: 'xmltv')
 class XmltvIptvProvider extends IptvProvider with XmltvIptvProviderMappable {
   final Uri url;
+  final Duration epgExpiration;
 
-  XmltvIptvProvider({required super.name, required super.order, required this.url})
+  XmltvIptvProvider({required super.name, required super.order, required this.url, required this.epgExpiration})
     : super(id: const Uuid().v4(), type: IptvProviderType.xmltv);
 }

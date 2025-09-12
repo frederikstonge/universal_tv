@@ -6,26 +6,26 @@ import 'xmltv_base.dart';
 part 'xmltv_programme.mapper.dart';
 
 @MappableClass(discriminatorValue: 'programme')
-class XmltvProgramme with XmltvProgrammeMappable implements XmltvBase {
+class XmltvProgramme extends XmltvBase with XmltvProgrammeMappable {
   final String channelId;
   final DateTime start;
   final DateTime? stop;
   final String? title;
   final String? description;
   final List<String> categories;
-  final String providerName;
 
-  const XmltvProgramme({
+  XmltvProgramme({
     required this.channelId,
     required this.start,
     this.stop,
     this.title,
     this.description,
     this.categories = const [],
-    required this.providerName,
+    required super.providerName,
+    required super.expiration,
   });
 
-  factory XmltvProgramme.fromXtXmltvProgramme(XtXmltvProgramme programme, String providerName) {
+  factory XmltvProgramme.fromXtXmltvProgramme(XtXmltvProgramme programme, String providerName, DateTime expiration) {
     return XmltvProgramme(
       channelId: programme.channelId,
       start: programme.start,
@@ -34,10 +34,11 @@ class XmltvProgramme with XmltvProgrammeMappable implements XmltvBase {
       description: programme.description,
       categories: programme.categories,
       providerName: providerName,
+      expiration: expiration,
     );
   }
 
-  factory XmltvProgramme.fromXtEpg(XtEpgEntry entry, String providerName) {
+  factory XmltvProgramme.fromXtEpg(XtEpgEntry entry, String providerName, DateTime expiration) {
     return XmltvProgramme(
       channelId: entry.channelId,
       start: entry.startUtc,
@@ -46,6 +47,7 @@ class XmltvProgramme with XmltvProgrammeMappable implements XmltvBase {
       description: entry.description,
       categories: [],
       providerName: providerName,
+      expiration: expiration,
     );
   }
 }
