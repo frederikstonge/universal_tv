@@ -60,4 +60,14 @@ class XmltvRepository extends XmltvBaseRepository {
     final items = await db.advanced.collection('xmltv:${provider.name}').whereEquals('type', 'programme').find();
     return items.map((e) => XmltvProgrammeMapper.fromMap(e)).toList();
   }
+
+  @override
+  Future<bool> supportsShortEpg() async {
+    return true;
+  }
+
+  @override
+  Future<bool> supportsXmltv() async {
+    return true;
+  }
 }

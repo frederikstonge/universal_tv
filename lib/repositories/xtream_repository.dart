@@ -103,6 +103,16 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
     return [];
   }
 
+  Future<bool> supportsShortEpg() async {
+    final capabilities = await client.capabilities();
+    return capabilities.supportsShortEpg;
+  }
+
+  Future<bool> supportsXmltv() async {
+    final capabilities = await client.capabilities();
+    return capabilities.supportsXmltv;
+  }
+
   @override
   Future<List<XmltvProgramme>> getShortEpg() async {
     final capabilities = await client.capabilities();
