@@ -165,7 +165,7 @@ class M3uRepository extends StreamBaseRepository {
       return MovieItem(
         streamId: e.id,
         name: e.name,
-        categoryId: imdbEntry?.genres?.firstOrNull ?? e.groupTitle ?? 'Unknown',
+        categoryId: imdbEntry?.genres?.firstOrNull ?? e.groupTitle ?? provider.name,
         posterUrl: imdbEntry?.primaryImage?.url ?? e.logoUrl,
         providerName: provider.name,
       );
@@ -193,11 +193,17 @@ class M3uRepository extends StreamBaseRepository {
         .mapIndexed((i, e) {
           final imdbId = e.value.first.tvgId ?? e.value.first.safeTvgName;
           final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
+          final entry = e.value.first;
           return TvShowItem(
             seriesId: i,
-            name: imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? e.key ?? 'Unknown',
-            categoryId: imdbEntry?.genres?.firstOrNull ?? 'Unknown',
-            posterUrl: imdbEntry?.primaryImage?.url ?? e.value.first.logoUrl,
+            name:
+                imdbEntry?.primaryTitle ??
+                imdbEntry?.originalTitle ??
+                entry.groupTitle ??
+                entry.safeTvgName ??
+                entry.name,
+            categoryId: imdbEntry?.genres?.firstOrNull ?? provider.name,
+            posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
             providerName: provider.name,
           );
         })
@@ -214,7 +220,7 @@ class M3uRepository extends StreamBaseRepository {
       return LiveChannel(
         streamId: i,
         name: e.name,
-        categoryId: e.groupTitle ?? 'Unknown',
+        categoryId: e.groupTitle ?? provider.name,
         logoUrl: e.logoUrl,
         epgChannelId: e.tvgId,
         providerName: provider.name,
@@ -265,7 +271,7 @@ class M3uRepository extends StreamBaseRepository {
 
     return TvShowDetails(
       seriesId: seriesId,
-      name: imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? 'Unknown',
+      name: imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? entry.safeTvgName ?? entry.name,
       seasons: entries
           .groupListsBy((s) => s.seasonNumber)
           .map(
