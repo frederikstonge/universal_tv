@@ -15,6 +15,10 @@ extension M3uEntryExtensions on M3uEntry {
     name.toLowerCase().allMatches(seasonEpisodePattern).first.group(2),
   );
 
+  String? get imdbId => tvgId ?? safeTvgName;
+
+  String? get imdbTitle => groupTitle ?? safeTvgName ?? name;
+
   int get seasonNumber => seriesInfo.key != null ? int.parse(seriesInfo.key!) : 0;
 
   int get episodeNumber => seriesInfo.value != null ? int.parse(seriesInfo.value!) : 0;
