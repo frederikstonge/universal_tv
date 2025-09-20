@@ -14,6 +14,7 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TvShowsStateMapper._());
       TvShowItemMapper.ensureInitialized();
+      CategoryMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -24,14 +25,19 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
   static List<TvShowItem>? _$items(TvShowsState v) => v.items;
   static const Field<TvShowsState, List<TvShowItem>> _f$items =
       Field('items', _$items, opt: true, def: const []);
+  static List<Category>? _$categories(TvShowsState v) => v.categories;
+  static const Field<TvShowsState, List<Category>> _f$categories =
+      Field('categories', _$categories, opt: true, def: const []);
 
   @override
   final MappableFields<TvShowsState> fields = const {
     #items: _f$items,
+    #categories: _f$categories,
   };
 
   static TvShowsState _instantiate(DecodingData data) {
-    return TvShowsState(items: data.dec(_f$items));
+    return TvShowsState(
+        items: data.dec(_f$items), categories: data.dec(_f$categories));
   }
 
   @override
@@ -89,7 +95,9 @@ abstract class TvShowsStateCopyWith<$R, $In extends TvShowsState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, TvShowItem, TvShowItemCopyWith<$R, TvShowItem, TvShowItem>>?
       get items;
-  $R call({List<TvShowItem>? items});
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+      get categories;
+  $R call({List<TvShowItem>? items, List<Category>? categories});
   TvShowsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -108,11 +116,21 @@ class _TvShowsStateCopyWithImpl<$R, $Out>
               (v) => call(items: v))
           : null;
   @override
-  $R call({Object? items = $none}) =>
-      $apply(FieldCopyWithData({if (items != $none) #items: items}));
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+      get categories => $value.categories != null
+          ? ListCopyWith($value.categories!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(categories: v))
+          : null;
   @override
-  TvShowsState $make(CopyWithData data) =>
-      TvShowsState(items: data.get(#items, or: $value.items));
+  $R call({Object? items = $none, Object? categories = $none}) =>
+      $apply(FieldCopyWithData({
+        if (items != $none) #items: items,
+        if (categories != $none) #categories: categories
+      }));
+  @override
+  TvShowsState $make(CopyWithData data) => TvShowsState(
+      items: data.get(#items, or: $value.items),
+      categories: data.get(#categories, or: $value.categories));
 
   @override
   TvShowsStateCopyWith<$R2, TvShowsState, $Out2> $chain<$R2, $Out2>(

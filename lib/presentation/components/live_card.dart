@@ -1,19 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
 
-class EntryCard extends StatefulWidget {
-  final XtSeriesItem? series;
+import '../../models/live_channel.dart';
+
+class LiveCard extends StatefulWidget {
+  final LiveChannel channel;
   final Function() onTap;
 
-  const EntryCard({super.key, required this.series, required this.onTap});
+  const LiveCard({super.key, required this.channel, required this.onTap});
 
   @override
-  State<EntryCard> createState() => _EntryCardState();
+  State<LiveCard> createState() => _LiveCardState();
 }
 
-class _EntryCardState extends State<EntryCard> {
+class _LiveCardState extends State<LiveCard> {
   bool isFocused = false;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _EntryCardState extends State<EntryCard> {
                   ? style.decoration.copyWith(border: Border.all(width: 3, color: FTheme.of(context).colors.primary))
                   : style.decoration,
             ),
-            image: widget.series?.posterUrl != null
+            image: widget.channel.logoUrl != null
                 ? Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -37,8 +38,8 @@ class _EntryCardState extends State<EntryCard> {
                       CachedNetworkImage(
                         height: 40,
                         width: 40,
-                        cacheKey: widget.series!.posterUrl!,
-                        imageUrl: widget.series!.posterUrl!,
+                        cacheKey: widget.channel.logoUrl!,
+                        imageUrl: widget.channel.logoUrl!,
                         alignment: Alignment.center,
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             FProgress(value: downloadProgress.progress),
@@ -48,8 +49,8 @@ class _EntryCardState extends State<EntryCard> {
                   )
                 : null,
             title: Text(
-              widget.series!.name,
-              maxLines: widget.series!.posterUrl != null ? 2 : 4,
+              widget.channel.name,
+              maxLines: widget.channel.logoUrl != null ? 2 : 4,
               overflow: TextOverflow.ellipsis,
             ),
             child: Expanded(

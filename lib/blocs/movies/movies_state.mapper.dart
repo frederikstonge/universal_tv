@@ -14,6 +14,7 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MoviesStateMapper._());
       MovieItemMapper.ensureInitialized();
+      CategoryMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -24,14 +25,19 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   static List<MovieItem>? _$items(MoviesState v) => v.items;
   static const Field<MoviesState, List<MovieItem>> _f$items =
       Field('items', _$items, opt: true, def: const []);
+  static List<Category>? _$categories(MoviesState v) => v.categories;
+  static const Field<MoviesState, List<Category>> _f$categories =
+      Field('categories', _$categories, opt: true, def: const []);
 
   @override
   final MappableFields<MoviesState> fields = const {
     #items: _f$items,
+    #categories: _f$categories,
   };
 
   static MoviesState _instantiate(DecodingData data) {
-    return MoviesState(items: data.dec(_f$items));
+    return MoviesState(
+        items: data.dec(_f$items), categories: data.dec(_f$categories));
   }
 
   @override
@@ -88,7 +94,9 @@ abstract class MoviesStateCopyWith<$R, $In extends MoviesState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, MovieItem, MovieItemCopyWith<$R, MovieItem, MovieItem>>?
       get items;
-  $R call({List<MovieItem>? items});
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+      get categories;
+  $R call({List<MovieItem>? items, List<Category>? categories});
   MoviesStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -107,11 +115,21 @@ class _MoviesStateCopyWithImpl<$R, $Out>
               (v) => call(items: v))
           : null;
   @override
-  $R call({Object? items = $none}) =>
-      $apply(FieldCopyWithData({if (items != $none) #items: items}));
+  ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
+      get categories => $value.categories != null
+          ? ListCopyWith($value.categories!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(categories: v))
+          : null;
   @override
-  MoviesState $make(CopyWithData data) =>
-      MoviesState(items: data.get(#items, or: $value.items));
+  $R call({Object? items = $none, Object? categories = $none}) =>
+      $apply(FieldCopyWithData({
+        if (items != $none) #items: items,
+        if (categories != $none) #categories: categories
+      }));
+  @override
+  MoviesState $make(CopyWithData data) => MoviesState(
+      items: data.get(#items, or: $value.items),
+      categories: data.get(#categories, or: $value.categories));
 
   @override
   MoviesStateCopyWith<$R2, MoviesState, $Out2> $chain<$R2, $Out2>(
