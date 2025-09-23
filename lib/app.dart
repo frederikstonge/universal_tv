@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'presentation/pages/live/live_page.dart';
 import 'presentation/pages/movies/movies_page.dart';
 import 'presentation/pages/player/player_page.dart';
-import 'presentation/pages/search/search_page.dart';
 import 'presentation/pages/settings/settings_page.dart';
 import 'presentation/pages/tv_shows/tv_shows_page.dart';
 import 'presentation/shells/main_shell.dart';
@@ -17,7 +16,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetsApp.router(
       color: FThemes.slate.dark.colors.primary,
-      title: 'UniversalTV',
+      title: 'Universal TV',
       builder: (context, child) => FTheme(data: FThemes.slate.dark, child: child!),
       routerConfig: GoRouter(
         initialLocation: '/movies',
@@ -32,9 +31,6 @@ class App extends StatelessWidget {
               ),
               StatefulShellBranch(
                 routes: [GoRoute(path: '/live', name: 'live', builder: (context, state) => const LivePage())],
-              ),
-              StatefulShellBranch(
-                routes: [GoRoute(path: '/search', name: 'search', builder: (context, state) => const SearchPage())],
               ),
               StatefulShellBranch(
                 routes: [

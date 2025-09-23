@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:reaxdb_dart/reaxdb_dart.dart';
 
 import '../../blocs/settings/iptv_provider.dart';
 import '../../blocs/settings/settings_cubit.dart';
@@ -19,56 +18,61 @@ import '../../repositories/m3u_repository.dart';
 import '../../repositories/stream_base_repository.dart';
 import '../../repositories/xmltv_repository.dart';
 import '../../repositories/xtream_repository.dart';
+import '../state_status.dart';
 import 'iptv_service_state.dart';
 
 class IptvServiceCubit extends Cubit<IptvServiceState> {
   final Dio dio;
   final ImdbApi imdbApi;
   final SettingsCubit settingsCubit;
-  SimpleReaxDB? db;
   StreamSubscription? _settingsSubscription;
 
   IptvServiceCubit({required this.dio, required this.imdbApi, required this.settingsCubit})
-    : super(IptvServiceState()) {
+    : super(IptvServiceState(status: StateStatus.initial)) {
     _settingsSubscription = settingsCubit.stream.listen((data) async {
       await load(data.providers);
     });
   }
 
   Future<void> initialize(List<IptvProvider> providers) async {
-    db ??= await SimpleReaxDB.open('unversal_tv');
-    await db!.clear();
     await load(providers);
   }
 
   Future<void> load(List<IptvProvider> providers) async {
-    final currentRepositories = List<BaseRepository>.from(state.repositories);
-    final removedRepositories = currentRepositories.where((r) => !providers.any((p) => p.name == r.name)).toList();
-    await Future.wait(removedRepositories.map((r) => r.dispose()).toList());
-    currentRepositories.removeWhere((r) => removedRepositories.contains(r));
+    emit(state.copyWith(status: StateStatus.loading));
 
-    final newProviders = providers.where((p) => !currentRepositories.any((r) => r.name == p.name)).toList();
-    if (newProviders.isEmpty) {
+    try {
+      final currentRepositories = List<BaseRepository>.from(state.repositories);
+      final removedRepositories = currentRepositories.where((r) => !providers.any((p) => p.name == r.name)).toList();
+      await Future.wait(removedRepositories.map((r) => r.dispose()).toList());
+      currentRepositories.removeWhere((r) => removedRepositories.contains(r));
+
+      final newProviders = providers.where((p) => !currentRepositories.any((r) => r.name == p.name)).toList();
+      if (newProviders.isEmpty) {
+        return;
+      }
+
+      final List<BaseRepository> newRepositories = newProviders.map((p) {
+        switch (p.type) {
+          case IptvProviderType.xtream:
+            return XtreamRepository(provider: p as XtreamIptvProvider);
+          case IptvProviderType.xmltv:
+            return XmltvRepository(provider: p as XmltvIptvProvider, dio: dio);
+          case IptvProviderType.m3u:
+            return M3uRepository(provider: p as M3uIptvProvider, dio: dio, imdbApi: imdbApi);
+        }
+      }).toList();
+
+      if (newRepositories.isNotEmpty) {
+        await Future.wait(newRepositories.map((r) => r.load()).toList());
+        currentRepositories.addAll(newRepositories);
+      }
+
+      emit(state.copyWith(status: StateStatus.success, repositories: currentRepositories));
+    } catch (e) {
+      emit(state.copyWith(status: StateStatus.failure));
       return;
     }
-
-    final List<BaseRepository> newRepositories = newProviders.map((p) {
-      switch (p.type) {
-        case IptvProviderType.xtream:
-          return XtreamRepository(provider: p as XtreamIptvProvider);
-        case IptvProviderType.xmltv:
-          return XmltvRepository(provider: p as XmltvIptvProvider, dio: dio, db: db!);
-        case IptvProviderType.m3u:
-          return M3uRepository(provider: p as M3uIptvProvider, dio: dio, imdbApi: imdbApi, db: db!);
-      }
-    }).toList();
-
-    if (newRepositories.isNotEmpty) {
-      await Future.wait(newRepositories.map((r) => r.load()).toList());
-      currentRepositories.addAll(newRepositories);
-    }
-
-    emit(IptvServiceState(repositories: currentRepositories));
   }
 
   @override
@@ -76,8 +80,6 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
     await _settingsSubscription?.cancel();
     _settingsSubscription = null;
     await Future.wait(state.repositories.map((r) => r.dispose()).toList());
-    await db?.close();
-    db = null;
     return super.close();
   }
 

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -22,29 +23,50 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
   final String id = 'XmltvProgramme';
 
   static String _$channelId(XmltvProgramme v) => v.channelId;
-  static const Field<XmltvProgramme, String> _f$channelId =
-      Field('channelId', _$channelId);
+  static const Field<XmltvProgramme, String> _f$channelId = Field(
+    'channelId',
+    _$channelId,
+  );
   static DateTime _$start(XmltvProgramme v) => v.start;
-  static const Field<XmltvProgramme, DateTime> _f$start =
-      Field('start', _$start);
+  static const Field<XmltvProgramme, DateTime> _f$start = Field(
+    'start',
+    _$start,
+  );
   static DateTime? _$stop(XmltvProgramme v) => v.stop;
-  static const Field<XmltvProgramme, DateTime> _f$stop =
-      Field('stop', _$stop, opt: true);
+  static const Field<XmltvProgramme, DateTime> _f$stop = Field(
+    'stop',
+    _$stop,
+    opt: true,
+  );
   static String? _$title(XmltvProgramme v) => v.title;
-  static const Field<XmltvProgramme, String> _f$title =
-      Field('title', _$title, opt: true);
+  static const Field<XmltvProgramme, String> _f$title = Field(
+    'title',
+    _$title,
+    opt: true,
+  );
   static String? _$description(XmltvProgramme v) => v.description;
-  static const Field<XmltvProgramme, String> _f$description =
-      Field('description', _$description, opt: true);
+  static const Field<XmltvProgramme, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
   static List<String> _$categories(XmltvProgramme v) => v.categories;
-  static const Field<XmltvProgramme, List<String>> _f$categories =
-      Field('categories', _$categories, opt: true, def: const []);
+  static const Field<XmltvProgramme, List<String>> _f$categories = Field(
+    'categories',
+    _$categories,
+    opt: true,
+    def: const [],
+  );
   static String _$providerName(XmltvProgramme v) => v.providerName;
-  static const Field<XmltvProgramme, String> _f$providerName =
-      Field('providerName', _$providerName);
+  static const Field<XmltvProgramme, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static DateTime _$expiration(XmltvProgramme v) => v.expiration;
-  static const Field<XmltvProgramme, DateTime> _f$expiration =
-      Field('expiration', _$expiration);
+  static const Field<XmltvProgramme, DateTime> _f$expiration = Field(
+    'expiration',
+    _$expiration,
+  );
 
   @override
   final MappableFields<XmltvProgramme> fields = const {
@@ -67,14 +89,15 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
 
   static XmltvProgramme _instantiate(DecodingData data) {
     return XmltvProgramme(
-        channelId: data.dec(_f$channelId),
-        start: data.dec(_f$start),
-        stop: data.dec(_f$stop),
-        title: data.dec(_f$title),
-        description: data.dec(_f$description),
-        categories: data.dec(_f$categories),
-        providerName: data.dec(_f$providerName),
-        expiration: data.dec(_f$expiration));
+      channelId: data.dec(_f$channelId),
+      start: data.dec(_f$start),
+      stop: data.dec(_f$stop),
+      title: data.dec(_f$title),
+      description: data.dec(_f$description),
+      categories: data.dec(_f$categories),
+      providerName: data.dec(_f$providerName),
+      expiration: data.dec(_f$expiration),
+    );
   }
 
   @override
@@ -91,35 +114,43 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
 
 mixin XmltvProgrammeMappable {
   String toJson() {
-    return XmltvProgrammeMapper.ensureInitialized()
-        .encodeJson<XmltvProgramme>(this as XmltvProgramme);
+    return XmltvProgrammeMapper.ensureInitialized().encodeJson<XmltvProgramme>(
+      this as XmltvProgramme,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return XmltvProgrammeMapper.ensureInitialized()
-        .encodeMap<XmltvProgramme>(this as XmltvProgramme);
+    return XmltvProgrammeMapper.ensureInitialized().encodeMap<XmltvProgramme>(
+      this as XmltvProgramme,
+    );
   }
 
   XmltvProgrammeCopyWith<XmltvProgramme, XmltvProgramme, XmltvProgramme>
-      get copyWith =>
-          _XmltvProgrammeCopyWithImpl<XmltvProgramme, XmltvProgramme>(
-              this as XmltvProgramme, $identity, $identity);
+  get copyWith => _XmltvProgrammeCopyWithImpl<XmltvProgramme, XmltvProgramme>(
+    this as XmltvProgramme,
+    $identity,
+    $identity,
+  );
   @override
   String toString() {
-    return XmltvProgrammeMapper.ensureInitialized()
-        .stringifyValue(this as XmltvProgramme);
+    return XmltvProgrammeMapper.ensureInitialized().stringifyValue(
+      this as XmltvProgramme,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return XmltvProgrammeMapper.ensureInitialized()
-        .equalsValue(this as XmltvProgramme, other);
+    return XmltvProgrammeMapper.ensureInitialized().equalsValue(
+      this as XmltvProgramme,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return XmltvProgrammeMapper.ensureInitialized()
-        .hashValue(this as XmltvProgramme);
+    return XmltvProgrammeMapper.ensureInitialized().hashValue(
+      this as XmltvProgramme,
+    );
   }
 }
 
@@ -133,17 +164,19 @@ abstract class XmltvProgrammeCopyWith<$R, $In extends XmltvProgramme, $Out>
     implements XmltvBaseCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categories;
   @override
-  $R call(
-      {String? channelId,
-      DateTime? start,
-      DateTime? stop,
-      String? title,
-      String? description,
-      List<String>? categories,
-      String? providerName,
-      DateTime? expiration});
+  $R call({
+    String? channelId,
+    DateTime? start,
+    DateTime? stop,
+    String? title,
+    String? description,
+    List<String>? categories,
+    String? providerName,
+    DateTime? expiration,
+  });
   XmltvProgrammeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _XmltvProgrammeCopyWithImpl<$R, $Out>
@@ -156,41 +189,48 @@ class _XmltvProgrammeCopyWithImpl<$R, $Out>
       XmltvProgrammeMapper.ensureInitialized();
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categories =>
-      ListCopyWith($value.categories, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(categories: v));
+      ListCopyWith(
+        $value.categories,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(categories: v),
+      );
   @override
-  $R call(
-          {String? channelId,
-          DateTime? start,
-          Object? stop = $none,
-          Object? title = $none,
-          Object? description = $none,
-          List<String>? categories,
-          String? providerName,
-          DateTime? expiration}) =>
-      $apply(FieldCopyWithData({
-        if (channelId != null) #channelId: channelId,
-        if (start != null) #start: start,
-        if (stop != $none) #stop: stop,
-        if (title != $none) #title: title,
-        if (description != $none) #description: description,
-        if (categories != null) #categories: categories,
-        if (providerName != null) #providerName: providerName,
-        if (expiration != null) #expiration: expiration
-      }));
+  $R call({
+    String? channelId,
+    DateTime? start,
+    Object? stop = $none,
+    Object? title = $none,
+    Object? description = $none,
+    List<String>? categories,
+    String? providerName,
+    DateTime? expiration,
+  }) => $apply(
+    FieldCopyWithData({
+      if (channelId != null) #channelId: channelId,
+      if (start != null) #start: start,
+      if (stop != $none) #stop: stop,
+      if (title != $none) #title: title,
+      if (description != $none) #description: description,
+      if (categories != null) #categories: categories,
+      if (providerName != null) #providerName: providerName,
+      if (expiration != null) #expiration: expiration,
+    }),
+  );
   @override
   XmltvProgramme $make(CopyWithData data) => XmltvProgramme(
-      channelId: data.get(#channelId, or: $value.channelId),
-      start: data.get(#start, or: $value.start),
-      stop: data.get(#stop, or: $value.stop),
-      title: data.get(#title, or: $value.title),
-      description: data.get(#description, or: $value.description),
-      categories: data.get(#categories, or: $value.categories),
-      providerName: data.get(#providerName, or: $value.providerName),
-      expiration: data.get(#expiration, or: $value.expiration));
+    channelId: data.get(#channelId, or: $value.channelId),
+    start: data.get(#start, or: $value.start),
+    stop: data.get(#stop, or: $value.stop),
+    title: data.get(#title, or: $value.title),
+    description: data.get(#description, or: $value.description),
+    categories: data.get(#categories, or: $value.categories),
+    providerName: data.get(#providerName, or: $value.providerName),
+    expiration: data.get(#expiration, or: $value.expiration),
+  );
 
   @override
   XmltvProgrammeCopyWith<$R2, XmltvProgramme, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _XmltvProgrammeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _XmltvProgrammeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

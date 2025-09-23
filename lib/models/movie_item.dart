@@ -7,14 +7,14 @@ part 'movie_item.mapper.dart';
 class MovieItem with MovieItemMappable {
   final int streamId;
   final String name;
-  final String categoryId;
+  final List<String> categoryIds;
   final String? posterUrl;
   final String providerName;
 
   const MovieItem({
     required this.streamId,
     required this.name,
-    required this.categoryId,
+    required this.categoryIds,
     this.posterUrl,
     required this.providerName,
   });
@@ -23,7 +23,7 @@ class MovieItem with MovieItemMappable {
     return MovieItem(
       streamId: item.streamId,
       name: item.name,
-      categoryId: item.categoryId,
+      categoryIds: [item.categoryId],
       posterUrl: item.posterUrl,
       providerName: providerName,
     );

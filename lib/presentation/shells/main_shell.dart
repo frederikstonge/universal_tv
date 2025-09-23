@@ -14,7 +14,6 @@ class MainShell extends StatelessWidget {
       'Movies': FIcons.tvMinimal,
       'TV Shows': FIcons.tvMinimalPlay,
       'Live TV': FIcons.tv,
-      'Search': FIcons.search,
       'Settings': FIcons.settings,
     };
     final breakpoints = context.theme.breakpoints;
@@ -36,7 +35,7 @@ class MainShell extends StatelessWidget {
             ? null
             : FSidebar(
                 autofocus: true,
-                header: FHeader.nested(title: Text('UniversalTV')),
+                header: FHeader.nested(title: Text('Universal TV')),
                 children: items.entries
                     .mapIndexed(
                       (i, e) => FSidebarItem(

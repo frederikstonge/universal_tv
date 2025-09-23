@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -21,36 +22,46 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
   final String id = 'TvShowItem';
 
   static int _$seriesId(TvShowItem v) => v.seriesId;
-  static const Field<TvShowItem, int> _f$seriesId =
-      Field('seriesId', _$seriesId);
+  static const Field<TvShowItem, int> _f$seriesId = Field(
+    'seriesId',
+    _$seriesId,
+  );
   static String _$name(TvShowItem v) => v.name;
   static const Field<TvShowItem, String> _f$name = Field('name', _$name);
-  static String _$categoryId(TvShowItem v) => v.categoryId;
-  static const Field<TvShowItem, String> _f$categoryId =
-      Field('categoryId', _$categoryId);
+  static List<String> _$categoryIds(TvShowItem v) => v.categoryIds;
+  static const Field<TvShowItem, List<String>> _f$categoryIds = Field(
+    'categoryIds',
+    _$categoryIds,
+  );
   static String? _$posterUrl(TvShowItem v) => v.posterUrl;
-  static const Field<TvShowItem, String> _f$posterUrl =
-      Field('posterUrl', _$posterUrl, opt: true);
+  static const Field<TvShowItem, String> _f$posterUrl = Field(
+    'posterUrl',
+    _$posterUrl,
+    opt: true,
+  );
   static String _$providerName(TvShowItem v) => v.providerName;
-  static const Field<TvShowItem, String> _f$providerName =
-      Field('providerName', _$providerName);
+  static const Field<TvShowItem, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
 
   @override
   final MappableFields<TvShowItem> fields = const {
     #seriesId: _f$seriesId,
     #name: _f$name,
-    #categoryId: _f$categoryId,
+    #categoryIds: _f$categoryIds,
     #posterUrl: _f$posterUrl,
     #providerName: _f$providerName,
   };
 
   static TvShowItem _instantiate(DecodingData data) {
     return TvShowItem(
-        seriesId: data.dec(_f$seriesId),
-        name: data.dec(_f$name),
-        categoryId: data.dec(_f$categoryId),
-        posterUrl: data.dec(_f$posterUrl),
-        providerName: data.dec(_f$providerName));
+      seriesId: data.dec(_f$seriesId),
+      name: data.dec(_f$name),
+      categoryIds: data.dec(_f$categoryIds),
+      posterUrl: data.dec(_f$posterUrl),
+      providerName: data.dec(_f$providerName),
+    );
   }
 
   @override
@@ -67,28 +78,36 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
 
 mixin TvShowItemMappable {
   String toJson() {
-    return TvShowItemMapper.ensureInitialized()
-        .encodeJson<TvShowItem>(this as TvShowItem);
+    return TvShowItemMapper.ensureInitialized().encodeJson<TvShowItem>(
+      this as TvShowItem,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return TvShowItemMapper.ensureInitialized()
-        .encodeMap<TvShowItem>(this as TvShowItem);
+    return TvShowItemMapper.ensureInitialized().encodeMap<TvShowItem>(
+      this as TvShowItem,
+    );
   }
 
   TvShowItemCopyWith<TvShowItem, TvShowItem, TvShowItem> get copyWith =>
       _TvShowItemCopyWithImpl<TvShowItem, TvShowItem>(
-          this as TvShowItem, $identity, $identity);
+        this as TvShowItem,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return TvShowItemMapper.ensureInitialized()
-        .stringifyValue(this as TvShowItem);
+    return TvShowItemMapper.ensureInitialized().stringifyValue(
+      this as TvShowItem,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return TvShowItemMapper.ensureInitialized()
-        .equalsValue(this as TvShowItem, other);
+    return TvShowItemMapper.ensureInitialized().equalsValue(
+      this as TvShowItem,
+      other,
+    );
   }
 
   @override
@@ -105,12 +124,14 @@ extension TvShowItemValueCopy<$R, $Out>
 
 abstract class TvShowItemCopyWith<$R, $In extends TvShowItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call(
-      {int? seriesId,
-      String? name,
-      String? categoryId,
-      String? posterUrl,
-      String? providerName});
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categoryIds;
+  $R call({
+    int? seriesId,
+    String? name,
+    List<String>? categoryIds,
+    String? posterUrl,
+    String? providerName,
+  });
   TvShowItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -123,29 +144,40 @@ class _TvShowItemCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TvShowItem> $mapper =
       TvShowItemMapper.ensureInitialized();
   @override
-  $R call(
-          {int? seriesId,
-          String? name,
-          String? categoryId,
-          Object? posterUrl = $none,
-          String? providerName}) =>
-      $apply(FieldCopyWithData({
-        if (seriesId != null) #seriesId: seriesId,
-        if (name != null) #name: name,
-        if (categoryId != null) #categoryId: categoryId,
-        if (posterUrl != $none) #posterUrl: posterUrl,
-        if (providerName != null) #providerName: providerName
-      }));
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get categoryIds => ListCopyWith(
+    $value.categoryIds,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(categoryIds: v),
+  );
+  @override
+  $R call({
+    int? seriesId,
+    String? name,
+    List<String>? categoryIds,
+    Object? posterUrl = $none,
+    String? providerName,
+  }) => $apply(
+    FieldCopyWithData({
+      if (seriesId != null) #seriesId: seriesId,
+      if (name != null) #name: name,
+      if (categoryIds != null) #categoryIds: categoryIds,
+      if (posterUrl != $none) #posterUrl: posterUrl,
+      if (providerName != null) #providerName: providerName,
+    }),
+  );
   @override
   TvShowItem $make(CopyWithData data) => TvShowItem(
-      seriesId: data.get(#seriesId, or: $value.seriesId),
-      name: data.get(#name, or: $value.name),
-      categoryId: data.get(#categoryId, or: $value.categoryId),
-      posterUrl: data.get(#posterUrl, or: $value.posterUrl),
-      providerName: data.get(#providerName, or: $value.providerName));
+    seriesId: data.get(#seriesId, or: $value.seriesId),
+    name: data.get(#name, or: $value.name),
+    categoryIds: data.get(#categoryIds, or: $value.categoryIds),
+    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
+    providerName: data.get(#providerName, or: $value.providerName),
+  );
 
   @override
   TvShowItemCopyWith<$R2, TvShowItem, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _TvShowItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _TvShowItemCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -23,11 +24,19 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   final String id = 'MoviesState';
 
   static List<MovieItem>? _$items(MoviesState v) => v.items;
-  static const Field<MoviesState, List<MovieItem>> _f$items =
-      Field('items', _$items, opt: true, def: const []);
+  static const Field<MoviesState, List<MovieItem>> _f$items = Field(
+    'items',
+    _$items,
+    opt: true,
+    def: const [],
+  );
   static List<Category>? _$categories(MoviesState v) => v.categories;
-  static const Field<MoviesState, List<Category>> _f$categories =
-      Field('categories', _$categories, opt: true, def: const []);
+  static const Field<MoviesState, List<Category>> _f$categories = Field(
+    'categories',
+    _$categories,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<MoviesState> fields = const {
@@ -37,7 +46,9 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
 
   static MoviesState _instantiate(DecodingData data) {
     return MoviesState(
-        items: data.dec(_f$items), categories: data.dec(_f$categories));
+      items: data.dec(_f$items),
+      categories: data.dec(_f$categories),
+    );
   }
 
   @override
@@ -54,28 +65,36 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
 
 mixin MoviesStateMappable {
   String toJson() {
-    return MoviesStateMapper.ensureInitialized()
-        .encodeJson<MoviesState>(this as MoviesState);
+    return MoviesStateMapper.ensureInitialized().encodeJson<MoviesState>(
+      this as MoviesState,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return MoviesStateMapper.ensureInitialized()
-        .encodeMap<MoviesState>(this as MoviesState);
+    return MoviesStateMapper.ensureInitialized().encodeMap<MoviesState>(
+      this as MoviesState,
+    );
   }
 
   MoviesStateCopyWith<MoviesState, MoviesState, MoviesState> get copyWith =>
       _MoviesStateCopyWithImpl<MoviesState, MoviesState>(
-          this as MoviesState, $identity, $identity);
+        this as MoviesState,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return MoviesStateMapper.ensureInitialized()
-        .stringifyValue(this as MoviesState);
+    return MoviesStateMapper.ensureInitialized().stringifyValue(
+      this as MoviesState,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return MoviesStateMapper.ensureInitialized()
-        .equalsValue(this as MoviesState, other);
+    return MoviesStateMapper.ensureInitialized().equalsValue(
+      this as MoviesState,
+      other,
+    );
   }
 
   @override
@@ -93,9 +112,9 @@ extension MoviesStateValueCopy<$R, $Out>
 abstract class MoviesStateCopyWith<$R, $In extends MoviesState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, MovieItem, MovieItemCopyWith<$R, MovieItem, MovieItem>>?
-      get items;
+  get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
-      get categories;
+  get categories;
   $R call({List<MovieItem>? items, List<Category>? categories});
   MoviesStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -110,29 +129,38 @@ class _MoviesStateCopyWithImpl<$R, $Out>
       MoviesStateMapper.ensureInitialized();
   @override
   ListCopyWith<$R, MovieItem, MovieItemCopyWith<$R, MovieItem, MovieItem>>?
-      get items => $value.items != null
-          ? ListCopyWith($value.items!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(items: v))
-          : null;
+  get items => $value.items != null
+      ? ListCopyWith(
+          $value.items!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(items: v),
+        )
+      : null;
   @override
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
-      get categories => $value.categories != null
-          ? ListCopyWith($value.categories!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(categories: v))
-          : null;
+  get categories => $value.categories != null
+      ? ListCopyWith(
+          $value.categories!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(categories: v),
+        )
+      : null;
   @override
-  $R call({Object? items = $none, Object? categories = $none}) =>
-      $apply(FieldCopyWithData({
-        if (items != $none) #items: items,
-        if (categories != $none) #categories: categories
-      }));
+  $R call({Object? items = $none, Object? categories = $none}) => $apply(
+    FieldCopyWithData({
+      if (items != $none) #items: items,
+      if (categories != $none) #categories: categories,
+    }),
+  );
   @override
   MoviesState $make(CopyWithData data) => MoviesState(
-      items: data.get(#items, or: $value.items),
-      categories: data.get(#categories, or: $value.categories));
+    items: data.get(#items, or: $value.items),
+    categories: data.get(#categories, or: $value.categories),
+  );
 
   @override
   MoviesStateCopyWith<$R2, MoviesState, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _MoviesStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _MoviesStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

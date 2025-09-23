@@ -7,14 +7,14 @@ part 'tv_show_item.mapper.dart';
 class TvShowItem with TvShowItemMappable {
   final int seriesId;
   final String name;
-  final String categoryId;
+  final List<String> categoryIds;
   final String? posterUrl;
   final String providerName;
 
   const TvShowItem({
     required this.seriesId,
     required this.name,
-    required this.categoryId,
+    required this.categoryIds,
     this.posterUrl,
     required this.providerName,
   });
@@ -23,7 +23,7 @@ class TvShowItem with TvShowItemMappable {
     return TvShowItem(
       seriesId: item.seriesId,
       name: item.name,
-      categoryId: item.categoryId,
+      categoryIds: [item.categoryId],
       posterUrl: item.posterUrl,
       providerName: providerName,
     );

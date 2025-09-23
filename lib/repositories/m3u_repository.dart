@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
-import 'package:reaxdb_dart/reaxdb_dart.dart';
 
 import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
@@ -24,9 +23,11 @@ class M3uRepository extends StreamBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
   final ImdbApi imdbApi;
-  final SimpleReaxDB db;
 
-  M3uRepository({required this.provider, required this.dio, required this.imdbApi, required this.db});
+  final List<M3uEntry> _entries = [];
+  final List<ImdbEntry> _imdbEntries = [];
+
+  M3uRepository({required this.provider, required this.dio, required this.imdbApi});
 
   @override
   String get name => provider.name;
@@ -61,7 +62,7 @@ class M3uRepository extends StreamBaseRepository {
         try {
           final result = await imdbApi.titlesBatchGetGet(titleIds: titlesBatch);
           final titles = result.body?.titles?.map((e) => ImdbEntry.fromImdbapiTitle(e)).toList() ?? [];
-          await db.putAll(titles.asMap().map((k, v) => MapEntry('imdb_${provider.name}:${v.id}', v.toMap())));
+          _imdbEntries.addAll(titles);
         } catch (e) {
           // ignore errors from imdb api
         }
@@ -82,50 +83,46 @@ class M3uRepository extends StreamBaseRepository {
               entries[entries.indexOf(element)] = newElement;
             }
 
-            await db.put('imdb_${provider.name}:${imdbEntry.id}', imdbEntry.toMap());
+            _imdbEntries.add(imdbEntry);
           }
         } catch (e) {
           // ignore errors from imdb api
         }
       }
 
-      await db.putAll(entries.asMap().map((k, v) => MapEntry('m3u_${provider.name}:${v.id}', v.toMap())));
+      _entries.addAll(entries);
     }
   }
 
   @override
   Future<void> dispose() async {
-    final keys = await db.query('m3u_${provider.name}:*');
-    for (final key in keys) {
-      await db.delete(key);
-    }
-
-    final imdbKeys = await db.query('imdb_${provider.name}:*');
-    for (final imdbKey in imdbKeys) {
-      await db.delete(imdbKey);
-    }
+    _entries.clear();
+    _imdbEntries.clear();
   }
 
   @override
   Future<List<Category>> getLiveCategories() async {
-    final items = await db.advanced
-        .collection('m3u_${provider.name}')
-        .whereEquals('type', IptvType.live.name)
-        .distinct('groupTitle');
-    final categories = items.map((i) => CategoryMapper.fromMap(i)).toList();
+    final categories = _entries
+        .where((e) => e.type == IptvType.live)
+        .groupListsBy((e) => e.groupTitle)
+        .keys
+        .whereType<String>()
+        .toSet()
+        .toList()
+        .map((i) => Category(id: i, name: i, type: IptvType.live, providerName: provider.name))
+        .toList();
+
     return categories;
   }
 
   @override
   Future<List<Category>> getMovieCategories() async {
-    final items = await db.advanced.collection('m3u_${provider.name}').whereEquals('type', IptvType.movies.name).find();
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
+    final entries = _entries.where((e) => e.type == IptvType.movies).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbItems = await db.advanced.collection('imdb_${provider.name}').whereIn('id', imdbIds).find();
-    final imdbEntries = imdbItems.map((i) => ImdbEntryMapper.fromMap(i)).toList();
+    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
 
     return imdbEntries
-        .map((e) => e.genres?.first)
+        .expand((e) => e.genres ?? [])
         .where((e) => e != null)
         .toSet()
         .toList()
@@ -144,18 +141,12 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<Category>> getTvShowCategories() async {
-    final items = await db.advanced
-        .collection('m3u_${provider.name}')
-        .whereEquals('type', IptvType.tvshows.name)
-        .find();
-
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
+    final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbItems = await db.advanced.collection('imdb_${provider.name}').whereIn('id', imdbIds).find();
-    final imdbEntries = imdbItems.map((i) => ImdbEntryMapper.fromMap(i)).toList();
+    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
 
     return imdbEntries
-        .map((e) => e.genres?.first)
+        .expand((e) => e.genres ?? [])
         .where((e) => e != null)
         .toSet()
         .toList()
@@ -174,11 +165,9 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<MovieItem>> getMovies() async {
-    final items = await db.advanced.collection('m3u_${provider.name}').whereEquals('type', IptvType.movies.name).find();
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
+    final entries = _entries.where((e) => e.type == IptvType.movies).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbItems = await db.advanced.collection('imdb_${provider.name}').whereIn('id', imdbIds).find();
-    final imdbEntries = imdbItems.map((i) => ImdbEntryMapper.fromMap(i)).toList();
+    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
 
     final vodItems = entries.where((e) => e.type == IptvType.movies).map((e) {
       final imdbId = e.imdbId;
@@ -186,7 +175,7 @@ class M3uRepository extends StreamBaseRepository {
       return MovieItem(
         streamId: e.id,
         name: e.name,
-        categoryId: imdbEntry?.genres?.firstOrNull ?? e.groupTitle ?? provider.name,
+        categoryIds: imdbEntry?.genres ?? [e.groupTitle ?? provider.name],
         posterUrl: imdbEntry?.primaryImage?.url ?? e.logoUrl,
         providerName: provider.name,
       );
@@ -197,15 +186,9 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<TvShowItem>> getTvShows() async {
-    final items = await db.advanced
-        .collection('m3u_${provider.name}')
-        .whereEquals('type', IptvType.tvshows.name)
-        .find();
-
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
+    final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbItems = await db.advanced.collection('imdb_${provider.name}').whereIn('id', imdbIds).find();
-    final imdbEntries = imdbItems.map((i) => ImdbEntryMapper.fromMap(i)).toList();
+    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
 
     final seriesItems = entries
         .where((e) => e.type == IptvType.tvshows)
@@ -223,7 +206,7 @@ class M3uRepository extends StreamBaseRepository {
                 entry.groupTitle ??
                 entry.safeTvgName ??
                 entry.name,
-            categoryId: imdbEntry?.genres?.firstOrNull ?? provider.name,
+            categoryIds: imdbEntry?.genres ?? [provider.name],
             posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
             providerName: provider.name,
           );
@@ -235,9 +218,8 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<LiveChannel>> getLiveStreams() async {
-    final items = await db.advanced.collection('m3u_${provider.name}').whereEquals('type', IptvType.live.name).find();
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
-    final liveChannels = entries.where((e) => e.type == IptvType.live).mapIndexed((i, e) {
+    final entries = _entries.where((e) => e.type == IptvType.live).toList();
+    final liveChannels = entries.mapIndexed((i, e) {
       return LiveChannel(
         streamId: i,
         name: e.name,
@@ -253,11 +235,11 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<MovieDetails> getMovieDetails(int vodId) async {
-    final item = await db.advanced.collection('m3u_${provider.name}:$vodId').findOne();
-    final entry = M3uEntryMapper.fromMap(item!);
+    final entry = _entries.firstWhereOrNull((e) => e.id == vodId);
+    if (entry == null) throw Exception('Movie not found');
+
     final imdbId = entry.imdbId;
-    final imdbItem = await db.advanced.collection('imdb_${provider.name}').whereEquals('id', imdbId).findOne();
-    final imdbEntry = imdbItem != null ? ImdbEntryMapper.fromMap(imdbItem) : null;
+    final imdbEntry = _imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
 
     return MovieDetails(
       streamId: vodId,
@@ -273,19 +255,13 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<TvShowDetails> getTvShowDetails(int seriesId) async {
-    final item = await db.advanced.collection('m3u_${provider.name}:$seriesId').findOne();
-    final entry = M3uEntryMapper.fromMap(item!);
-    final items = await db.advanced
-        .collection('m3u_${provider.name}')
-        .whereEquals('groupTitle', entry.groupTitle)
-        .whereEquals('type', IptvType.tvshows.name)
-        .find();
+    final entry = _entries.firstWhereOrNull((e) => e.id == seriesId);
+    if (entry == null) throw Exception('Series not found');
 
-    final entries = items.map((i) => M3uEntryMapper.fromMap(i)).toList();
+    final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
 
     final imdbId = entry.imdbId;
-    final imdbItem = await db.advanced.collection('imdb_${provider.name}').whereEquals('id', imdbId).findOne();
-    final imdbEntry = imdbItem != null ? ImdbEntryMapper.fromMap(imdbItem) : null;
+    final imdbEntry = _imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
 
     final episodesInfo = await imdbApi.titlesTitleIdEpisodesGet(titleId: imdbId);
     final seasons = episodesInfo.body?.episodes?.groupListsBy((g) => g.season);
@@ -327,22 +303,22 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<String> getLiveUrl(int streamId, {String? extension}) async {
-    final item = await db.advanced.collection('m3u_${provider.name}:$streamId').findOne();
-    final entry = M3uEntryMapper.fromMap(item!);
+    final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.live);
+    if (entry == null) throw Exception('Stream not found');
     return entry.url;
   }
 
   @override
   Future<String> getMovieUrl(int streamId, {String? extension}) async {
-    final item = await db.advanced.collection('m3u_${provider.name}:$streamId').findOne();
-    final entry = M3uEntryMapper.fromMap(item!);
+    final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.movies);
+    if (entry == null) throw Exception('Movie not found');
     return entry.url;
   }
 
   @override
   Future<String> getTvShowUrl(int episodeId, {String? extension}) async {
-    final item = await db.advanced.collection('m3u_${provider.name}:$episodeId').findOne();
-    final entry = M3uEntryMapper.fromMap(item!);
+    final entry = _entries.firstWhereOrNull((e) => e.id == episodeId && e.type == IptvType.tvshows);
+    if (entry == null) throw Exception('TV Show not found');
     return entry.url;
   }
 }

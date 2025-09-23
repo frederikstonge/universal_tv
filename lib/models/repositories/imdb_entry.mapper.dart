@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -25,35 +26,65 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
   static String? _$id(ImdbEntry v) => v.id;
   static const Field<ImdbEntry, String> _f$id = Field('id', _$id, opt: true);
   static String? _$type(ImdbEntry v) => v.type;
-  static const Field<ImdbEntry, String> _f$type =
-      Field('type', _$type, opt: true);
+  static const Field<ImdbEntry, String> _f$type = Field(
+    'type',
+    _$type,
+    opt: true,
+  );
   static String? _$primaryTitle(ImdbEntry v) => v.primaryTitle;
-  static const Field<ImdbEntry, String> _f$primaryTitle =
-      Field('primaryTitle', _$primaryTitle, opt: true);
+  static const Field<ImdbEntry, String> _f$primaryTitle = Field(
+    'primaryTitle',
+    _$primaryTitle,
+    opt: true,
+  );
   static String? _$originalTitle(ImdbEntry v) => v.originalTitle;
-  static const Field<ImdbEntry, String> _f$originalTitle =
-      Field('originalTitle', _$originalTitle, opt: true);
+  static const Field<ImdbEntry, String> _f$originalTitle = Field(
+    'originalTitle',
+    _$originalTitle,
+    opt: true,
+  );
   static ImdbImage? _$primaryImage(ImdbEntry v) => v.primaryImage;
-  static const Field<ImdbEntry, ImdbImage> _f$primaryImage =
-      Field('primaryImage', _$primaryImage, opt: true);
+  static const Field<ImdbEntry, ImdbImage> _f$primaryImage = Field(
+    'primaryImage',
+    _$primaryImage,
+    opt: true,
+  );
   static int? _$startYear(ImdbEntry v) => v.startYear;
-  static const Field<ImdbEntry, int> _f$startYear =
-      Field('startYear', _$startYear, opt: true);
+  static const Field<ImdbEntry, int> _f$startYear = Field(
+    'startYear',
+    _$startYear,
+    opt: true,
+  );
   static int? _$endYear(ImdbEntry v) => v.endYear;
-  static const Field<ImdbEntry, int> _f$endYear =
-      Field('endYear', _$endYear, opt: true);
+  static const Field<ImdbEntry, int> _f$endYear = Field(
+    'endYear',
+    _$endYear,
+    opt: true,
+  );
   static int? _$runtimeSeconds(ImdbEntry v) => v.runtimeSeconds;
-  static const Field<ImdbEntry, int> _f$runtimeSeconds =
-      Field('runtimeSeconds', _$runtimeSeconds, opt: true);
+  static const Field<ImdbEntry, int> _f$runtimeSeconds = Field(
+    'runtimeSeconds',
+    _$runtimeSeconds,
+    opt: true,
+  );
   static List<String>? _$genres(ImdbEntry v) => v.genres;
-  static const Field<ImdbEntry, List<String>> _f$genres =
-      Field('genres', _$genres, opt: true);
+  static const Field<ImdbEntry, List<String>> _f$genres = Field(
+    'genres',
+    _$genres,
+    opt: true,
+  );
   static ImdbRating? _$rating(ImdbEntry v) => v.rating;
-  static const Field<ImdbEntry, ImdbRating> _f$rating =
-      Field('rating', _$rating, opt: true);
+  static const Field<ImdbEntry, ImdbRating> _f$rating = Field(
+    'rating',
+    _$rating,
+    opt: true,
+  );
   static String? _$plot(ImdbEntry v) => v.plot;
-  static const Field<ImdbEntry, String> _f$plot =
-      Field('plot', _$plot, opt: true);
+  static const Field<ImdbEntry, String> _f$plot = Field(
+    'plot',
+    _$plot,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbEntry> fields = const {
@@ -72,17 +103,18 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
 
   static ImdbEntry _instantiate(DecodingData data) {
     return ImdbEntry(
-        id: data.dec(_f$id),
-        type: data.dec(_f$type),
-        primaryTitle: data.dec(_f$primaryTitle),
-        originalTitle: data.dec(_f$originalTitle),
-        primaryImage: data.dec(_f$primaryImage),
-        startYear: data.dec(_f$startYear),
-        endYear: data.dec(_f$endYear),
-        runtimeSeconds: data.dec(_f$runtimeSeconds),
-        genres: data.dec(_f$genres),
-        rating: data.dec(_f$rating),
-        plot: data.dec(_f$plot));
+      id: data.dec(_f$id),
+      type: data.dec(_f$type),
+      primaryTitle: data.dec(_f$primaryTitle),
+      originalTitle: data.dec(_f$originalTitle),
+      primaryImage: data.dec(_f$primaryImage),
+      startYear: data.dec(_f$startYear),
+      endYear: data.dec(_f$endYear),
+      runtimeSeconds: data.dec(_f$runtimeSeconds),
+      genres: data.dec(_f$genres),
+      rating: data.dec(_f$rating),
+      plot: data.dec(_f$plot),
+    );
   }
 
   @override
@@ -99,28 +131,36 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
 
 mixin ImdbEntryMappable {
   String toJson() {
-    return ImdbEntryMapper.ensureInitialized()
-        .encodeJson<ImdbEntry>(this as ImdbEntry);
+    return ImdbEntryMapper.ensureInitialized().encodeJson<ImdbEntry>(
+      this as ImdbEntry,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImdbEntryMapper.ensureInitialized()
-        .encodeMap<ImdbEntry>(this as ImdbEntry);
+    return ImdbEntryMapper.ensureInitialized().encodeMap<ImdbEntry>(
+      this as ImdbEntry,
+    );
   }
 
   ImdbEntryCopyWith<ImdbEntry, ImdbEntry, ImdbEntry> get copyWith =>
       _ImdbEntryCopyWithImpl<ImdbEntry, ImdbEntry>(
-          this as ImdbEntry, $identity, $identity);
+        this as ImdbEntry,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ImdbEntryMapper.ensureInitialized()
-        .stringifyValue(this as ImdbEntry);
+    return ImdbEntryMapper.ensureInitialized().stringifyValue(
+      this as ImdbEntry,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImdbEntryMapper.ensureInitialized()
-        .equalsValue(this as ImdbEntry, other);
+    return ImdbEntryMapper.ensureInitialized().equalsValue(
+      this as ImdbEntry,
+      other,
+    );
   }
 
   @override
@@ -139,18 +179,19 @@ abstract class ImdbEntryCopyWith<$R, $In extends ImdbEntry, $Out>
   ImdbImageCopyWith<$R, ImdbImage, ImdbImage>? get primaryImage;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get genres;
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating;
-  $R call(
-      {String? id,
-      String? type,
-      String? primaryTitle,
-      String? originalTitle,
-      ImdbImage? primaryImage,
-      int? startYear,
-      int? endYear,
-      int? runtimeSeconds,
-      List<String>? genres,
-      ImdbRating? rating,
-      String? plot});
+  $R call({
+    String? id,
+    String? type,
+    String? primaryTitle,
+    String? originalTitle,
+    ImdbImage? primaryImage,
+    int? startYear,
+    int? endYear,
+    int? runtimeSeconds,
+    List<String>? genres,
+    ImdbRating? rating,
+    String? plot,
+  });
   ImdbEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -168,56 +209,62 @@ class _ImdbEntryCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get genres =>
       $value.genres != null
-          ? ListCopyWith($value.genres!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(genres: v))
-          : null;
+      ? ListCopyWith(
+          $value.genres!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(genres: v),
+        )
+      : null;
   @override
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating =>
       $value.rating?.copyWith.$chain((v) => call(rating: v));
   @override
-  $R call(
-          {Object? id = $none,
-          Object? type = $none,
-          Object? primaryTitle = $none,
-          Object? originalTitle = $none,
-          Object? primaryImage = $none,
-          Object? startYear = $none,
-          Object? endYear = $none,
-          Object? runtimeSeconds = $none,
-          Object? genres = $none,
-          Object? rating = $none,
-          Object? plot = $none}) =>
-      $apply(FieldCopyWithData({
-        if (id != $none) #id: id,
-        if (type != $none) #type: type,
-        if (primaryTitle != $none) #primaryTitle: primaryTitle,
-        if (originalTitle != $none) #originalTitle: originalTitle,
-        if (primaryImage != $none) #primaryImage: primaryImage,
-        if (startYear != $none) #startYear: startYear,
-        if (endYear != $none) #endYear: endYear,
-        if (runtimeSeconds != $none) #runtimeSeconds: runtimeSeconds,
-        if (genres != $none) #genres: genres,
-        if (rating != $none) #rating: rating,
-        if (plot != $none) #plot: plot
-      }));
+  $R call({
+    Object? id = $none,
+    Object? type = $none,
+    Object? primaryTitle = $none,
+    Object? originalTitle = $none,
+    Object? primaryImage = $none,
+    Object? startYear = $none,
+    Object? endYear = $none,
+    Object? runtimeSeconds = $none,
+    Object? genres = $none,
+    Object? rating = $none,
+    Object? plot = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != $none) #id: id,
+      if (type != $none) #type: type,
+      if (primaryTitle != $none) #primaryTitle: primaryTitle,
+      if (originalTitle != $none) #originalTitle: originalTitle,
+      if (primaryImage != $none) #primaryImage: primaryImage,
+      if (startYear != $none) #startYear: startYear,
+      if (endYear != $none) #endYear: endYear,
+      if (runtimeSeconds != $none) #runtimeSeconds: runtimeSeconds,
+      if (genres != $none) #genres: genres,
+      if (rating != $none) #rating: rating,
+      if (plot != $none) #plot: plot,
+    }),
+  );
   @override
   ImdbEntry $make(CopyWithData data) => ImdbEntry(
-      id: data.get(#id, or: $value.id),
-      type: data.get(#type, or: $value.type),
-      primaryTitle: data.get(#primaryTitle, or: $value.primaryTitle),
-      originalTitle: data.get(#originalTitle, or: $value.originalTitle),
-      primaryImage: data.get(#primaryImage, or: $value.primaryImage),
-      startYear: data.get(#startYear, or: $value.startYear),
-      endYear: data.get(#endYear, or: $value.endYear),
-      runtimeSeconds: data.get(#runtimeSeconds, or: $value.runtimeSeconds),
-      genres: data.get(#genres, or: $value.genres),
-      rating: data.get(#rating, or: $value.rating),
-      plot: data.get(#plot, or: $value.plot));
+    id: data.get(#id, or: $value.id),
+    type: data.get(#type, or: $value.type),
+    primaryTitle: data.get(#primaryTitle, or: $value.primaryTitle),
+    originalTitle: data.get(#originalTitle, or: $value.originalTitle),
+    primaryImage: data.get(#primaryImage, or: $value.primaryImage),
+    startYear: data.get(#startYear, or: $value.startYear),
+    endYear: data.get(#endYear, or: $value.endYear),
+    runtimeSeconds: data.get(#runtimeSeconds, or: $value.runtimeSeconds),
+    genres: data.get(#genres, or: $value.genres),
+    rating: data.get(#rating, or: $value.rating),
+    plot: data.get(#plot, or: $value.plot),
+  );
 
   @override
   ImdbEntryCopyWith<$R2, ImdbEntry, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImdbEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImdbEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImdbImageMapper extends ClassMapperBase<ImdbImage> {
@@ -237,14 +284,23 @@ class ImdbImageMapper extends ClassMapperBase<ImdbImage> {
   static String? _$url(ImdbImage v) => v.url;
   static const Field<ImdbImage, String> _f$url = Field('url', _$url, opt: true);
   static int? _$width(ImdbImage v) => v.width;
-  static const Field<ImdbImage, int> _f$width =
-      Field('width', _$width, opt: true);
+  static const Field<ImdbImage, int> _f$width = Field(
+    'width',
+    _$width,
+    opt: true,
+  );
   static int? _$height(ImdbImage v) => v.height;
-  static const Field<ImdbImage, int> _f$height =
-      Field('height', _$height, opt: true);
+  static const Field<ImdbImage, int> _f$height = Field(
+    'height',
+    _$height,
+    opt: true,
+  );
   static String? _$type(ImdbImage v) => v.type;
-  static const Field<ImdbImage, String> _f$type =
-      Field('type', _$type, opt: true);
+  static const Field<ImdbImage, String> _f$type = Field(
+    'type',
+    _$type,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbImage> fields = const {
@@ -256,10 +312,11 @@ class ImdbImageMapper extends ClassMapperBase<ImdbImage> {
 
   static ImdbImage _instantiate(DecodingData data) {
     return ImdbImage(
-        url: data.dec(_f$url),
-        width: data.dec(_f$width),
-        height: data.dec(_f$height),
-        type: data.dec(_f$type));
+      url: data.dec(_f$url),
+      width: data.dec(_f$width),
+      height: data.dec(_f$height),
+      type: data.dec(_f$type),
+    );
   }
 
   @override
@@ -276,28 +333,36 @@ class ImdbImageMapper extends ClassMapperBase<ImdbImage> {
 
 mixin ImdbImageMappable {
   String toJson() {
-    return ImdbImageMapper.ensureInitialized()
-        .encodeJson<ImdbImage>(this as ImdbImage);
+    return ImdbImageMapper.ensureInitialized().encodeJson<ImdbImage>(
+      this as ImdbImage,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImdbImageMapper.ensureInitialized()
-        .encodeMap<ImdbImage>(this as ImdbImage);
+    return ImdbImageMapper.ensureInitialized().encodeMap<ImdbImage>(
+      this as ImdbImage,
+    );
   }
 
   ImdbImageCopyWith<ImdbImage, ImdbImage, ImdbImage> get copyWith =>
       _ImdbImageCopyWithImpl<ImdbImage, ImdbImage>(
-          this as ImdbImage, $identity, $identity);
+        this as ImdbImage,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ImdbImageMapper.ensureInitialized()
-        .stringifyValue(this as ImdbImage);
+    return ImdbImageMapper.ensureInitialized().stringifyValue(
+      this as ImdbImage,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImdbImageMapper.ensureInitialized()
-        .equalsValue(this as ImdbImage, other);
+    return ImdbImageMapper.ensureInitialized().equalsValue(
+      this as ImdbImage,
+      other,
+    );
   }
 
   @override
@@ -326,28 +391,31 @@ class _ImdbImageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ImdbImage> $mapper =
       ImdbImageMapper.ensureInitialized();
   @override
-  $R call(
-          {Object? url = $none,
-          Object? width = $none,
-          Object? height = $none,
-          Object? type = $none}) =>
-      $apply(FieldCopyWithData({
-        if (url != $none) #url: url,
-        if (width != $none) #width: width,
-        if (height != $none) #height: height,
-        if (type != $none) #type: type
-      }));
+  $R call({
+    Object? url = $none,
+    Object? width = $none,
+    Object? height = $none,
+    Object? type = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (url != $none) #url: url,
+      if (width != $none) #width: width,
+      if (height != $none) #height: height,
+      if (type != $none) #type: type,
+    }),
+  );
   @override
   ImdbImage $make(CopyWithData data) => ImdbImage(
-      url: data.get(#url, or: $value.url),
-      width: data.get(#width, or: $value.width),
-      height: data.get(#height, or: $value.height),
-      type: data.get(#type, or: $value.type));
+    url: data.get(#url, or: $value.url),
+    width: data.get(#width, or: $value.width),
+    height: data.get(#height, or: $value.height),
+    type: data.get(#type, or: $value.type),
+  );
 
   @override
   ImdbImageCopyWith<$R2, ImdbImage, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImdbImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImdbImageCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImdbRatingMapper extends ClassMapperBase<ImdbRating> {
@@ -365,11 +433,17 @@ class ImdbRatingMapper extends ClassMapperBase<ImdbRating> {
   final String id = 'ImdbRating';
 
   static double? _$aggregateRating(ImdbRating v) => v.aggregateRating;
-  static const Field<ImdbRating, double> _f$aggregateRating =
-      Field('aggregateRating', _$aggregateRating, opt: true);
+  static const Field<ImdbRating, double> _f$aggregateRating = Field(
+    'aggregateRating',
+    _$aggregateRating,
+    opt: true,
+  );
   static int? _$voteCount(ImdbRating v) => v.voteCount;
-  static const Field<ImdbRating, int> _f$voteCount =
-      Field('voteCount', _$voteCount, opt: true);
+  static const Field<ImdbRating, int> _f$voteCount = Field(
+    'voteCount',
+    _$voteCount,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbRating> fields = const {
@@ -379,8 +453,9 @@ class ImdbRatingMapper extends ClassMapperBase<ImdbRating> {
 
   static ImdbRating _instantiate(DecodingData data) {
     return ImdbRating(
-        aggregateRating: data.dec(_f$aggregateRating),
-        voteCount: data.dec(_f$voteCount));
+      aggregateRating: data.dec(_f$aggregateRating),
+      voteCount: data.dec(_f$voteCount),
+    );
   }
 
   @override
@@ -397,28 +472,36 @@ class ImdbRatingMapper extends ClassMapperBase<ImdbRating> {
 
 mixin ImdbRatingMappable {
   String toJson() {
-    return ImdbRatingMapper.ensureInitialized()
-        .encodeJson<ImdbRating>(this as ImdbRating);
+    return ImdbRatingMapper.ensureInitialized().encodeJson<ImdbRating>(
+      this as ImdbRating,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImdbRatingMapper.ensureInitialized()
-        .encodeMap<ImdbRating>(this as ImdbRating);
+    return ImdbRatingMapper.ensureInitialized().encodeMap<ImdbRating>(
+      this as ImdbRating,
+    );
   }
 
   ImdbRatingCopyWith<ImdbRating, ImdbRating, ImdbRating> get copyWith =>
       _ImdbRatingCopyWithImpl<ImdbRating, ImdbRating>(
-          this as ImdbRating, $identity, $identity);
+        this as ImdbRating,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ImdbRatingMapper.ensureInitialized()
-        .stringifyValue(this as ImdbRating);
+    return ImdbRatingMapper.ensureInitialized().stringifyValue(
+      this as ImdbRating,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImdbRatingMapper.ensureInitialized()
-        .equalsValue(this as ImdbRating, other);
+    return ImdbRatingMapper.ensureInitialized().equalsValue(
+      this as ImdbRating,
+      other,
+    );
   }
 
   @override
@@ -449,19 +532,22 @@ class _ImdbRatingCopyWithImpl<$R, $Out>
       ImdbRatingMapper.ensureInitialized();
   @override
   $R call({Object? aggregateRating = $none, Object? voteCount = $none}) =>
-      $apply(FieldCopyWithData({
-        if (aggregateRating != $none) #aggregateRating: aggregateRating,
-        if (voteCount != $none) #voteCount: voteCount
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (aggregateRating != $none) #aggregateRating: aggregateRating,
+          if (voteCount != $none) #voteCount: voteCount,
+        }),
+      );
   @override
   ImdbRating $make(CopyWithData data) => ImdbRating(
-      aggregateRating: data.get(#aggregateRating, or: $value.aggregateRating),
-      voteCount: data.get(#voteCount, or: $value.voteCount));
+    aggregateRating: data.get(#aggregateRating, or: $value.aggregateRating),
+    voteCount: data.get(#voteCount, or: $value.voteCount),
+  );
 
   @override
   ImdbRatingCopyWith<$R2, ImdbRating, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImdbRatingCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImdbRatingCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImdbEpisodesEntryMapper extends ClassMapperBase<ImdbEpisodesEntry> {
@@ -480,11 +566,17 @@ class ImdbEpisodesEntryMapper extends ClassMapperBase<ImdbEpisodesEntry> {
   final String id = 'ImdbEpisodesEntry';
 
   static List<ImdbEpisode>? _$episodes(ImdbEpisodesEntry v) => v.episodes;
-  static const Field<ImdbEpisodesEntry, List<ImdbEpisode>> _f$episodes =
-      Field('episodes', _$episodes, opt: true);
+  static const Field<ImdbEpisodesEntry, List<ImdbEpisode>> _f$episodes = Field(
+    'episodes',
+    _$episodes,
+    opt: true,
+  );
   static int? _$totalCount(ImdbEpisodesEntry v) => v.totalCount;
-  static const Field<ImdbEpisodesEntry, int> _f$totalCount =
-      Field('totalCount', _$totalCount, opt: true);
+  static const Field<ImdbEpisodesEntry, int> _f$totalCount = Field(
+    'totalCount',
+    _$totalCount,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbEpisodesEntry> fields = const {
@@ -494,7 +586,9 @@ class ImdbEpisodesEntryMapper extends ClassMapperBase<ImdbEpisodesEntry> {
 
   static ImdbEpisodesEntry _instantiate(DecodingData data) {
     return ImdbEpisodesEntry(
-        episodes: data.dec(_f$episodes), totalCount: data.dec(_f$totalCount));
+      episodes: data.dec(_f$episodes),
+      totalCount: data.dec(_f$totalCount),
+    );
   }
 
   @override
@@ -520,44 +614,64 @@ mixin ImdbEpisodesEntryMappable {
         .encodeMap<ImdbEpisodesEntry>(this as ImdbEpisodesEntry);
   }
 
-  ImdbEpisodesEntryCopyWith<ImdbEpisodesEntry, ImdbEpisodesEntry,
-          ImdbEpisodesEntry>
-      get copyWith =>
-          _ImdbEpisodesEntryCopyWithImpl<ImdbEpisodesEntry, ImdbEpisodesEntry>(
-              this as ImdbEpisodesEntry, $identity, $identity);
+  ImdbEpisodesEntryCopyWith<
+    ImdbEpisodesEntry,
+    ImdbEpisodesEntry,
+    ImdbEpisodesEntry
+  >
+  get copyWith =>
+      _ImdbEpisodesEntryCopyWithImpl<ImdbEpisodesEntry, ImdbEpisodesEntry>(
+        this as ImdbEpisodesEntry,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ImdbEpisodesEntryMapper.ensureInitialized()
-        .stringifyValue(this as ImdbEpisodesEntry);
+    return ImdbEpisodesEntryMapper.ensureInitialized().stringifyValue(
+      this as ImdbEpisodesEntry,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImdbEpisodesEntryMapper.ensureInitialized()
-        .equalsValue(this as ImdbEpisodesEntry, other);
+    return ImdbEpisodesEntryMapper.ensureInitialized().equalsValue(
+      this as ImdbEpisodesEntry,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return ImdbEpisodesEntryMapper.ensureInitialized()
-        .hashValue(this as ImdbEpisodesEntry);
+    return ImdbEpisodesEntryMapper.ensureInitialized().hashValue(
+      this as ImdbEpisodesEntry,
+    );
   }
 }
 
 extension ImdbEpisodesEntryValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ImdbEpisodesEntry, $Out> {
   ImdbEpisodesEntryCopyWith<$R, ImdbEpisodesEntry, $Out>
-      get $asImdbEpisodesEntry => $base
-          .as((v, t, t2) => _ImdbEpisodesEntryCopyWithImpl<$R, $Out>(v, t, t2));
+  get $asImdbEpisodesEntry => $base.as(
+    (v, t, t2) => _ImdbEpisodesEntryCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class ImdbEpisodesEntryCopyWith<$R, $In extends ImdbEpisodesEntry,
-    $Out> implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, ImdbEpisode,
-      ImdbEpisodeCopyWith<$R, ImdbEpisode, ImdbEpisode>>? get episodes;
+abstract class ImdbEpisodesEntryCopyWith<
+  $R,
+  $In extends ImdbEpisodesEntry,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<
+    $R,
+    ImdbEpisode,
+    ImdbEpisodeCopyWith<$R, ImdbEpisode, ImdbEpisode>
+  >?
+  get episodes;
   $R call({List<ImdbEpisode>? episodes, int? totalCount});
   ImdbEpisodesEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
-      Then<$Out2, $R2> t);
+    Then<$Out2, $R2> t,
+  );
 }
 
 class _ImdbEpisodesEntryCopyWithImpl<$R, $Out>
@@ -569,27 +683,35 @@ class _ImdbEpisodesEntryCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ImdbEpisodesEntry> $mapper =
       ImdbEpisodesEntryMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, ImdbEpisode,
-          ImdbEpisodeCopyWith<$R, ImdbEpisode, ImdbEpisode>>?
-      get episodes => $value.episodes != null
-          ? ListCopyWith($value.episodes!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(episodes: v))
-          : null;
+  ListCopyWith<
+    $R,
+    ImdbEpisode,
+    ImdbEpisodeCopyWith<$R, ImdbEpisode, ImdbEpisode>
+  >?
+  get episodes => $value.episodes != null
+      ? ListCopyWith(
+          $value.episodes!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(episodes: v),
+        )
+      : null;
   @override
-  $R call({Object? episodes = $none, Object? totalCount = $none}) =>
-      $apply(FieldCopyWithData({
-        if (episodes != $none) #episodes: episodes,
-        if (totalCount != $none) #totalCount: totalCount
-      }));
+  $R call({Object? episodes = $none, Object? totalCount = $none}) => $apply(
+    FieldCopyWithData({
+      if (episodes != $none) #episodes: episodes,
+      if (totalCount != $none) #totalCount: totalCount,
+    }),
+  );
   @override
   ImdbEpisodesEntry $make(CopyWithData data) => ImdbEpisodesEntry(
-      episodes: data.get(#episodes, or: $value.episodes),
-      totalCount: data.get(#totalCount, or: $value.totalCount));
+    episodes: data.get(#episodes, or: $value.episodes),
+    totalCount: data.get(#totalCount, or: $value.totalCount),
+  );
 
   @override
   ImdbEpisodesEntryCopyWith<$R2, ImdbEpisodesEntry, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImdbEpisodesEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImdbEpisodesEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class ImdbEpisodeMapper extends ClassMapperBase<ImdbEpisode> {
@@ -611,26 +733,47 @@ class ImdbEpisodeMapper extends ClassMapperBase<ImdbEpisode> {
   static String? _$id(ImdbEpisode v) => v.id;
   static const Field<ImdbEpisode, String> _f$id = Field('id', _$id, opt: true);
   static String? _$title(ImdbEpisode v) => v.title;
-  static const Field<ImdbEpisode, String> _f$title =
-      Field('title', _$title, opt: true);
+  static const Field<ImdbEpisode, String> _f$title = Field(
+    'title',
+    _$title,
+    opt: true,
+  );
   static ImdbImage? _$primaryImage(ImdbEpisode v) => v.primaryImage;
-  static const Field<ImdbEpisode, ImdbImage> _f$primaryImage =
-      Field('primaryImage', _$primaryImage, opt: true);
+  static const Field<ImdbEpisode, ImdbImage> _f$primaryImage = Field(
+    'primaryImage',
+    _$primaryImage,
+    opt: true,
+  );
   static String? _$season(ImdbEpisode v) => v.season;
-  static const Field<ImdbEpisode, String> _f$season =
-      Field('season', _$season, opt: true);
+  static const Field<ImdbEpisode, String> _f$season = Field(
+    'season',
+    _$season,
+    opt: true,
+  );
   static int? _$episodeNumber(ImdbEpisode v) => v.episodeNumber;
-  static const Field<ImdbEpisode, int> _f$episodeNumber =
-      Field('episodeNumber', _$episodeNumber, opt: true);
+  static const Field<ImdbEpisode, int> _f$episodeNumber = Field(
+    'episodeNumber',
+    _$episodeNumber,
+    opt: true,
+  );
   static int? _$runtimeSeconds(ImdbEpisode v) => v.runtimeSeconds;
-  static const Field<ImdbEpisode, int> _f$runtimeSeconds =
-      Field('runtimeSeconds', _$runtimeSeconds, opt: true);
+  static const Field<ImdbEpisode, int> _f$runtimeSeconds = Field(
+    'runtimeSeconds',
+    _$runtimeSeconds,
+    opt: true,
+  );
   static String? _$plot(ImdbEpisode v) => v.plot;
-  static const Field<ImdbEpisode, String> _f$plot =
-      Field('plot', _$plot, opt: true);
+  static const Field<ImdbEpisode, String> _f$plot = Field(
+    'plot',
+    _$plot,
+    opt: true,
+  );
   static ImdbRating? _$rating(ImdbEpisode v) => v.rating;
-  static const Field<ImdbEpisode, ImdbRating> _f$rating =
-      Field('rating', _$rating, opt: true);
+  static const Field<ImdbEpisode, ImdbRating> _f$rating = Field(
+    'rating',
+    _$rating,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbEpisode> fields = const {
@@ -646,14 +789,15 @@ class ImdbEpisodeMapper extends ClassMapperBase<ImdbEpisode> {
 
   static ImdbEpisode _instantiate(DecodingData data) {
     return ImdbEpisode(
-        id: data.dec(_f$id),
-        title: data.dec(_f$title),
-        primaryImage: data.dec(_f$primaryImage),
-        season: data.dec(_f$season),
-        episodeNumber: data.dec(_f$episodeNumber),
-        runtimeSeconds: data.dec(_f$runtimeSeconds),
-        plot: data.dec(_f$plot),
-        rating: data.dec(_f$rating));
+      id: data.dec(_f$id),
+      title: data.dec(_f$title),
+      primaryImage: data.dec(_f$primaryImage),
+      season: data.dec(_f$season),
+      episodeNumber: data.dec(_f$episodeNumber),
+      runtimeSeconds: data.dec(_f$runtimeSeconds),
+      plot: data.dec(_f$plot),
+      rating: data.dec(_f$rating),
+    );
   }
 
   @override
@@ -670,28 +814,36 @@ class ImdbEpisodeMapper extends ClassMapperBase<ImdbEpisode> {
 
 mixin ImdbEpisodeMappable {
   String toJson() {
-    return ImdbEpisodeMapper.ensureInitialized()
-        .encodeJson<ImdbEpisode>(this as ImdbEpisode);
+    return ImdbEpisodeMapper.ensureInitialized().encodeJson<ImdbEpisode>(
+      this as ImdbEpisode,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return ImdbEpisodeMapper.ensureInitialized()
-        .encodeMap<ImdbEpisode>(this as ImdbEpisode);
+    return ImdbEpisodeMapper.ensureInitialized().encodeMap<ImdbEpisode>(
+      this as ImdbEpisode,
+    );
   }
 
   ImdbEpisodeCopyWith<ImdbEpisode, ImdbEpisode, ImdbEpisode> get copyWith =>
       _ImdbEpisodeCopyWithImpl<ImdbEpisode, ImdbEpisode>(
-          this as ImdbEpisode, $identity, $identity);
+        this as ImdbEpisode,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return ImdbEpisodeMapper.ensureInitialized()
-        .stringifyValue(this as ImdbEpisode);
+    return ImdbEpisodeMapper.ensureInitialized().stringifyValue(
+      this as ImdbEpisode,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return ImdbEpisodeMapper.ensureInitialized()
-        .equalsValue(this as ImdbEpisode, other);
+    return ImdbEpisodeMapper.ensureInitialized().equalsValue(
+      this as ImdbEpisode,
+      other,
+    );
   }
 
   @override
@@ -710,15 +862,16 @@ abstract class ImdbEpisodeCopyWith<$R, $In extends ImdbEpisode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ImdbImageCopyWith<$R, ImdbImage, ImdbImage>? get primaryImage;
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating;
-  $R call(
-      {String? id,
-      String? title,
-      ImdbImage? primaryImage,
-      String? season,
-      int? episodeNumber,
-      int? runtimeSeconds,
-      String? plot,
-      ImdbRating? rating});
+  $R call({
+    String? id,
+    String? title,
+    ImdbImage? primaryImage,
+    String? season,
+    int? episodeNumber,
+    int? runtimeSeconds,
+    String? plot,
+    ImdbRating? rating,
+  });
   ImdbEpisodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -737,38 +890,42 @@ class _ImdbEpisodeCopyWithImpl<$R, $Out>
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating =>
       $value.rating?.copyWith.$chain((v) => call(rating: v));
   @override
-  $R call(
-          {Object? id = $none,
-          Object? title = $none,
-          Object? primaryImage = $none,
-          Object? season = $none,
-          Object? episodeNumber = $none,
-          Object? runtimeSeconds = $none,
-          Object? plot = $none,
-          Object? rating = $none}) =>
-      $apply(FieldCopyWithData({
-        if (id != $none) #id: id,
-        if (title != $none) #title: title,
-        if (primaryImage != $none) #primaryImage: primaryImage,
-        if (season != $none) #season: season,
-        if (episodeNumber != $none) #episodeNumber: episodeNumber,
-        if (runtimeSeconds != $none) #runtimeSeconds: runtimeSeconds,
-        if (plot != $none) #plot: plot,
-        if (rating != $none) #rating: rating
-      }));
+  $R call({
+    Object? id = $none,
+    Object? title = $none,
+    Object? primaryImage = $none,
+    Object? season = $none,
+    Object? episodeNumber = $none,
+    Object? runtimeSeconds = $none,
+    Object? plot = $none,
+    Object? rating = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != $none) #id: id,
+      if (title != $none) #title: title,
+      if (primaryImage != $none) #primaryImage: primaryImage,
+      if (season != $none) #season: season,
+      if (episodeNumber != $none) #episodeNumber: episodeNumber,
+      if (runtimeSeconds != $none) #runtimeSeconds: runtimeSeconds,
+      if (plot != $none) #plot: plot,
+      if (rating != $none) #rating: rating,
+    }),
+  );
   @override
   ImdbEpisode $make(CopyWithData data) => ImdbEpisode(
-      id: data.get(#id, or: $value.id),
-      title: data.get(#title, or: $value.title),
-      primaryImage: data.get(#primaryImage, or: $value.primaryImage),
-      season: data.get(#season, or: $value.season),
-      episodeNumber: data.get(#episodeNumber, or: $value.episodeNumber),
-      runtimeSeconds: data.get(#runtimeSeconds, or: $value.runtimeSeconds),
-      plot: data.get(#plot, or: $value.plot),
-      rating: data.get(#rating, or: $value.rating));
+    id: data.get(#id, or: $value.id),
+    title: data.get(#title, or: $value.title),
+    primaryImage: data.get(#primaryImage, or: $value.primaryImage),
+    season: data.get(#season, or: $value.season),
+    episodeNumber: data.get(#episodeNumber, or: $value.episodeNumber),
+    runtimeSeconds: data.get(#runtimeSeconds, or: $value.runtimeSeconds),
+    plot: data.get(#plot, or: $value.plot),
+    rating: data.get(#rating, or: $value.rating),
+  );
 
   @override
   ImdbEpisodeCopyWith<$R2, ImdbEpisode, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _ImdbEpisodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _ImdbEpisodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

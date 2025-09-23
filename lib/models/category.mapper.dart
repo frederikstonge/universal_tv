@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -28,8 +29,10 @@ class CategoryMapper extends ClassMapperBase<Category> {
   static IptvType _$type(Category v) => v.type;
   static const Field<Category, IptvType> _f$type = Field('type', _$type);
   static String _$providerName(Category v) => v.providerName;
-  static const Field<Category, String> _f$providerName =
-      Field('providerName', _$providerName);
+  static const Field<Category, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
 
   @override
   final MappableFields<Category> fields = const {
@@ -41,10 +44,11 @@ class CategoryMapper extends ClassMapperBase<Category> {
 
   static Category _instantiate(DecodingData data) {
     return Category(
-        id: data.dec(_f$id),
-        name: data.dec(_f$name),
-        type: data.dec(_f$type),
-        providerName: data.dec(_f$providerName));
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      type: data.dec(_f$type),
+      providerName: data.dec(_f$providerName),
+    );
   }
 
   @override
@@ -61,18 +65,23 @@ class CategoryMapper extends ClassMapperBase<Category> {
 
 mixin CategoryMappable {
   String toJson() {
-    return CategoryMapper.ensureInitialized()
-        .encodeJson<Category>(this as Category);
+    return CategoryMapper.ensureInitialized().encodeJson<Category>(
+      this as Category,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return CategoryMapper.ensureInitialized()
-        .encodeMap<Category>(this as Category);
+    return CategoryMapper.ensureInitialized().encodeMap<Category>(
+      this as Category,
+    );
   }
 
   CategoryCopyWith<Category, Category, Category> get copyWith =>
       _CategoryCopyWithImpl<Category, Category>(
-          this as Category, $identity, $identity);
+        this as Category,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return CategoryMapper.ensureInitialized().stringifyValue(this as Category);
@@ -80,8 +89,10 @@ mixin CategoryMappable {
 
   @override
   bool operator ==(Object other) {
-    return CategoryMapper.ensureInitialized()
-        .equalsValue(this as Category, other);
+    return CategoryMapper.ensureInitialized().equalsValue(
+      this as Category,
+      other,
+    );
   }
 
   @override
@@ -111,21 +122,25 @@ class _CategoryCopyWithImpl<$R, $Out>
       CategoryMapper.ensureInitialized();
   @override
   $R call({String? id, String? name, IptvType? type, String? providerName}) =>
-      $apply(FieldCopyWithData({
-        if (id != null) #id: id,
-        if (name != null) #name: name,
-        if (type != null) #type: type,
-        if (providerName != null) #providerName: providerName
-      }));
+      $apply(
+        FieldCopyWithData({
+          if (id != null) #id: id,
+          if (name != null) #name: name,
+          if (type != null) #type: type,
+          if (providerName != null) #providerName: providerName,
+        }),
+      );
   @override
   Category $make(CopyWithData data) => Category(
-      id: data.get(#id, or: $value.id),
-      name: data.get(#name, or: $value.name),
-      type: data.get(#type, or: $value.type),
-      providerName: data.get(#providerName, or: $value.providerName));
+    id: data.get(#id, or: $value.id),
+    name: data.get(#name, or: $value.name),
+    type: data.get(#type, or: $value.type),
+    providerName: data.get(#providerName, or: $value.providerName),
+  );
 
   @override
   CategoryCopyWith<$R2, Category, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _CategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _CategoryCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+

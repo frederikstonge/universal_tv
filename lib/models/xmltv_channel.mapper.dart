@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
@@ -24,17 +25,27 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
   static String _$id(XmltvChannel v) => v.id;
   static const Field<XmltvChannel, String> _f$id = Field('id', _$id);
   static String? _$displayName(XmltvChannel v) => v.displayName;
-  static const Field<XmltvChannel, String> _f$displayName =
-      Field('displayName', _$displayName, opt: true);
+  static const Field<XmltvChannel, String> _f$displayName = Field(
+    'displayName',
+    _$displayName,
+    opt: true,
+  );
   static String? _$iconUrl(XmltvChannel v) => v.iconUrl;
-  static const Field<XmltvChannel, String> _f$iconUrl =
-      Field('iconUrl', _$iconUrl, opt: true);
+  static const Field<XmltvChannel, String> _f$iconUrl = Field(
+    'iconUrl',
+    _$iconUrl,
+    opt: true,
+  );
   static String _$providerName(XmltvChannel v) => v.providerName;
-  static const Field<XmltvChannel, String> _f$providerName =
-      Field('providerName', _$providerName);
+  static const Field<XmltvChannel, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static DateTime _$expiration(XmltvChannel v) => v.expiration;
-  static const Field<XmltvChannel, DateTime> _f$expiration =
-      Field('expiration', _$expiration);
+  static const Field<XmltvChannel, DateTime> _f$expiration = Field(
+    'expiration',
+    _$expiration,
+  );
 
   @override
   final MappableFields<XmltvChannel> fields = const {
@@ -54,11 +65,12 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
 
   static XmltvChannel _instantiate(DecodingData data) {
     return XmltvChannel(
-        id: data.dec(_f$id),
-        displayName: data.dec(_f$displayName),
-        iconUrl: data.dec(_f$iconUrl),
-        providerName: data.dec(_f$providerName),
-        expiration: data.dec(_f$expiration));
+      id: data.dec(_f$id),
+      displayName: data.dec(_f$displayName),
+      iconUrl: data.dec(_f$iconUrl),
+      providerName: data.dec(_f$providerName),
+      expiration: data.dec(_f$expiration),
+    );
   }
 
   @override
@@ -75,34 +87,43 @@ class XmltvChannelMapper extends SubClassMapperBase<XmltvChannel> {
 
 mixin XmltvChannelMappable {
   String toJson() {
-    return XmltvChannelMapper.ensureInitialized()
-        .encodeJson<XmltvChannel>(this as XmltvChannel);
+    return XmltvChannelMapper.ensureInitialized().encodeJson<XmltvChannel>(
+      this as XmltvChannel,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return XmltvChannelMapper.ensureInitialized()
-        .encodeMap<XmltvChannel>(this as XmltvChannel);
+    return XmltvChannelMapper.ensureInitialized().encodeMap<XmltvChannel>(
+      this as XmltvChannel,
+    );
   }
 
   XmltvChannelCopyWith<XmltvChannel, XmltvChannel, XmltvChannel> get copyWith =>
       _XmltvChannelCopyWithImpl<XmltvChannel, XmltvChannel>(
-          this as XmltvChannel, $identity, $identity);
+        this as XmltvChannel,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
-    return XmltvChannelMapper.ensureInitialized()
-        .stringifyValue(this as XmltvChannel);
+    return XmltvChannelMapper.ensureInitialized().stringifyValue(
+      this as XmltvChannel,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return XmltvChannelMapper.ensureInitialized()
-        .equalsValue(this as XmltvChannel, other);
+    return XmltvChannelMapper.ensureInitialized().equalsValue(
+      this as XmltvChannel,
+      other,
+    );
   }
 
   @override
   int get hashCode {
-    return XmltvChannelMapper.ensureInitialized()
-        .hashValue(this as XmltvChannel);
+    return XmltvChannelMapper.ensureInitialized().hashValue(
+      this as XmltvChannel,
+    );
   }
 }
 
@@ -115,12 +136,13 @@ extension XmltvChannelValueCopy<$R, $Out>
 abstract class XmltvChannelCopyWith<$R, $In extends XmltvChannel, $Out>
     implements XmltvBaseCopyWith<$R, $In, $Out> {
   @override
-  $R call(
-      {String? id,
-      String? displayName,
-      String? iconUrl,
-      String? providerName,
-      DateTime? expiration});
+  $R call({
+    String? id,
+    String? displayName,
+    String? iconUrl,
+    String? providerName,
+    DateTime? expiration,
+  });
   XmltvChannelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -133,29 +155,33 @@ class _XmltvChannelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<XmltvChannel> $mapper =
       XmltvChannelMapper.ensureInitialized();
   @override
-  $R call(
-          {String? id,
-          Object? displayName = $none,
-          Object? iconUrl = $none,
-          String? providerName,
-          DateTime? expiration}) =>
-      $apply(FieldCopyWithData({
-        if (id != null) #id: id,
-        if (displayName != $none) #displayName: displayName,
-        if (iconUrl != $none) #iconUrl: iconUrl,
-        if (providerName != null) #providerName: providerName,
-        if (expiration != null) #expiration: expiration
-      }));
+  $R call({
+    String? id,
+    Object? displayName = $none,
+    Object? iconUrl = $none,
+    String? providerName,
+    DateTime? expiration,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (displayName != $none) #displayName: displayName,
+      if (iconUrl != $none) #iconUrl: iconUrl,
+      if (providerName != null) #providerName: providerName,
+      if (expiration != null) #expiration: expiration,
+    }),
+  );
   @override
   XmltvChannel $make(CopyWithData data) => XmltvChannel(
-      id: data.get(#id, or: $value.id),
-      displayName: data.get(#displayName, or: $value.displayName),
-      iconUrl: data.get(#iconUrl, or: $value.iconUrl),
-      providerName: data.get(#providerName, or: $value.providerName),
-      expiration: data.get(#expiration, or: $value.expiration));
+    id: data.get(#id, or: $value.id),
+    displayName: data.get(#displayName, or: $value.displayName),
+    iconUrl: data.get(#iconUrl, or: $value.iconUrl),
+    providerName: data.get(#providerName, or: $value.providerName),
+    expiration: data.get(#expiration, or: $value.expiration),
+  );
 
   @override
   XmltvChannelCopyWith<$R2, XmltvChannel, $Out2> $chain<$R2, $Out2>(
-          Then<$Out2, $R2> t) =>
-      _XmltvChannelCopyWithImpl<$R2, $Out2>($value, $cast, t);
+    Then<$Out2, $R2> t,
+  ) => _XmltvChannelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
+
