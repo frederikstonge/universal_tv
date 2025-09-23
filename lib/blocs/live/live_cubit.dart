@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../iptv_service/iptv_service_cubit.dart';
+import '../state_status.dart';
 import 'live_state.dart';
 
 class LiveCubit extends Cubit<LiveState> {
@@ -11,8 +12,10 @@ class LiveCubit extends Cubit<LiveState> {
   StreamSubscription? _iptvSubscription;
 
   LiveCubit({required this.iptvServiceCubit}) : super(LiveState()) {
-    _iptvSubscription = iptvServiceCubit.stream.listen((_) {
-      load();
+    _iptvSubscription = iptvServiceCubit.stream.listen((iptvServiceState) {
+      if (iptvServiceState.status != StateStatus.loading) {
+        load();
+      }
     });
   }
 

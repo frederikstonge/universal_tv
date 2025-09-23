@@ -146,8 +146,8 @@ class M3uIptvProviderMapper extends SubClassMapperBase<M3uIptvProvider> {
   static const Field<M3uIptvProvider, String> _f$name = Field('name', _$name);
   static int _$order(M3uIptvProvider v) => v.order;
   static const Field<M3uIptvProvider, int> _f$order = Field('order', _$order);
-  static List<Uri> _$urls(M3uIptvProvider v) => v.urls;
-  static const Field<M3uIptvProvider, List<Uri>> _f$urls = Field(
+  static List<String> _$urls(M3uIptvProvider v) => v.urls;
+  static const Field<M3uIptvProvider, List<String>> _f$urls = Field(
     'urls',
     _$urls,
   );
@@ -251,9 +251,9 @@ extension M3uIptvProviderValueCopy<$R, $Out>
 
 abstract class M3uIptvProviderCopyWith<$R, $In extends M3uIptvProvider, $Out>
     implements IptvProviderCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, Uri, ObjectCopyWith<$R, Uri, Uri>> get urls;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get urls;
   @override
-  $R call({String? name, int? order, List<Uri>? urls});
+  $R call({String? name, int? order, List<String>? urls});
   M3uIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -268,13 +268,14 @@ class _M3uIptvProviderCopyWithImpl<$R, $Out>
   late final ClassMapperBase<M3uIptvProvider> $mapper =
       M3uIptvProviderMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, Uri, ObjectCopyWith<$R, Uri, Uri>> get urls => ListCopyWith(
-    $value.urls,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(urls: v),
-  );
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get urls =>
+      ListCopyWith(
+        $value.urls,
+        (v, t) => ObjectCopyWith(v, $identity, t),
+        (v) => call(urls: v),
+      );
   @override
-  $R call({String? name, int? order, List<Uri>? urls}) => $apply(
+  $R call({String? name, int? order, List<String>? urls}) => $apply(
     FieldCopyWithData({
       if (name != null) #name: name,
       if (order != null) #order: order,

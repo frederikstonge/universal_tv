@@ -35,63 +35,91 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<void> load() async {
     for (final link in provider.urls) {
-      final value = await dio.getUri<String>(link);
-      final m3uDataStream = parseM3u(Stream.value(utf8.encode(value.data!)));
+      if (link.contains('{page}')) {
+        bool success;
+        var page = 1;
+        do {
+          final currentPage = page++;
+          final url = link.replaceAll('{page}', currentPage.toString());
+          success = await _loadm3uData(url);
+        } while (success);
+      } else {
+        await _loadm3uData(link);
+      }
+    }
+  }
+
+  Future<bool> _loadm3uData(String link) async {
+    String data;
+    try {
+      final response = await dio.get<String>(link);
+      if (response.data == null || response.statusCode != 200) {
+        return false;
+      }
+      data = response.data!;
+    } catch (e) {
+      return false;
+    }
+
+    final List<M3uEntry> entries = [];
+    try {
+      final m3uDataStream = parseM3u(Stream.value(utf8.encode(data)));
       final m3uData = await m3uDataStream.toList();
-      final entries = m3uData
+      final m3uEntries = m3uData
           .asMap()
           .entries
           .map((e) => M3uEntry.fromXtM3uEntry(e.key, e.value, provider.name))
           .toList();
-
-      final entriesWithImdbIds = entries
-          .where(
-            (e) =>
-                (e.type == IptvType.movies || e.type == IptvType.tvshows) &&
-                e.imdbId != null &&
-                (e.imdbId?.startsWith('tt') ?? false),
-          )
-          .toList();
-
-      final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toSet().toList();
-
-      final pageSize = 5;
-
-      for (var i = 0; i < (imdbTitlesIds.length / pageSize).ceil(); i++) {
-        final titlesBatch = imdbTitlesIds.skip(i * pageSize).take(pageSize).toList();
-        try {
-          final result = await imdbApi.titlesBatchGetGet(titleIds: titlesBatch);
-          final titles = result.body?.titles?.map((e) => ImdbEntry.fromImdbapiTitle(e)).toList() ?? [];
-          _imdbEntries.addAll(titles);
-        } catch (e) {
-          // ignore errors from imdb api
-        }
-      }
-
-      final entriesWithoutImdbIds = entries.where((e) => !entriesWithImdbIds.contains(e)).toList();
-      final imdbTitlesName = entriesWithoutImdbIds.map((e) => e.imdbTitle).whereType<String>().toSet().toList();
-
-      for (final imdbTitleName in imdbTitlesName) {
-        try {
-          final result = await imdbApi.searchTitlesGet(query: imdbTitleName, limit: 1);
-          final title = result.body?.titles?.firstOrNull;
-          if (title != null) {
-            final imdbEntry = ImdbEntry.fromImdbapiTitle(title);
-            final element = entries.firstWhereOrNull((e) => e.imdbTitle == imdbTitleName);
-            if (element != null) {
-              final newElement = element.copyWith(tvgId: imdbEntry.id);
-              entries[entries.indexOf(element)] = newElement;
-            }
-
-            _imdbEntries.add(imdbEntry);
-          }
-        } catch (e) {
-          // ignore errors from imdb api
-        }
-      }
-
-      _entries.addAll(entries);
+      entries.addAll(m3uEntries);
+    } catch (e) {
+      return false;
     }
+
+    final entriesWithImdbIds = entries
+        .where(
+          (e) =>
+              (e.type == IptvType.movies || e.type == IptvType.tvshows) &&
+              e.imdbId != null &&
+              (e.imdbId?.startsWith('tt') ?? false),
+        )
+        .toList();
+
+    final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toSet().toList();
+
+    for (final ids in imdbTitlesIds.slices(5)) {
+      try {
+        final result = await imdbApi.titlesBatchGetGet(titleIds: ids);
+        final titles = result.body?.titles?.map((e) => ImdbEntry.fromImdbapiTitle(e)).toList() ?? [];
+        _imdbEntries.addAll(titles);
+      } catch (e) {
+        // ignore errors from imdb api
+      }
+    }
+
+    final entriesWithoutImdbIds = entries.where((e) => !entriesWithImdbIds.contains(e)).toList();
+    final imdbTitlesName = entriesWithoutImdbIds.map((e) => e.imdbTitle).whereType<String>().toSet().toList();
+
+    for (final imdbTitleName in imdbTitlesName) {
+      try {
+        final result = await imdbApi.searchTitlesGet(query: imdbTitleName, limit: 1);
+        final title = result.body?.titles?.firstOrNull;
+        if (title != null) {
+          final imdbEntry = ImdbEntry.fromImdbapiTitle(title);
+          final element = entries.firstWhereOrNull((e) => e.imdbTitle == imdbTitleName);
+          if (element != null) {
+            final newElement = element.copyWith(tvgId: imdbEntry.id);
+            entries[entries.indexOf(element)] = newElement;
+          }
+
+          _imdbEntries.add(imdbEntry);
+        }
+      } catch (e) {
+        // ignore errors from imdb api
+      }
+    }
+
+    _entries.addAll(entries);
+    return true;
   }
 
   @override

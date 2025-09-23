@@ -18,7 +18,7 @@ abstract class IptvProvider with IptvProviderMappable {
 
 @MappableClass(discriminatorValue: 'm3u')
 class M3uIptvProvider extends IptvProvider with M3uIptvProviderMappable {
-  final List<Uri> urls;
+  final List<String> urls;
 
   M3uIptvProvider({required super.name, required super.order, required this.urls})
     : super(id: const Uuid().v4(), type: IptvProviderType.m3u);

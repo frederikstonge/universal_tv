@@ -30,15 +30,15 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
   IptvServiceCubit({required this.dio, required this.imdbApi, required this.settingsCubit})
     : super(IptvServiceState(status: StateStatus.initial)) {
     _settingsSubscription = settingsCubit.stream.listen((data) async {
-      await load(data.providers);
+      await _load(data.providers);
     });
   }
 
   Future<void> initialize(List<IptvProvider> providers) async {
-    await load(providers);
+    await _load(providers);
   }
 
-  Future<void> load(List<IptvProvider> providers) async {
+  Future<void> _load(List<IptvProvider> providers) async {
     emit(state.copyWith(status: StateStatus.loading));
 
     try {
