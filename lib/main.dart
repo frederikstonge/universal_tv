@@ -8,8 +8,8 @@ import 'bootstrapper.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
-  final storagePath = await getApplicationDocumentsDirectory();
 
+  final storagePath = await getApplicationDocumentsDirectory();
   HydratedBloc.storage = await HydratedStorage.build(storageDirectory: HydratedStorageDirectory(storagePath.path));
 
   runApp(const Bootstrapper());
