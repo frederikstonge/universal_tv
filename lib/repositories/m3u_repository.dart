@@ -264,7 +264,9 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<MovieDetails> getMovieDetails(int vodId) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == vodId);
-    if (entry == null) throw Exception('Movie not found');
+    if (entry == null) {
+      throw Exception('Movie not found');
+    }
 
     final imdbId = entry.imdbId;
     final imdbEntry = _imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
@@ -284,7 +286,9 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<TvShowDetails> getTvShowDetails(int seriesId) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == seriesId);
-    if (entry == null) throw Exception('Series not found');
+    if (entry == null) {
+      throw Exception('TV Show not found');
+    }
 
     final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
 
@@ -332,21 +336,30 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<String> getLiveUrl(int streamId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.live);
-    if (entry == null) throw Exception('Stream not found');
+    if (entry == null) {
+      throw Exception('Stream not found');
+    }
+
     return entry.url;
   }
 
   @override
   Future<String> getMovieUrl(int streamId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.movies);
-    if (entry == null) throw Exception('Movie not found');
+    if (entry == null) {
+      throw Exception('Movie not found');
+    }
+
     return entry.url;
   }
 
   @override
   Future<String> getTvShowUrl(int episodeId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == episodeId && e.type == IptvType.tvshows);
-    if (entry == null) throw Exception('TV Show not found');
+    if (entry == null) {
+      throw Exception('TV Show not found');
+    }
+
     return entry.url;
   }
 }
