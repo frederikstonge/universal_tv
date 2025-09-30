@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 part of 'imdb_api.swagger.dart';
 
@@ -35,6 +35,16 @@ final class _$ImdbApi extends ImdbApi {
     String? sortBy,
     String? sortOrder,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a list of titles with optional filters.',
+      summary: 'List titles',
+      operationId: 'IMDbAPIService_ListTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -59,6 +69,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client.send<ImdbapiListTitlesResponse, ImdbapiListTitlesResponse>(
       $request,
@@ -66,15 +77,42 @@ final class _$ImdbApi extends ImdbApi {
   }
 
   @override
-  Future<Response<ImdbapiTitle>> _titlesTitleIdGet({required String? titleId}) {
+  Future<Response<ImdbapiTitle>> _titlesTitleIdGet({
+    required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a title\'s details using its IMDb ID.',
+      summary: 'Get title by ID',
+      operationId: 'IMDbAPIService_GetTitle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/titles/${titleId}');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<ImdbapiTitle, ImdbapiTitle>($request);
   }
 
   @override
   Future<Response<ImdbapiBatchGetTitlesResponse>> _titlesBatchGetGet({
     required List<String>? titleIds,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of multiple titles using their IMDb IDs.',
+      summary: 'Batch get titles by IDs',
+      operationId: 'IMDbAPIService_BatchGetTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles:batchGet');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -85,6 +123,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiBatchGetTitlesResponse, ImdbapiBatchGetTitlesResponse>(
@@ -98,6 +137,16 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? categories,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the credits associated with a specific title.',
+      summary: 'List credits for a title',
+      operationId: 'IMDbAPIService_ListTitleCredits',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/credits');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -110,6 +159,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiListTitleCreditsResponse, ImdbapiListTitleCreditsResponse>(
@@ -119,9 +169,27 @@ final class _$ImdbApi extends ImdbApi {
 
   @override
   Future<Response<ImdbapiListTitleReleaseDatesResponse>>
-  _titlesTitleIdReleaseDatesGet({required String? titleId}) {
+  _titlesTitleIdReleaseDatesGet({
+    required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the release dates associated with a specific title.',
+      summary: 'List release dates for a title',
+      operationId: 'IMDbAPIService_ListTitleReleaseDates',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/titles/${titleId}/releaseDates');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<
       ImdbapiListTitleReleaseDatesResponse,
       ImdbapiListTitleReleaseDatesResponse
@@ -131,9 +199,25 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiListTitleAKAsResponse>> _titlesTitleIdAkasGet({
     required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the alternative titles (AKAs) associated with a specific title.',
+      summary: 'List AKAs for a title',
+      operationId: 'IMDbAPIService_ListTitleAKAs',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/akas');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client
         .send<ImdbapiListTitleAKAsResponse, ImdbapiListTitleAKAsResponse>(
           $request,
@@ -143,9 +227,24 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiListTitleSeasonsResponse>> _titlesTitleIdSeasonsGet({
     required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the seasons associated with a specific title.',
+      summary: 'List seasons for a title',
+      operationId: 'IMDbAPIService_ListTitleSeasons',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/seasons');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client
         .send<ImdbapiListTitleSeasonsResponse, ImdbapiListTitleSeasonsResponse>(
           $request,
@@ -158,6 +257,16 @@ final class _$ImdbApi extends ImdbApi {
     String? season,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the episodes associated with a specific title.',
+      summary: 'List episodes for a title',
+      operationId: 'IMDbAPIService_ListTitleEpisodes',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/episodes');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -170,6 +279,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client.send<
       ImdbapiListTitleEpisodesResponse,
@@ -183,6 +293,16 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? types,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the images associated with a specific title.',
+      summary: 'List images for a title',
+      operationId: 'IMDbAPIService_ListTitleImages',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/images');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -195,6 +315,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiListTitleImagesResponse, ImdbapiListTitleImagesResponse>(
@@ -208,6 +329,16 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? types,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the videos associated with a specific title.',
+      summary: 'List videos for a title',
+      operationId: 'IMDbAPIService_ListTitleVideos',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/videos');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -220,6 +351,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiListTitleVideosResponse, ImdbapiListTitleVideosResponse>(
@@ -233,6 +365,17 @@ final class _$ImdbApi extends ImdbApi {
     required String? titleId,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the award nominations associated with a specific title.',
+      summary: 'List award nominations for a title',
+      operationId: 'IMDbAPIService_ListTitleAwardNominations',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/awardNominations');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -244,6 +387,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client.send<
       ImdbapiListTitleAwardNominationsResponse,
@@ -253,9 +397,27 @@ final class _$ImdbApi extends ImdbApi {
 
   @override
   Future<Response<ImdbapiListTitleParentsGuideResponse>>
-  _titlesTitleIdParentsGuideGet({required String? titleId}) {
+  _titlesTitleIdParentsGuideGet({
+    required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the parents guide associated with a specific title.',
+      summary: 'List parents guide for a title',
+      operationId: 'IMDbAPIService_ListTitleParentsGuide',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/titles/${titleId}/parentsGuide');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<
       ImdbapiListTitleParentsGuideResponse,
       ImdbapiListTitleParentsGuideResponse
@@ -264,9 +426,27 @@ final class _$ImdbApi extends ImdbApi {
 
   @override
   Future<Response<ImdbapiListTitleCertificatesResponse>>
-  _titlesTitleIdCertificatesGet({required String? titleId}) {
+  _titlesTitleIdCertificatesGet({
+    required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the certificates associated with a specific title.',
+      summary: 'List certificates for a title',
+      operationId: 'IMDbAPIService_ListTitleCertificates',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/titles/${titleId}/certificates');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<
       ImdbapiListTitleCertificatesResponse,
       ImdbapiListTitleCertificatesResponse
@@ -280,6 +460,17 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? categories,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the company credits associated with a specific title.',
+      summary: 'List company credits for a title',
+      operationId: 'IMDbAPIService_ListTitleCompanyCredits',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/companyCredits');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -292,6 +483,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client.send<
       ImdbapiListTitleCompanyCreditsResponse,
@@ -302,9 +494,25 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiBoxOffice>> _titlesTitleIdBoxOfficeGet({
     required String? titleId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the box office information associated with a specific title.',
+      summary: 'Get box office information for a title',
+      operationId: 'IMDbAPIService_GetTitleBoxOffice',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/boxOffice');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<ImdbapiBoxOffice, ImdbapiBoxOffice>($request);
   }
 
@@ -312,6 +520,16 @@ final class _$ImdbApi extends ImdbApi {
   Future<Response<ImdbapiSearchTitlesResponse>> _searchTitlesGet({
     required String? query,
     int? limit,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Search for titles using a query string.',
+      summary: 'Search titles by query',
+      operationId: 'IMDbAPIService_SearchTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/search/titles');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -323,6 +541,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiSearchTitlesResponse, ImdbapiSearchTitlesResponse>(
@@ -331,9 +550,26 @@ final class _$ImdbApi extends ImdbApi {
   }
 
   @override
-  Future<Response<ImdbapiName>> _namesNameIdGet({required String? nameId}) {
+  Future<Response<ImdbapiName>> _namesNameIdGet({
+    required String? nameId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a name\'s details using its IMDb ID.',
+      summary: 'Get name by ID',
+      operationId: 'IMDbAPIService_GetName',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/names/${nameId}');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<ImdbapiName, ImdbapiName>($request);
   }
 
@@ -343,6 +579,16 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? types,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the images associated with a specific name.',
+      summary: 'List images for a name',
+      operationId: 'IMDbAPIService_ListNameImages',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/names/${nameId}/images');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -355,6 +601,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiListNameImagesResponse, ImdbapiListNameImagesResponse>(
@@ -369,6 +616,16 @@ final class _$ImdbApi extends ImdbApi {
     List<String>? categories,
     int? pageSize,
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the filmography associated with a specific name.',
+      summary: 'List filmography for a name',
+      operationId: 'IMDbAPIService_ListNameFilmography',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/names/${nameId}/filmography');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -381,6 +638,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client.send<
       ImdbapiListNameFilmographyResponse,
@@ -390,9 +648,27 @@ final class _$ImdbApi extends ImdbApi {
 
   @override
   Future<Response<ImdbapiListNameRelationshipsResponse>>
-  _namesNameIdRelationshipsGet({required String? nameId}) {
+  _namesNameIdRelationshipsGet({
+    required String? nameId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the relationships associated with a specific name.',
+      summary: 'List relationships for a name',
+      operationId: 'IMDbAPIService_ListNameRelationships',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/names/${nameId}/relationships');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<
       ImdbapiListNameRelationshipsResponse,
       ImdbapiListNameRelationshipsResponse
@@ -402,6 +678,16 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiBatchGetNamesResponse>> _namesBatchGetGet({
     required List<String>? nameIds,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of multiple names using their IMDb IDs.',
+      summary: 'Batch get names by IDs',
+      operationId: 'IMDbAPIService_BatchGetNames',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/names:batchGet');
     final Map<String, dynamic> $params = <String, dynamic>{'nameIds': nameIds};
@@ -410,6 +696,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiBatchGetNamesResponse, ImdbapiBatchGetNamesResponse>(
@@ -420,6 +707,16 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiListStarMetersResponse>> _chartStarmeterGet({
     String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the star meter rankings for names.',
+      summary: 'List star meter rankings',
+      operationId: 'IMDbAPIService_ListStarMeters',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/chart/starmeter');
     final Map<String, dynamic> $params = <String, dynamic>{
@@ -430,6 +727,7 @@ final class _$ImdbApi extends ImdbApi {
       $url,
       client.baseUrl,
       parameters: $params,
+      tag: swaggerMetaData,
     );
     return client
         .send<ImdbapiListStarMetersResponse, ImdbapiListStarMetersResponse>(
@@ -438,9 +736,26 @@ final class _$ImdbApi extends ImdbApi {
   }
 
   @override
-  Future<Response<ImdbapiListListInterestCategoriesResponse>> _interestsGet() {
+  Future<Response<ImdbapiListListInterestCategoriesResponse>> _interestsGet({
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve all interest categories available in the IMDb API.',
+      summary: 'List interest categories',
+      operationId: 'IMDbAPIService_ListInterestCategories',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Interest"],
+      deprecated: false,
+    ),
+  }) {
     final Uri $url = Uri.parse('/interests');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<
       ImdbapiListListInterestCategoriesResponse,
       ImdbapiListListInterestCategoriesResponse
@@ -450,9 +765,24 @@ final class _$ImdbApi extends ImdbApi {
   @override
   Future<Response<ImdbapiInterest>> _interestsInterestIdGet({
     required String? interestId,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of a specific interest using its ID.',
+      summary: 'Get interest by ID',
+      operationId: 'IMDbAPIService_GetInterest',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Interest"],
+      deprecated: false,
+    ),
   }) {
     final Uri $url = Uri.parse('/interests/${interestId}');
-    final Request $request = Request('GET', $url, client.baseUrl);
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      tag: swaggerMetaData,
+    );
     return client.send<ImdbapiInterest, ImdbapiInterest>($request);
   }
 }

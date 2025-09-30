@@ -40,7 +40,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   json_serializable: ^6.9.5
-  swagger_dart_code_generator: ^4.0.0
+  swagger_dart_code_generator: ^4.0.2
 
 flutter:
   # TODO: Set to false once we have custom video controls

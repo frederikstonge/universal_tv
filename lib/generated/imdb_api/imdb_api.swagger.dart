@@ -1,4 +1,6 @@
+// coverage:ignore-file
 // ignore_for_file: type=lint
+// ignore_for_file: unused_element_parameter
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_annotation/json_annotation.dart' as json;
@@ -13,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show MultipartFile;
 import 'package:chopper/chopper.dart' as chopper;
 import 'imdb_api.enums.swagger.dart' as enums;
+import 'imdb_api.metadata.swagger.dart';
 export 'imdb_api.enums.swagger.dart';
 
 part 'imdb_api.swagger.chopper.dart';
@@ -139,6 +142,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('sortBy') String? sortBy,
     @Query('sortOrder') String? sortOrder,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a list of titles with optional filters.',
+      summary: 'List titles',
+      operationId: 'IMDbAPIService_ListTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///Get title by ID
@@ -159,6 +173,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/titles/{titleId}')
   Future<chopper.Response<ImdbapiTitle>> _titlesTitleIdGet({
     @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a title\'s details using its IMDb ID.',
+      summary: 'Get title by ID',
+      operationId: 'IMDbAPIService_GetTitle',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///Batch get titles by IDs
@@ -179,6 +204,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/titles:batchGet')
   Future<chopper.Response<ImdbapiBatchGetTitlesResponse>> _titlesBatchGetGet({
     @Query('titleIds') required List<String>? titleIds,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of multiple titles using their IMDb IDs.',
+      summary: 'Batch get titles by IDs',
+      operationId: 'IMDbAPIService_BatchGetTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List credits for a title
@@ -218,6 +254,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('categories') List<String>? categories,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the credits associated with a specific title.',
+      summary: 'List credits for a title',
+      operationId: 'IMDbAPIService_ListTitleCredits',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List release dates for a title
@@ -236,7 +283,21 @@ abstract class ImdbApi extends ChopperService {
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
   @GET(path: '/titles/{titleId}/releaseDates')
   Future<chopper.Response<ImdbapiListTitleReleaseDatesResponse>>
-  _titlesTitleIdReleaseDatesGet({@Path('titleId') required String? titleId});
+  _titlesTitleIdReleaseDatesGet({
+    @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the release dates associated with a specific title.',
+      summary: 'List release dates for a title',
+      operationId: 'IMDbAPIService_ListTitleReleaseDates',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  });
 
   ///List AKAs for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
@@ -256,6 +317,18 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/titles/{titleId}/akas')
   Future<chopper.Response<ImdbapiListTitleAKAsResponse>> _titlesTitleIdAkasGet({
     @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the alternative titles (AKAs) associated with a specific title.',
+      summary: 'List AKAs for a title',
+      operationId: 'IMDbAPIService_ListTitleAKAs',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List seasons for a title
@@ -274,7 +347,20 @@ abstract class ImdbApi extends ChopperService {
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
   @GET(path: '/titles/{titleId}/seasons')
   Future<chopper.Response<ImdbapiListTitleSeasonsResponse>>
-  _titlesTitleIdSeasonsGet({@Path('titleId') required String? titleId});
+  _titlesTitleIdSeasonsGet({
+    @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the seasons associated with a specific title.',
+      summary: 'List seasons for a title',
+      operationId: 'IMDbAPIService_ListTitleSeasons',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  });
 
   ///List episodes for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
@@ -313,6 +399,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('season') String? season,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the episodes associated with a specific title.',
+      summary: 'List episodes for a title',
+      operationId: 'IMDbAPIService_ListTitleEpisodes',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List images for a title
@@ -352,6 +449,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('types') List<String>? types,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the images associated with a specific title.',
+      summary: 'List images for a title',
+      operationId: 'IMDbAPIService_ListTitleImages',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List videos for a title
@@ -391,6 +499,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('types') List<String>? types,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the videos associated with a specific title.',
+      summary: 'List videos for a title',
+      operationId: 'IMDbAPIService_ListTitleVideos',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List award nominations for a title
@@ -425,6 +544,18 @@ abstract class ImdbApi extends ChopperService {
     @Path('titleId') required String? titleId,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the award nominations associated with a specific title.',
+      summary: 'List award nominations for a title',
+      operationId: 'IMDbAPIService_ListTitleAwardNominations',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///List parents guide for a title
@@ -443,7 +574,21 @@ abstract class ImdbApi extends ChopperService {
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
   @GET(path: '/titles/{titleId}/parentsGuide')
   Future<chopper.Response<ImdbapiListTitleParentsGuideResponse>>
-  _titlesTitleIdParentsGuideGet({@Path('titleId') required String? titleId});
+  _titlesTitleIdParentsGuideGet({
+    @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the parents guide associated with a specific title.',
+      summary: 'List parents guide for a title',
+      operationId: 'IMDbAPIService_ListTitleParentsGuide',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  });
 
   ///List certificates for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
@@ -461,7 +606,21 @@ abstract class ImdbApi extends ChopperService {
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
   @GET(path: '/titles/{titleId}/certificates')
   Future<chopper.Response<ImdbapiListTitleCertificatesResponse>>
-  _titlesTitleIdCertificatesGet({@Path('titleId') required String? titleId});
+  _titlesTitleIdCertificatesGet({
+    @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the certificates associated with a specific title.',
+      summary: 'List certificates for a title',
+      operationId: 'IMDbAPIService_ListTitleCertificates',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
+  });
 
   ///List company credits for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
@@ -500,6 +659,18 @@ abstract class ImdbApi extends ChopperService {
     @Query('categories') List<String>? categories,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the company credits associated with a specific title.',
+      summary: 'List company credits for a title',
+      operationId: 'IMDbAPIService_ListTitleCompanyCredits',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///Get box office information for a title
@@ -520,6 +691,18 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/titles/{titleId}/boxOffice')
   Future<chopper.Response<ImdbapiBoxOffice>> _titlesTitleIdBoxOfficeGet({
     @Path('titleId') required String? titleId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the box office information associated with a specific title.',
+      summary: 'Get box office information for a title',
+      operationId: 'IMDbAPIService_GetTitleBoxOffice',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///Search titles by query
@@ -544,6 +727,17 @@ abstract class ImdbApi extends ChopperService {
   Future<chopper.Response<ImdbapiSearchTitlesResponse>> _searchTitlesGet({
     @Query('query') required String? query,
     @Query('limit') int? limit,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Search for titles using a query string.',
+      summary: 'Search titles by query',
+      operationId: 'IMDbAPIService_SearchTitles',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Title"],
+      deprecated: false,
+    ),
   });
 
   ///Get name by ID
@@ -564,6 +758,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/names/{nameId}')
   Future<chopper.Response<ImdbapiName>> _namesNameIdGet({
     @Path('nameId') required String? nameId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve a name\'s details using its IMDb ID.',
+      summary: 'Get name by ID',
+      operationId: 'IMDbAPIService_GetName',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   });
 
   ///List images for a name
@@ -602,6 +807,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('types') List<String>? types,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the images associated with a specific name.',
+      summary: 'List images for a name',
+      operationId: 'IMDbAPIService_ListNameImages',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   });
 
   ///List filmography for a name
@@ -641,6 +857,17 @@ abstract class ImdbApi extends ChopperService {
     @Query('categories') List<String>? categories,
     @Query('pageSize') int? pageSize,
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the filmography associated with a specific name.',
+      summary: 'List filmography for a name',
+      operationId: 'IMDbAPIService_ListNameFilmography',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   });
 
   ///List relationships for a name
@@ -659,7 +886,21 @@ abstract class ImdbApi extends ChopperService {
   ///@param nameId Required. IMDB name ID in the format "nm1234567".
   @GET(path: '/names/{nameId}/relationships')
   Future<chopper.Response<ImdbapiListNameRelationshipsResponse>>
-  _namesNameIdRelationshipsGet({@Path('nameId') required String? nameId});
+  _namesNameIdRelationshipsGet({
+    @Path('nameId') required String? nameId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve the relationships associated with a specific name.',
+      summary: 'List relationships for a name',
+      operationId: 'IMDbAPIService_ListNameRelationships',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
+  });
 
   ///Batch get names by IDs
   ///@param nameIds Required. List of IMDb name IDs in the format "nm1234567". The maximum number of IDs is 5.
@@ -679,6 +920,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/names:batchGet')
   Future<chopper.Response<ImdbapiBatchGetNamesResponse>> _namesBatchGetGet({
     @Query('nameIds') required List<String>? nameIds,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of multiple names using their IMDb IDs.',
+      summary: 'Batch get names by IDs',
+      operationId: 'IMDbAPIService_BatchGetNames',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   });
 
   ///List star meter rankings
@@ -699,6 +951,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/chart/starmeter')
   Future<chopper.Response<ImdbapiListStarMetersResponse>> _chartStarmeterGet({
     @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the star meter rankings for names.',
+      summary: 'List star meter rankings',
+      operationId: 'IMDbAPIService_ListStarMeters',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
   });
 
   ///List interest categories
@@ -715,7 +978,20 @@ abstract class ImdbApi extends ChopperService {
   ///List interest categories
   @GET(path: '/interests')
   Future<chopper.Response<ImdbapiListListInterestCategoriesResponse>>
-  _interestsGet();
+  _interestsGet({
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description:
+          'Retrieve all interest categories available in the IMDb API.',
+      summary: 'List interest categories',
+      operationId: 'IMDbAPIService_ListInterestCategories',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Interest"],
+      deprecated: false,
+    ),
+  });
 
   ///Get interest by ID
   ///@param interestId Required. The ID of the interest to retrieve.
@@ -735,6 +1011,17 @@ abstract class ImdbApi extends ChopperService {
   @GET(path: '/interests/{interestId}')
   Future<chopper.Response<ImdbapiInterest>> _interestsInterestIdGet({
     @Path('interestId') required String? interestId,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve details of a specific interest using its ID.',
+      summary: 'Get interest by ID',
+      operationId: 'IMDbAPIService_GetInterest',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Interest"],
+      deprecated: false,
+    ),
   });
 }
 
