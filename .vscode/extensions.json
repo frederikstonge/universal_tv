@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "dart-code.flutter",
+        "dart-code.dart-code",
+        "Google.arb-editor",
+        "kaiqun.build-runner",
+        "FelixAngelov.bloc",
+    ]
+}
