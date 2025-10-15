@@ -35,7 +35,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return GlobalLoaderOverlay(
-      overlayWidgetBuilder: (progress) => Center(child: FProgress.circularIcon()),
+      overlayWidgetBuilder: (progress) => Center(child: FCircularProgress()),
       child: BlocListener<IptvServiceCubit, IptvServiceState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {

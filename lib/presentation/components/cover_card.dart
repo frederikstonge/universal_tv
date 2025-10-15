@@ -45,8 +45,9 @@ class _CoverCardState extends State<CoverCard> {
                       cacheKey: widget.iconUrl!,
                       imageUrl: widget.iconUrl!,
                       alignment: Alignment.center,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          FProgress(value: downloadProgress.progress),
+                      progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
+                          ? FDeterminateProgress(value: downloadProgress.progress!)
+                          : FProgress(),
                       errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
                     ),
                   ],
