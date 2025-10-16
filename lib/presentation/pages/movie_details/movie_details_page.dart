@@ -71,11 +71,21 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(movie!.name),
-                            FButton(onPress: () {}, prefix: Icon(FIcons.play), child: Text('Play')),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: FButton(
+                                    mainAxisSize: MainAxisSize.min,
+                                    prefix: Icon(FIcons.play),
+                                    onPress: () {},
+                                    child: Text('Play'),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

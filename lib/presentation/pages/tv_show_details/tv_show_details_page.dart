@@ -77,47 +77,62 @@ class _TvShowDetailsPageState extends State<TvShowDetailsPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                Expanded(
-                                  child: FSelect<int>(
-                                    items: tvShow!.seasons.map((i, e) => MapEntry('season $i', i)),
-                                    initialValue: selectedSeason,
-                                    onChange: (value) {
-                                      setState(() {
-                                        if (value == null) return;
-                                        selectedSeason = value;
-                                        selectedEpisode = null;
-                                      });
-                                    },
-                                  ),
-                                ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: FSelect<int>(
+                                      items: tvShow!.seasons.map((i, e) => MapEntry('Season $i', i)),
+                                      initialValue: selectedSeason,
+                                      onChange: (value) {
+                                        setState(() {
+                                          if (value == null) {
+                                            return;
+                                          }
 
-                                Expanded(
-                                  child: FSelect<EpisodeDetails>(
-                                    items: tvShow!.seasons[selectedSeason]!.asMap().map(
-                                      (i, e) => MapEntry('episode ${e.episode}', e),
+                                          selectedSeason = value;
+                                          selectedEpisode = null;
+                                        });
+                                      },
                                     ),
-                                    initialValue: selectedEpisode ?? tvShow!.seasons[selectedSeason]!.first,
-                                    onChange: (value) {
-                                      setState(() {
-                                        if (value == null) return;
-                                        selectedEpisode = value;
-                                      });
-                                    },
                                   ),
-                                ),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: FSelect<EpisodeDetails>(
+                                      items: tvShow!.seasons[selectedSeason]!.asMap().map(
+                                        (i, e) => MapEntry('Episode ${e.episode}', e),
+                                      ),
+                                      initialValue: selectedEpisode ?? tvShow!.seasons[selectedSeason]!.first,
+                                      onChange: (value) {
+                                        setState(() {
+                                          if (value == null) {
+                                            return;
+                                          }
 
-                                Flexible(
-                                  child: FButton(onPress: () {}, prefix: Icon(FIcons.play), child: Text('Play')),
-                                ),
-                              ],
-                            ),
+                                          selectedEpisode = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: FButton(
+                                      mainAxisSize: MainAxisSize.min,
+                                      prefix: Icon(FIcons.play),
+                                      onPress: () {},
+                                      child: Text('Play'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ],

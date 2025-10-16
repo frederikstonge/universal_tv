@@ -157,7 +157,6 @@ class M3uRepository extends StreamBaseRepository {
     final entries = _entries.where((e) => e.type == IptvType.movies).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
     final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
-
     final vodItems = entries.where((e) => e.type == IptvType.movies).map((e) {
       final imdbId = e.imdbId;
       final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
@@ -178,7 +177,6 @@ class M3uRepository extends StreamBaseRepository {
     final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
     final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
-
     final seriesItems = entries.where((e) => e.type == IptvType.tvshows).groupListsBy((e) => e.groupTitle).entries.map((
       e,
     ) {

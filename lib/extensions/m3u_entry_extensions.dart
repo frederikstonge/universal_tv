@@ -18,7 +18,7 @@ extension M3uEntryExtensions on M3uEntry {
     }
 
     final season = allMatches.first.group(1);
-    final episode = allMatches.last.group(2);
+    final episode = allMatches.first.group(2);
     return MapEntry(season, episode);
   }
 
