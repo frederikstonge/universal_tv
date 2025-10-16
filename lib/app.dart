@@ -7,11 +7,9 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'blocs/iptv_service/iptv_service_cubit.dart';
 import 'blocs/iptv_service/iptv_service_state.dart';
 import 'blocs/state_status.dart';
-import 'presentation/pages/live/live_page.dart';
-import 'presentation/pages/movies/movies_page.dart';
+import 'presentation/pages/movie_details/movie_details_page.dart';
 import 'presentation/pages/player/player_page.dart';
-import 'presentation/pages/settings/settings_page.dart';
-import 'presentation/pages/tv_shows/tv_shows_page.dart';
+import 'presentation/pages/tv_show_details/tv_show_details_page.dart';
 import 'presentation/shells/main_shell.dart';
 
 class App extends StatefulWidget {
@@ -50,28 +48,26 @@ class _AppState extends State<App> {
           title: 'Universal TV',
           builder: (context, child) => FTheme(data: FThemes.slate.dark, child: child!),
           routerConfig: GoRouter(
-            initialLocation: '/movies',
+            initialLocation: '/home',
             routes: [
-              StatefulShellRoute.indexedStack(
-                branches: [
-                  StatefulShellBranch(
-                    routes: [GoRoute(path: '/movies', name: 'movies', builder: (context, state) => const MoviesPage())],
-                  ),
-                  StatefulShellBranch(
-                    routes: [
-                      GoRoute(path: '/tvshows', name: 'tvshows', builder: (context, state) => const TvShowsPage()),
-                    ],
-                  ),
-                  StatefulShellBranch(
-                    routes: [GoRoute(path: '/live', name: 'live', builder: (context, state) => const LivePage())],
-                  ),
-                  StatefulShellBranch(
-                    routes: [
-                      GoRoute(path: '/settings', name: 'settings', builder: (context, state) => const SettingsPage()),
-                    ],
-                  ),
-                ],
-                builder: (context, state, navigationShell) => MainShell(navigationShell: navigationShell),
+              GoRoute(path: '/home', name: 'home', builder: (context, state) => const MainShell()),
+              GoRoute(
+                path: '/movie/:providerName/:movieId',
+                name: 'movieDetails',
+                builder: (context, state) {
+                  final providerName = state.pathParameters['providerName']!;
+                  final movieId = int.parse(state.pathParameters['movieId']!);
+                  return MovieDetailsPage(providerName: providerName, movieId: movieId);
+                },
+              ),
+              GoRoute(
+                path: '/tvshow/:providerName/:tvShowId',
+                name: 'tvShowDetails',
+                builder: (context, state) {
+                  final providerName = state.pathParameters['providerName']!;
+                  final tvShowId = int.parse(state.pathParameters['tvShowId']!);
+                  return TvShowDetailsPage(providerName: providerName, tvShowId: tvShowId);
+                },
               ),
               GoRoute(
                 path: '/player',

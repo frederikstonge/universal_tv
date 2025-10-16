@@ -27,6 +27,8 @@ class M3uRepository extends StreamBaseRepository {
   final List<M3uEntry> _entries = [];
   final List<ImdbEntry> _imdbEntries = [];
 
+  int id = 0;
+
   M3uRepository({required this.provider, required this.dio, required this.imdbApi});
 
   @override
@@ -34,6 +36,8 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<void> load() async {
+    id = 0;
+    _entries.clear();
     for (final link in provider.urls) {
       if (link.contains('{page}')) {
         bool success;
@@ -65,11 +69,7 @@ class M3uRepository extends StreamBaseRepository {
     try {
       final m3uDataStream = parseM3u(Stream.value(utf8.encode(data)));
       final m3uData = await m3uDataStream.toList();
-      final m3uEntries = m3uData
-          .asMap()
-          .entries
-          .map((e) => M3uEntry.fromXtM3uEntry(e.key, e.value, provider.name))
-          .toList();
+      final m3uEntries = m3uData.map((e) => M3uEntry.fromXtM3uEntry(id++, e, provider.name)).toList();
       entries.addAll(m3uEntries);
     } catch (e) {
       return false;
@@ -91,28 +91,6 @@ class M3uRepository extends StreamBaseRepository {
         final result = await imdbApi.titlesBatchGetGet(titleIds: ids);
         final titles = result.body?.titles?.map((e) => ImdbEntry.fromImdbapiTitle(e)).toList() ?? [];
         _imdbEntries.addAll(titles);
-      } catch (e) {
-        // ignore errors from imdb api
-      }
-    }
-
-    final entriesWithoutImdbIds = entries.where((e) => !entriesWithImdbIds.contains(e)).toList();
-    final imdbTitlesName = entriesWithoutImdbIds.map((e) => e.imdbTitle).whereType<String>().toSet().toList();
-
-    for (final imdbTitleName in imdbTitlesName) {
-      try {
-        final result = await imdbApi.searchTitlesGet(query: imdbTitleName, limit: 1);
-        final title = result.body?.titles?.firstOrNull;
-        if (title != null) {
-          final imdbEntry = ImdbEntry.fromImdbapiTitle(title);
-          final element = entries.firstWhereOrNull((e) => e.imdbTitle == imdbTitleName);
-          if (element != null) {
-            final newElement = element.copyWith(tvgId: imdbEntry.id);
-            entries[entries.indexOf(element)] = newElement;
-          }
-
-          _imdbEntries.add(imdbEntry);
-        }
       } catch (e) {
         // ignore errors from imdb api
       }
@@ -151,19 +129,10 @@ class M3uRepository extends StreamBaseRepository {
 
     return imdbEntries
         .expand((e) => e.genres ?? [])
-        .where((e) => e != null)
+        .whereType<String>()
         .toSet()
         .toList()
-        .asMap()
-        .entries
-        .map(
-          (e) => Category(
-            id: e.value.toString(),
-            name: e.value.toString(),
-            type: IptvType.movies,
-            providerName: provider.name,
-          ),
-        )
+        .map((e) => Category(id: e, name: e, type: IptvType.movies, providerName: provider.name))
         .toList();
   }
 
@@ -178,16 +147,8 @@ class M3uRepository extends StreamBaseRepository {
         .where((e) => e != null)
         .toSet()
         .toList()
-        .asMap()
-        .entries
-        .map(
-          (e) => Category(
-            id: e.value.toString(),
-            name: e.value.toString(),
-            type: IptvType.movies,
-            providerName: provider.name,
-          ),
-        )
+        .whereType<String>()
+        .map((e) => Category(id: e, name: e, type: IptvType.tvshows, providerName: provider.name))
         .toList();
   }
 
@@ -218,28 +179,21 @@ class M3uRepository extends StreamBaseRepository {
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
     final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
 
-    final seriesItems = entries
-        .where((e) => e.type == IptvType.tvshows)
-        .groupListsBy((e) => e.groupTitle)
-        .entries
-        .mapIndexed((i, e) {
-          final imdbId = e.value.first.imdbId;
-          final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
-          final entry = e.value.first;
-          return TvShowItem(
-            seriesId: i,
-            name:
-                imdbEntry?.primaryTitle ??
-                imdbEntry?.originalTitle ??
-                entry.groupTitle ??
-                entry.safeTvgName ??
-                entry.name,
-            categoryIds: imdbEntry?.genres ?? [provider.name],
-            posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
-            providerName: provider.name,
-          );
-        })
-        .toList();
+    final seriesItems = entries.where((e) => e.type == IptvType.tvshows).groupListsBy((e) => e.groupTitle).entries.map((
+      e,
+    ) {
+      final imdbId = e.value.first.imdbId;
+      final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
+      final entry = e.value.first;
+      return TvShowItem(
+        seriesId: entry.id,
+        name:
+            imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? entry.safeTvgName ?? entry.name,
+        categoryIds: imdbEntry?.genres ?? [provider.name],
+        posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
+        providerName: provider.name,
+      );
+    }).toList();
 
     return seriesItems;
   }
@@ -247,9 +201,9 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<List<LiveChannel>> getLiveStreams() async {
     final entries = _entries.where((e) => e.type == IptvType.live).toList();
-    final liveChannels = entries.mapIndexed((i, e) {
+    final liveChannels = entries.map((e) {
       return LiveChannel(
-        streamId: i,
+        streamId: e.id,
         name: e.name,
         categoryId: e.groupTitle ?? provider.name,
         logoUrl: e.logoUrl,
@@ -263,7 +217,7 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<MovieDetails> getMovieDetails(int vodId) async {
-    final entry = _entries.firstWhereOrNull((e) => e.id == vodId);
+    final entry = _entries.firstWhereOrNull((e) => e.id == vodId && e.type == IptvType.movies);
     if (entry == null) {
       throw Exception('Movie not found');
     }
@@ -285,7 +239,7 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<TvShowDetails> getTvShowDetails(int seriesId) async {
-    final entry = _entries.firstWhereOrNull((e) => e.id == seriesId);
+    final entry = _entries.firstWhereOrNull((e) => e.id == seriesId && e.type == IptvType.tvshows);
     if (entry == null) {
       throw Exception('TV Show not found');
     }

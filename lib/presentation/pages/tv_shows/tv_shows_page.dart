@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../blocs/tv_shows/tv_shows_cubit.dart';
 import '../../../blocs/tv_shows/tv_shows_state.dart';
@@ -40,6 +41,13 @@ class TvShowsPage extends StatelessWidget {
                             title: entry.name,
                             posterUrl: entry.posterUrl,
                             onTap: () async {
+                              await GoRouter.of(context).pushNamed(
+                                'tvShowDetails',
+                                pathParameters: {
+                                  'providerName': entry.providerName,
+                                  'tvShowId': entry.seriesId.toString(),
+                                },
+                              );
                               //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
                             },
                           ),

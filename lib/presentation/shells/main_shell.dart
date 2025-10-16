@@ -1,21 +1,44 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
-import 'package:go_router/go_router.dart';
+import '../pages/live/live_page.dart';
+import '../pages/movies/movies_page.dart';
+import '../pages/settings/settings_page.dart';
+import '../pages/tv_shows/tv_shows_page.dart';
 
-class MainShell extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
+class MainShell extends StatefulWidget {
+  const MainShell({super.key});
 
-  const MainShell({super.key, required this.navigationShell});
+  @override
+  State<MainShell> createState() => _MainShellState();
+}
+
+class _MainShellState extends State<MainShell> {
+  final items = [
+    NavigationItem(label: 'Movies', icon: FIcons.tvMinimal, page: MoviesPage()),
+    NavigationItem(label: 'TV Shows', icon: FIcons.tvMinimalPlay, page: TvShowsPage()),
+    NavigationItem(label: 'Live TV', icon: FIcons.tv, page: LivePage()),
+    NavigationItem(label: 'Settings', icon: FIcons.settings, page: SettingsPage()),
+  ];
+
+  int index = 0;
+
+  late PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final items = {
-      'Movies': FIcons.tvMinimal,
-      'TV Shows': FIcons.tvMinimalPlay,
-      'Live TV': FIcons.tv,
-      'Settings': FIcons.settings,
-    };
     final breakpoints = context.theme.breakpoints;
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width <= breakpoints.sm;
@@ -24,10 +47,12 @@ class MainShell extends StatelessWidget {
         childPad: false,
         footer: isMobile
             ? FBottomNavigationBar(
-                index: navigationShell.currentIndex,
-                onChange: (value) => navigationShell.goBranch(value),
-                children: items.entries
-                    .map((e) => FBottomNavigationBarItem(icon: Icon(e.value), label: Text(e.key)))
+                index: index,
+                onChange: onItemTapped,
+                children: items
+                    .asMap()
+                    .entries
+                    .map((e) => FBottomNavigationBarItem(icon: Icon(e.value.icon), label: Text(e.value.label)))
                     .toList(),
               )
             : null,
@@ -36,19 +61,41 @@ class MainShell extends StatelessWidget {
             : FSidebar(
                 autofocus: true,
                 header: FHeader.nested(title: Text('Universal TV')),
-                children: items.entries
-                    .mapIndexed(
-                      (i, e) => FSidebarItem(
-                        icon: Icon(e.value),
-                        label: Text(e.key),
-                        selected: navigationShell.currentIndex == i,
-                        onPress: () => navigationShell.goBranch(i),
-                      ),
-                    )
-                    .toList(),
+                children: [
+                  FSidebarGroup(
+                    label: const Text('Navigation'),
+                    children: items
+                        .asMap()
+                        .entries
+                        .mapIndexed(
+                          (i, e) => FSidebarItem(
+                            icon: Icon(e.value.icon),
+                            label: Text(e.value.label),
+                            selected: index == i,
+                            onPress: () => onItemTapped(i),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
               ),
-        child: navigationShell,
+        child: PageView(controller: pageController, children: items.map((i) => i.page).toList()),
       ),
     );
   }
+
+  void onItemTapped(int index) {
+    setState(() {
+      this.index = index;
+    });
+    pageController.jumpToPage(index);
+  }
+}
+
+class NavigationItem {
+  final String label;
+  final IconData icon;
+  final Widget page;
+
+  NavigationItem({required this.label, required this.icon, required this.page});
 }
