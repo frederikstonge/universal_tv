@@ -79,7 +79,11 @@ class _MainShellState extends State<MainShell> {
                   ),
                 ],
               ),
-        child: PageView(controller: pageController, children: items.map((i) => i.page).toList()),
+        child: PageView(
+          controller: pageController,
+          physics: NeverScrollableScrollPhysics(),
+          children: items.map((i) => i.page).toList(),
+        ),
       ),
     );
   }

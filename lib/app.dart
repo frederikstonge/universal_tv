@@ -7,9 +7,9 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'blocs/iptv_service/iptv_service_cubit.dart';
 import 'blocs/iptv_service/iptv_service_state.dart';
 import 'blocs/state_status.dart';
-import 'presentation/pages/movie_details/movie_details_page.dart';
+import 'presentation/pages/movie_details/movie_details_shell.dart';
 import 'presentation/pages/player/player_page.dart';
-import 'presentation/pages/tv_show_details/tv_show_details_page.dart';
+import 'presentation/pages/tv_show_details/tv_show_details_shell.dart';
 import 'presentation/shells/main_shell.dart';
 
 class App extends StatefulWidget {
@@ -57,7 +57,7 @@ class _AppState extends State<App> {
                 builder: (context, state) {
                   final providerName = state.pathParameters['providerName']!;
                   final movieId = int.parse(state.pathParameters['movieId']!);
-                  return MovieDetailsPage(providerName: providerName, movieId: movieId);
+                  return MovieDetailsShell(providerName: providerName, movieId: movieId);
                 },
               ),
               GoRoute(
@@ -66,7 +66,7 @@ class _AppState extends State<App> {
                 builder: (context, state) {
                   final providerName = state.pathParameters['providerName']!;
                   final tvShowId = int.parse(state.pathParameters['tvShowId']!);
-                  return TvShowDetailsPage(providerName: providerName, tvShowId: tvShowId);
+                  return TvShowDetailsShell(providerName: providerName, tvShowId: tvShowId);
                 },
               ),
               GoRoute(
