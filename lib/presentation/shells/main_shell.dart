@@ -15,10 +15,10 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   final items = [
-    NavigationItem(label: 'Movies', icon: FIcons.tvMinimal, page: MoviesPage()),
-    NavigationItem(label: 'TV Shows', icon: FIcons.tvMinimalPlay, page: TvShowsPage()),
-    NavigationItem(label: 'Live TV', icon: FIcons.tv, page: LivePage()),
-    NavigationItem(label: 'Settings', icon: FIcons.settings, page: SettingsPage()),
+    NavigationItem(label: 'Movies', icon: FIcons.tvMinimal, page: const MoviesPage()),
+    NavigationItem(label: 'TV Shows', icon: FIcons.tvMinimalPlay, page: const TvShowsPage()),
+    NavigationItem(label: 'Live TV', icon: FIcons.tv, page: const LivePage()),
+    NavigationItem(label: 'Settings', icon: FIcons.settings, page: const SettingsPage()),
   ];
 
   int index = 0;
@@ -28,13 +28,27 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     pageController = PageController();
+    pageController.addListener(onPageChange);
+
     super.initState();
   }
 
   @override
   void dispose() {
+    pageController.removeListener(onPageChange);
     pageController.dispose();
     super.dispose();
+  }
+
+  void onPageChange() {
+    if (pageController.page != null && pageController.page! % 1.0 == 0.0) {
+      final newIndex = pageController.page!.round();
+      if (newIndex != index) {
+        setState(() {
+          index = newIndex;
+        });
+      }
+    }
   }
 
   @override
