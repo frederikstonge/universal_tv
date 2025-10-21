@@ -14,6 +14,7 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   static MoviesStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MoviesStateMapper._());
+      StateStatusMapper.ensureInitialized();
       MovieItemMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
     }
@@ -23,6 +24,11 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
   @override
   final String id = 'MoviesState';
 
+  static StateStatus _$status(MoviesState v) => v.status;
+  static const Field<MoviesState, StateStatus> _f$status = Field(
+    'status',
+    _$status,
+  );
   static List<MovieItem>? _$items(MoviesState v) => v.items;
   static const Field<MoviesState, List<MovieItem>> _f$items = Field(
     'items',
@@ -40,12 +46,14 @@ class MoviesStateMapper extends ClassMapperBase<MoviesState> {
 
   @override
   final MappableFields<MoviesState> fields = const {
+    #status: _f$status,
     #items: _f$items,
     #categories: _f$categories,
   };
 
   static MoviesState _instantiate(DecodingData data) {
     return MoviesState(
+      status: data.dec(_f$status),
       items: data.dec(_f$items),
       categories: data.dec(_f$categories),
     );
@@ -115,7 +123,11 @@ abstract class MoviesStateCopyWith<$R, $In extends MoviesState, $Out>
   get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
   get categories;
-  $R call({List<MovieItem>? items, List<Category>? categories});
+  $R call({
+    StateStatus? status,
+    List<MovieItem>? items,
+    List<Category>? categories,
+  });
   MoviesStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -146,14 +158,20 @@ class _MoviesStateCopyWithImpl<$R, $Out>
         )
       : null;
   @override
-  $R call({Object? items = $none, Object? categories = $none}) => $apply(
+  $R call({
+    StateStatus? status,
+    Object? items = $none,
+    Object? categories = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (status != null) #status: status,
       if (items != $none) #items: items,
       if (categories != $none) #categories: categories,
     }),
   );
   @override
   MoviesState $make(CopyWithData data) => MoviesState(
+    status: data.get(#status, or: $value.status),
     items: data.get(#items, or: $value.items),
     categories: data.get(#categories, or: $value.categories),
   );

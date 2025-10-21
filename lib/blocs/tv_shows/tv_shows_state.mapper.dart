@@ -14,6 +14,7 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
   static TvShowsStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TvShowsStateMapper._());
+      StateStatusMapper.ensureInitialized();
       TvShowItemMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
     }
@@ -23,6 +24,11 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
   @override
   final String id = 'TvShowsState';
 
+  static StateStatus _$status(TvShowsState v) => v.status;
+  static const Field<TvShowsState, StateStatus> _f$status = Field(
+    'status',
+    _$status,
+  );
   static List<TvShowItem>? _$items(TvShowsState v) => v.items;
   static const Field<TvShowsState, List<TvShowItem>> _f$items = Field(
     'items',
@@ -40,12 +46,14 @@ class TvShowsStateMapper extends ClassMapperBase<TvShowsState> {
 
   @override
   final MappableFields<TvShowsState> fields = const {
+    #status: _f$status,
     #items: _f$items,
     #categories: _f$categories,
   };
 
   static TvShowsState _instantiate(DecodingData data) {
     return TvShowsState(
+      status: data.dec(_f$status),
       items: data.dec(_f$items),
       categories: data.dec(_f$categories),
     );
@@ -117,7 +125,11 @@ abstract class TvShowsStateCopyWith<$R, $In extends TvShowsState, $Out>
   get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
   get categories;
-  $R call({List<TvShowItem>? items, List<Category>? categories});
+  $R call({
+    StateStatus? status,
+    List<TvShowItem>? items,
+    List<Category>? categories,
+  });
   TvShowsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -148,14 +160,20 @@ class _TvShowsStateCopyWithImpl<$R, $Out>
         )
       : null;
   @override
-  $R call({Object? items = $none, Object? categories = $none}) => $apply(
+  $R call({
+    StateStatus? status,
+    Object? items = $none,
+    Object? categories = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (status != null) #status: status,
       if (items != $none) #items: items,
       if (categories != $none) #categories: categories,
     }),
   );
   @override
   TvShowsState $make(CopyWithData data) => TvShowsState(
+    status: data.get(#status, or: $value.status),
     items: data.get(#items, or: $value.items),
     categories: data.get(#categories, or: $value.categories),
   );

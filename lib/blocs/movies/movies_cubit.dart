@@ -11,10 +11,17 @@ class MoviesCubit extends Cubit<MoviesState> {
 
   StreamSubscription? _iptvSubscription;
 
-  MoviesCubit({required this.iptvServiceCubit}) : super(MoviesState()) {
+  MoviesCubit({required this.iptvServiceCubit}) : super(MoviesState(status: StateStatus.initial)) {
     _iptvSubscription = iptvServiceCubit.stream.listen((iptvServiceState) {
-      if (iptvServiceState.status != StateStatus.loading) {
-        load();
+      switch (iptvServiceState.status) {
+        case StateStatus.success:
+          load();
+          break;
+        case StateStatus.loading:
+          emit(state.copyWith(status: StateStatus.loading));
+          break;
+        default:
+          break;
       }
     });
   }
@@ -27,11 +34,12 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   Future<void> load() async {
+    emit(state.copyWith(status: StateStatus.loading));
     final moviesFuture = iptvServiceCubit.getMovies();
     final categoriesFuture = iptvServiceCubit.getMovieCategories();
 
     await Future.wait([moviesFuture, categoriesFuture]);
 
-    emit(MoviesState(items: await moviesFuture, categories: await categoriesFuture));
+    emit(state.copyWith(status: StateStatus.success, items: await moviesFuture, categories: await categoriesFuture));
   }
 }

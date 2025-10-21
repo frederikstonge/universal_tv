@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../blocs/state_status.dart';
 import '../../../blocs/tv_shows/tv_shows_cubit.dart';
 import '../../../blocs/tv_shows/tv_shows_state.dart';
 import '../../components/cover_card.dart';
@@ -30,30 +31,34 @@ class TvShowsPage extends StatelessWidget {
                   FHeader.nested(title: Text(category.name), titleAlignment: AlignmentGeometry.centerLeft),
                   SizedBox(
                     height: 200,
-                    child: ListView.builder(
-                      itemCount: state.items!.where((e) => e.categoryIds.contains(category.id)).length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final entry = state.items!.where((e) => e.categoryIds.contains(category.id)).elementAt(index);
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CoverCard(
-                            title: entry.name,
-                            posterUrl: entry.posterUrl,
-                            onTap: () async {
-                              await GoRouter.of(context).pushNamed(
-                                'tvShowDetails',
-                                pathParameters: {
-                                  'providerName': entry.providerName,
-                                  'tvShowId': entry.seriesId.toString(),
-                                },
-                              );
-                              //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                    child: switch (state.status) {
+                      StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
+                      StateStatus.failure => const Center(child: Text('Failed to load tv shows')),
+                      StateStatus.success => ListView.builder(
+                        itemCount: state.items!.where((e) => e.categoryIds.contains(category.id)).length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final entry = state.items!.where((e) => e.categoryIds.contains(category.id)).elementAt(index);
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CoverCard(
+                              title: entry.name,
+                              posterUrl: entry.posterUrl,
+                              onTap: () async {
+                                await GoRouter.of(context).pushNamed(
+                                  'tvShowDetails',
+                                  pathParameters: {
+                                    'providerName': entry.providerName,
+                                    'tvShowId': entry.seriesId.toString(),
+                                  },
+                                );
+                                //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    },
                   ),
                 ],
               );

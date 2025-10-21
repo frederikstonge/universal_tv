@@ -4,14 +4,14 @@ import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
-class PlayerPage extends StatefulWidget {
-  const PlayerPage({super.key});
+class TvShowPlayerPage extends StatefulWidget {
+  const TvShowPlayerPage({super.key});
 
   @override
-  State<PlayerPage> createState() => _PlayerPageState();
+  State<TvShowPlayerPage> createState() => _TvShowPlayerPageState();
 }
 
-class _PlayerPageState extends State<PlayerPage> {
+class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
   late final Player player;
   late final VideoController videoController;
 

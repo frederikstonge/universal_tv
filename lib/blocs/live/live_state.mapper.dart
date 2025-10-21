@@ -14,6 +14,7 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
   static LiveStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = LiveStateMapper._());
+      StateStatusMapper.ensureInitialized();
       LiveChannelMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
     }
@@ -23,6 +24,11 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
   @override
   final String id = 'LiveState';
 
+  static StateStatus _$status(LiveState v) => v.status;
+  static const Field<LiveState, StateStatus> _f$status = Field(
+    'status',
+    _$status,
+  );
   static List<LiveChannel>? _$items(LiveState v) => v.items;
   static const Field<LiveState, List<LiveChannel>> _f$items = Field(
     'items',
@@ -40,12 +46,14 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
 
   @override
   final MappableFields<LiveState> fields = const {
+    #status: _f$status,
     #items: _f$items,
     #categories: _f$categories,
   };
 
   static LiveState _instantiate(DecodingData data) {
     return LiveState(
+      status: data.dec(_f$status),
       items: data.dec(_f$items),
       categories: data.dec(_f$categories),
     );
@@ -118,7 +126,11 @@ abstract class LiveStateCopyWith<$R, $In extends LiveState, $Out>
   get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
   get categories;
-  $R call({List<LiveChannel>? items, List<Category>? categories});
+  $R call({
+    StateStatus? status,
+    List<LiveChannel>? items,
+    List<Category>? categories,
+  });
   LiveStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -153,14 +165,20 @@ class _LiveStateCopyWithImpl<$R, $Out>
         )
       : null;
   @override
-  $R call({Object? items = $none, Object? categories = $none}) => $apply(
+  $R call({
+    StateStatus? status,
+    Object? items = $none,
+    Object? categories = $none,
+  }) => $apply(
     FieldCopyWithData({
+      if (status != null) #status: status,
       if (items != $none) #items: items,
       if (categories != $none) #categories: categories,
     }),
   );
   @override
   LiveState $make(CopyWithData data) => LiveState(
+    status: data.get(#status, or: $value.status),
     items: data.get(#items, or: $value.items),
     categories: data.get(#categories, or: $value.categories),
   );

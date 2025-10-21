@@ -11,10 +11,17 @@ class LiveCubit extends Cubit<LiveState> {
 
   StreamSubscription? _iptvSubscription;
 
-  LiveCubit({required this.iptvServiceCubit}) : super(LiveState()) {
+  LiveCubit({required this.iptvServiceCubit}) : super(LiveState(status: StateStatus.initial)) {
     _iptvSubscription = iptvServiceCubit.stream.listen((iptvServiceState) {
-      if (iptvServiceState.status != StateStatus.loading) {
-        load();
+      switch (iptvServiceState.status) {
+        case StateStatus.success:
+          load();
+          break;
+        case StateStatus.loading:
+          emit(state.copyWith(status: StateStatus.loading));
+          break;
+        default:
+          break;
       }
     });
   }
@@ -27,11 +34,14 @@ class LiveCubit extends Cubit<LiveState> {
   }
 
   Future<void> load() async {
+    emit(state.copyWith(status: StateStatus.loading));
     final liveChannelsFuture = iptvServiceCubit.getLiveStreams();
     final categoriesFuture = iptvServiceCubit.getLiveCategories();
 
     await Future.wait([liveChannelsFuture, categoriesFuture]);
 
-    emit(LiveState(items: await liveChannelsFuture, categories: await categoriesFuture));
+    emit(
+      state.copyWith(status: StateStatus.success, items: await liveChannelsFuture, categories: await categoriesFuture),
+    );
   }
 }

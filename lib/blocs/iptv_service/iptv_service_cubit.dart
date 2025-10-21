@@ -39,6 +39,10 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
   }
 
   Future<void> _load(List<IptvProvider> providers) async {
+    if (state.status == StateStatus.loading) {
+      return;
+    }
+
     emit(state.copyWith(status: StateStatus.loading));
 
     try {

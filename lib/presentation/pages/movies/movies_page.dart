@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../blocs/movies/movies_cubit.dart';
 import '../../../blocs/movies/movies_state.dart';
+import '../../../blocs/state_status.dart';
 import '../../components/cover_card.dart';
 
 class MoviesPage extends StatelessWidget {
@@ -30,30 +31,34 @@ class MoviesPage extends StatelessWidget {
                   FHeader.nested(title: Text(category.name), titleAlignment: AlignmentGeometry.centerLeft),
                   SizedBox(
                     height: 200,
-                    child: ListView.builder(
-                      itemCount: state.items!.where((e) => e.categoryIds.contains(category.id)).length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final entry = state.items!.where((e) => e.categoryIds.contains(category.id)).elementAt(index);
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CoverCard(
-                            title: entry.name,
-                            posterUrl: entry.posterUrl,
-                            onTap: () async {
-                              await GoRouter.of(context).pushNamed(
-                                'movieDetails',
-                                pathParameters: {
-                                  'providerName': entry.providerName,
-                                  'movieId': entry.streamId.toString(),
-                                },
-                              );
-                              //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                    child: switch (state.status) {
+                      StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
+                      StateStatus.failure => const Center(child: Text('Failed to load movies')),
+                      StateStatus.success => ListView.builder(
+                        itemCount: state.items!.where((e) => e.categoryIds.contains(category.id)).length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final entry = state.items!.where((e) => e.categoryIds.contains(category.id)).elementAt(index);
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CoverCard(
+                              title: entry.name,
+                              posterUrl: entry.posterUrl,
+                              onTap: () async {
+                                await GoRouter.of(context).pushNamed(
+                                  'movieDetails',
+                                  pathParameters: {
+                                    'providerName': entry.providerName,
+                                    'movieId': entry.streamId.toString(),
+                                  },
+                                );
+                                //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    },
                   ),
                 ],
               );

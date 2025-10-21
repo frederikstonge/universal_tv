@@ -15,36 +15,28 @@ class Bootstrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (blocContext) => SettingsCubit(),
-      child: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider(create: (repositoryContext) => Dio()),
-          RepositoryProvider(
-            create: (repositoryContext) => ImdbApi.create(baseUrl: Uri.parse('https://api.imdbapi.dev/')),
-          ),
-        ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (repositoryContext) => IptvServiceCubit(
-                dio: repositoryContext.read<Dio>(),
-                imdbApi: repositoryContext.read<ImdbApi>(),
-                settingsCubit: repositoryContext.read<SettingsCubit>(),
-              )..initialize(repositoryContext.read<SettingsCubit>().state.providers),
-            ),
-            BlocProvider(
-              create: (blocContext) => MoviesCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
-            ),
-            BlocProvider(
-              create: (blocContext) => TvShowsCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
-            ),
-            BlocProvider(
-              create: (blocContext) => LiveCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
-            ),
-          ],
-          child: const App(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (repositoryContext) => Dio()),
+        RepositoryProvider(
+          create: (repositoryContext) => ImdbApi.create(baseUrl: Uri.parse('https://api.imdbapi.dev/')),
         ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (blocContext) => SettingsCubit()),
+          BlocProvider(
+            create: (blocContext) => IptvServiceCubit(
+              dio: blocContext.read<Dio>(),
+              imdbApi: blocContext.read<ImdbApi>(),
+              settingsCubit: blocContext.read<SettingsCubit>(),
+            )..initialize(blocContext.read<SettingsCubit>().state.providers),
+          ),
+          BlocProvider(create: (blocContext) => MoviesCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
+          BlocProvider(create: (blocContext) => TvShowsCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
+          BlocProvider(create: (blocContext) => LiveCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
+        ],
+        child: const App(),
       ),
     );
   }
