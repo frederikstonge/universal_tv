@@ -176,7 +176,7 @@ class M3uIptvProviderMapper extends SubClassMapperBase<M3uIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'm3u';
+  final dynamic discriminatorValue = IptvProviderType.m3u;
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
@@ -320,8 +320,8 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
     'order',
     _$order,
   );
-  static Uri _$url(XtreamIptvProvider v) => v.url;
-  static const Field<XtreamIptvProvider, Uri> _f$url = Field('url', _$url);
+  static String _$url(XtreamIptvProvider v) => v.url;
+  static const Field<XtreamIptvProvider, String> _f$url = Field('url', _$url);
   static String _$userName(XtreamIptvProvider v) => v.userName;
   static const Field<XtreamIptvProvider, String> _f$userName = Field(
     'userName',
@@ -365,7 +365,7 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'xtream';
+  final dynamic discriminatorValue = IptvProviderType.xtream;
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
@@ -456,7 +456,7 @@ abstract class XtreamIptvProviderCopyWith<
   $R call({
     String? name,
     int? order,
-    Uri? url,
+    String? url,
     String? userName,
     String? password,
     Duration? epgExpiration,
@@ -478,7 +478,7 @@ class _XtreamIptvProviderCopyWithImpl<$R, $Out>
   $R call({
     String? name,
     int? order,
-    Uri? url,
+    String? url,
     String? userName,
     String? password,
     Duration? epgExpiration,
@@ -527,8 +527,8 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
   static const Field<XmltvIptvProvider, String> _f$name = Field('name', _$name);
   static int _$order(XmltvIptvProvider v) => v.order;
   static const Field<XmltvIptvProvider, int> _f$order = Field('order', _$order);
-  static Uri _$url(XmltvIptvProvider v) => v.url;
-  static const Field<XmltvIptvProvider, Uri> _f$url = Field('url', _$url);
+  static String _$url(XmltvIptvProvider v) => v.url;
+  static const Field<XmltvIptvProvider, String> _f$url = Field('url', _$url);
   static Duration _$epgExpiration(XmltvIptvProvider v) => v.epgExpiration;
   static const Field<XmltvIptvProvider, Duration> _f$epgExpiration = Field(
     'epgExpiration',
@@ -560,7 +560,7 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'xmltv';
+  final dynamic discriminatorValue = IptvProviderType.xmltv;
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
@@ -646,7 +646,7 @@ abstract class XmltvIptvProviderCopyWith<
 >
     implements IptvProviderCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, int? order, Uri? url, Duration? epgExpiration});
+  $R call({String? name, int? order, String? url, Duration? epgExpiration});
   XmltvIptvProviderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -661,7 +661,7 @@ class _XmltvIptvProviderCopyWithImpl<$R, $Out>
   late final ClassMapperBase<XmltvIptvProvider> $mapper =
       XmltvIptvProviderMapper.ensureInitialized();
   @override
-  $R call({String? name, int? order, Uri? url, Duration? epgExpiration}) =>
+  $R call({String? name, int? order, String? url, Duration? epgExpiration}) =>
       $apply(
         FieldCopyWithData({
           if (name != null) #name: name,

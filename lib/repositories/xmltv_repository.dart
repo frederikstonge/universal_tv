@@ -22,7 +22,7 @@ class XmltvRepository extends XmltvBaseRepository {
 
   @override
   Future<void> load() async {
-    final value = await dio.getUri<String>(provider.url);
+    final value = await dio.get<String>(provider.url);
     final xmltvDataStream = parseXmltv(Stream.value(utf8.encode(value.data!)));
     final xmltvData = await xmltvDataStream.toList();
 

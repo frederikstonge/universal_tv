@@ -16,7 +16,7 @@ abstract class IptvProvider with IptvProviderMappable {
   IptvProvider({required this.id, required this.name, required this.type, required this.order});
 }
 
-@MappableClass(discriminatorValue: 'm3u')
+@MappableClass(discriminatorValue: IptvProviderType.m3u)
 class M3uIptvProvider extends IptvProvider with M3uIptvProviderMappable {
   final List<String> urls;
 
@@ -24,9 +24,9 @@ class M3uIptvProvider extends IptvProvider with M3uIptvProviderMappable {
     : super(id: const Uuid().v4(), type: IptvProviderType.m3u);
 }
 
-@MappableClass(discriminatorValue: 'xtream')
+@MappableClass(discriminatorValue: IptvProviderType.xtream)
 class XtreamIptvProvider extends IptvProvider with XtreamIptvProviderMappable {
-  final Uri url;
+  final String url;
   final String userName;
   final String password;
   final Duration epgExpiration;
@@ -41,9 +41,9 @@ class XtreamIptvProvider extends IptvProvider with XtreamIptvProviderMappable {
   }) : super(id: const Uuid().v4(), type: IptvProviderType.xtream);
 }
 
-@MappableClass(discriminatorValue: 'xmltv')
+@MappableClass(discriminatorValue: IptvProviderType.xmltv)
 class XmltvIptvProvider extends IptvProvider with XmltvIptvProviderMappable {
-  final Uri url;
+  final String url;
   final Duration epgExpiration;
 
   XmltvIptvProvider({required super.name, required super.order, required this.url, required this.epgExpiration})

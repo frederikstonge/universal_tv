@@ -20,7 +20,7 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   late final XtreamClient client;
 
   XtreamRepository({required this.provider}) {
-    portal = XtreamPortal(provider.url);
+    portal = XtreamPortal(Uri.parse(provider.url));
     credentials = XtreamCredentials(username: provider.userName, password: provider.password);
     client = XtreamClient(portal, credentials);
   }
