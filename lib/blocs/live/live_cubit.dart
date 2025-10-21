@@ -34,6 +34,10 @@ class LiveCubit extends Cubit<LiveState> {
   }
 
   Future<void> load() async {
+    if (iptvServiceCubit.state.status != StateStatus.success) {
+      return;
+    }
+
     emit(state.copyWith(status: StateStatus.loading));
     final liveChannelsFuture = iptvServiceCubit.getLiveStreams();
     final categoriesFuture = iptvServiceCubit.getLiveCategories();

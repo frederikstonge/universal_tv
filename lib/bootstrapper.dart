@@ -32,9 +32,15 @@ class Bootstrapper extends StatelessWidget {
               settingsCubit: blocContext.read<SettingsCubit>(),
             )..initialize(blocContext.read<SettingsCubit>().state.providers),
           ),
-          BlocProvider(create: (blocContext) => MoviesCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
-          BlocProvider(create: (blocContext) => TvShowsCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
-          BlocProvider(create: (blocContext) => LiveCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())),
+          BlocProvider(
+            create: (blocContext) => MoviesCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
+          ),
+          BlocProvider(
+            create: (blocContext) => TvShowsCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
+          ),
+          BlocProvider(
+            create: (blocContext) => LiveCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),
+          ),
         ],
         child: const App(),
       ),
