@@ -6,16 +6,17 @@ import 'package:forui/forui.dart';
 
 import '../../../../blocs/settings/iptv_provider.dart';
 
-class AddProvider extends StatefulWidget {
+class EditM3uProvider extends StatefulWidget {
   final M3uIptvProvider provider;
   final FutureOr<void> Function(IptvProvider provider) onSave;
-  const AddProvider({super.key, required this.provider, required this.onSave});
+  final FutureOr<void> Function(IptvProvider provider) onDelete;
+  const EditM3uProvider({super.key, required this.provider, required this.onSave, required this.onDelete});
 
   @override
-  State<AddProvider> createState() => _AddProviderState();
+  State<EditM3uProvider> createState() => _EditM3uProviderState();
 }
 
-class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin {
+class _EditM3uProviderState extends State<EditM3uProvider> with TickerProviderStateMixin {
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _nameController;
   late final TextEditingController _urlsController;
@@ -103,6 +104,15 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
                     }
                   : null,
               child: Text('Save provider'),
+            ),
+            SizedBox(height: 16),
+            FButton(
+              style: FButtonStyle.destructive(),
+              prefix: Icon(FIcons.trash),
+              onPress: () async {
+                widget.onDelete(widget.provider);
+              },
+              child: Text('Delete provider'),
             ),
           ],
         ),

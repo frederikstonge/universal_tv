@@ -176,7 +176,7 @@ class M3uIptvProviderMapper extends SubClassMapperBase<M3uIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = IptvProviderType.m3u;
+  final dynamic discriminatorValue = 'm3u';
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
@@ -365,7 +365,7 @@ class XtreamIptvProviderMapper extends SubClassMapperBase<XtreamIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = IptvProviderType.xtream;
+  final dynamic discriminatorValue = 'xtream';
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();
@@ -560,7 +560,7 @@ class XmltvIptvProviderMapper extends SubClassMapperBase<XmltvIptvProvider> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = IptvProviderType.xmltv;
+  final dynamic discriminatorValue = 'xmltv';
   @override
   late final ClassMapperBase superMapper =
       IptvProviderMapper.ensureInitialized();

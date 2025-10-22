@@ -31,6 +31,7 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
   void initState() {
     _formKey = GlobalKey<FormState>();
     _nameController = TextEditingController();
+    _urlsController = TextEditingController();
     _urlController = TextEditingController();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
@@ -43,6 +44,7 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
   void dispose() {
     _timePickerController.dispose();
     _nameController.dispose();
+    _urlsController.dispose();
     _urlController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
