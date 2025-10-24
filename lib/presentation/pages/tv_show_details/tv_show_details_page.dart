@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../blocs/tv_show_details/tv_show_details_cubit.dart';
 import '../../../blocs/tv_show_details/tv_show_details_state.dart';
@@ -100,7 +101,22 @@ class TvShowDetailsPage extends StatelessWidget {
                                         child: FButton(
                                           mainAxisSize: MainAxisSize.min,
                                           prefix: Icon(FIcons.play),
-                                          onPress: () {},
+                                          onPress: () {
+                                            GoRouter.of(context).pushNamed(
+                                              'tvShowPlayer',
+                                              pathParameters: {
+                                                'providerName': state.tvShow!.providerName,
+                                                'tvShowId': state.tvShow!.seriesId.toString(),
+                                              },
+                                              queryParameters: {
+                                                'season': state.selectedSeason.toString(),
+                                                'episode':
+                                                    (state.selectedEpisode?.episode ??
+                                                            state.tvShow!.seasons[state.selectedSeason]!.first.episode)
+                                                        .toString(),
+                                              },
+                                            );
+                                          },
                                           child: Text('Play'),
                                         ),
                                       ),

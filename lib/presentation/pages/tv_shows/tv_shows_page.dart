@@ -52,7 +52,6 @@ class TvShowsPage extends StatelessWidget {
                                     'tvShowId': entry.seriesId.toString(),
                                   },
                                 );
-                                //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
                               },
                             ),
                           );

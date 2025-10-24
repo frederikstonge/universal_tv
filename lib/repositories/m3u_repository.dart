@@ -154,10 +154,10 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<MovieItem>> getMovies() async {
-    final entries = _entries.where((e) => e.type == IptvType.movies).toList();
-    final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
+    final movieEntries = _entries.where((e) => e.type == IptvType.movies).toList();
+    final imdbIds = movieEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
     final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
-    final vodItems = entries.where((e) => e.type == IptvType.movies).map((e) {
+    final vodItems = movieEntries.map((e) {
       final imdbId = e.imdbId;
       final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
       return MovieItem(
@@ -174,12 +174,10 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<TvShowItem>> getTvShows() async {
-    final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
-    final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
+    final tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows).toList();
+    final imdbIds = tvShowEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
     final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
-    final seriesItems = entries.where((e) => e.type == IptvType.tvshows).groupListsBy((e) => e.groupTitle).entries.map((
-      e,
-    ) {
+    final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
       final imdbId = e.value.first.imdbId;
       final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
       final entry = e.value.first;
@@ -198,8 +196,8 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<LiveChannel>> getLiveStreams() async {
-    final entries = _entries.where((e) => e.type == IptvType.live).toList();
-    final liveChannels = entries.map((e) {
+    final liveEntries = _entries.where((e) => e.type == IptvType.live).toList();
+    final liveChannels = liveEntries.map((e) {
       return LiveChannel(
         streamId: e.id,
         name: e.name,
@@ -266,7 +264,7 @@ class M3uRepository extends StreamBaseRepository {
                           episode.seasonNumber,
                 );
                 return EpisodeDetails(
-                  id: entries.indexOf(episode),
+                  id: episode.id,
                   title: episodeImdbEntry?.title ?? episode.name,
                   season: episode.seasonNumber,
                   episode: episode.episodeNumber,

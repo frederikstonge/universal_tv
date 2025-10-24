@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
@@ -44,7 +45,8 @@ class LivePage extends StatelessWidget {
                               title: entry.name,
                               iconUrl: entry.logoUrl,
                               onTap: () async {
-                                //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
+                                context.read<LiveCubit>().selectChannel(entry);
+                                await GoRouter.of(context).pushNamed('livePlayer');
                               },
                             ),
                           );

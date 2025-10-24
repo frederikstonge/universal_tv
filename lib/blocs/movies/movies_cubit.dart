@@ -44,6 +44,9 @@ class MoviesCubit extends Cubit<MoviesState> {
 
     await Future.wait([moviesFuture, categoriesFuture]);
 
-    emit(state.copyWith(status: StateStatus.success, items: await moviesFuture, categories: await categoriesFuture));
+    final movies = await moviesFuture;
+    final categories = await categoriesFuture;
+
+    emit(state.copyWith(status: StateStatus.success, items: movies, categories: categories));
   }
 }

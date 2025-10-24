@@ -43,12 +43,19 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
     opt: true,
     def: const [],
   );
+  static LiveChannel? _$selectedChannel(LiveState v) => v.selectedChannel;
+  static const Field<LiveState, LiveChannel> _f$selectedChannel = Field(
+    'selectedChannel',
+    _$selectedChannel,
+    opt: true,
+  );
 
   @override
   final MappableFields<LiveState> fields = const {
     #status: _f$status,
     #items: _f$items,
     #categories: _f$categories,
+    #selectedChannel: _f$selectedChannel,
   };
 
   static LiveState _instantiate(DecodingData data) {
@@ -56,6 +63,7 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
       status: data.dec(_f$status),
       items: data.dec(_f$items),
       categories: data.dec(_f$categories),
+      selectedChannel: data.dec(_f$selectedChannel),
     );
   }
 
@@ -126,10 +134,12 @@ abstract class LiveStateCopyWith<$R, $In extends LiveState, $Out>
   get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
   get categories;
+  LiveChannelCopyWith<$R, LiveChannel, LiveChannel>? get selectedChannel;
   $R call({
     StateStatus? status,
     List<LiveChannel>? items,
     List<Category>? categories,
+    LiveChannel? selectedChannel,
   });
   LiveStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -165,15 +175,20 @@ class _LiveStateCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  LiveChannelCopyWith<$R, LiveChannel, LiveChannel>? get selectedChannel =>
+      $value.selectedChannel?.copyWith.$chain((v) => call(selectedChannel: v));
+  @override
   $R call({
     StateStatus? status,
     Object? items = $none,
     Object? categories = $none,
+    Object? selectedChannel = $none,
   }) => $apply(
     FieldCopyWithData({
       if (status != null) #status: status,
       if (items != $none) #items: items,
       if (categories != $none) #categories: categories,
+      if (selectedChannel != $none) #selectedChannel: selectedChannel,
     }),
   );
   @override
@@ -181,6 +196,7 @@ class _LiveStateCopyWithImpl<$R, $Out>
     status: data.get(#status, or: $value.status),
     items: data.get(#items, or: $value.items),
     categories: data.get(#categories, or: $value.categories),
+    selectedChannel: data.get(#selectedChannel, or: $value.selectedChannel),
   );
 
   @override

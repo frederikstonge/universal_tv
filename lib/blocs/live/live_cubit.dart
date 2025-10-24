@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/live_channel.dart';
 import '../iptv_service/iptv_service_cubit.dart';
 import '../state_status.dart';
 import 'live_state.dart';
@@ -44,8 +45,13 @@ class LiveCubit extends Cubit<LiveState> {
 
     await Future.wait([liveChannelsFuture, categoriesFuture]);
 
-    emit(
-      state.copyWith(status: StateStatus.success, items: await liveChannelsFuture, categories: await categoriesFuture),
-    );
+    final liveChannels = await liveChannelsFuture;
+    final categories = await categoriesFuture;
+
+    emit(state.copyWith(status: StateStatus.success, items: liveChannels, categories: categories));
+  }
+
+  void selectChannel(LiveChannel channel) {
+    emit(state.copyWith(selectedChannel: channel));
   }
 }

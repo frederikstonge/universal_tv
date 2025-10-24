@@ -44,6 +44,9 @@ class TvShowsCubit extends Cubit<TvShowsState> {
 
     await Future.wait([tvShowsFuture, categoriesFuture]);
 
-    emit(state.copyWith(status: StateStatus.success, items: await tvShowsFuture, categories: await categoriesFuture));
+    final tvShows = await tvShowsFuture;
+    final categories = await categoriesFuture;
+
+    emit(state.copyWith(status: StateStatus.success, items: tvShows, categories: categories));
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/episode_details.dart';
@@ -12,12 +13,25 @@ class TvShowDetailsCubit extends Cubit<TvShowDetailsState> {
 
   TvShowDetailsCubit({required this.iptvServiceCubit}) : super(TvShowDetailsState(status: StateStatus.initial));
 
-  Future<void> load(String providerName, int tvShowId) async {
+  Future<void> load(String providerName, int tvShowId, {int? initialSeason, int? initialEpisode}) async {
     emit(state.copyWith(status: StateStatus.loading));
     try {
       final tvShowDetails = await iptvServiceCubit.getTvShowDetails(providerName, tvShowId);
-      final selectedSeason = tvShowDetails?.seasons.keys.firstOrNull;
-      final selectedEpisode = tvShowDetails?.seasons[selectedSeason]?.firstOrNull;
+
+      if (initialSeason != null && (tvShowDetails?.seasons.containsKey(initialSeason) != true)) {
+        throw Exception('Season $initialSeason not found for TV show ID $tvShowId');
+      }
+
+      final selectedSeason = initialSeason ?? tvShowDetails?.seasons.keys.firstOrNull;
+
+      if (initialEpisode != null &&
+          (tvShowDetails?.seasons[selectedSeason]?.any((e) => e.episode == initialEpisode) != true)) {
+        throw Exception('Episode $initialEpisode not found in season $selectedSeason for TV show ID $tvShowId');
+      }
+
+      final selectedEpisode =
+          tvShowDetails?.seasons[selectedSeason]?.firstWhereOrNull((e) => e.episode == initialEpisode) ??
+          tvShowDetails?.seasons[selectedSeason]?.firstOrNull;
 
       emit(
         state.copyWith(

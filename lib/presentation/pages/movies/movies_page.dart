@@ -52,7 +52,6 @@ class MoviesPage extends StatelessWidget {
                                     'movieId': entry.streamId.toString(),
                                   },
                                 );
-                                //await GoRouter.of(context).pushNamed('player', extra: entry.seriesId);
                               },
                             ),
                           );

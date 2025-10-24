@@ -11,6 +11,7 @@ class LiveState with LiveStateMappable {
   final StateStatus status;
   final List<LiveChannel>? items;
   final List<Category>? categories;
+  final LiveChannel? selectedChannel;
 
-  LiveState({required this.status, this.items = const [], this.categories = const []});
+  LiveState({required this.status, this.items = const [], this.categories = const [], this.selectedChannel});
 }

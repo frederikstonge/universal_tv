@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../blocs/movie_details/movie_details_cubit.dart';
 import '../../../blocs/movie_details/movie_details_state.dart';
@@ -57,7 +58,15 @@ class MovieDetailsPage extends StatelessWidget {
                                       child: FButton(
                                         mainAxisSize: MainAxisSize.min,
                                         prefix: Icon(FIcons.play),
-                                        onPress: () {},
+                                        onPress: () {
+                                          GoRouter.of(context).pushNamed(
+                                            'moviePlayer',
+                                            pathParameters: {
+                                              'providerName': state.movie!.providerName,
+                                              'movieId': state.movie!.streamId.toString(),
+                                            },
+                                          );
+                                        },
                                         child: Text('Play'),
                                       ),
                                     ),

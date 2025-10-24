@@ -1,7 +1,13 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+
+import '../../../blocs/iptv_service/iptv_service_cubit.dart';
+import '../../../blocs/live/live_cubit.dart';
+import '../../../blocs/live/live_state.dart';
+import '../../../models/live_channel.dart';
 
 class LivePlayerPage extends StatefulWidget {
   const LivePlayerPage({super.key});
@@ -18,7 +24,11 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   void initState() {
     player = Player();
     videoController = VideoController(player);
-    player.open(Media(''));
+    final liveState = context.read<LiveCubit>().state;
+    if (liveState.selectedChannel != null) {
+      _playLiveChannel(liveState.selectedChannel!);
+    }
+
     super.initState();
   }
 
@@ -30,17 +40,34 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FScaffold(
-      header: FHeader.nested(
-        titleAlignment: AlignmentGeometry.bottomCenter,
-        prefixes: [
-          if (Navigator.of(context).canPop()) ...[
-            FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
+    return BlocListener<LiveCubit, LiveState>(
+      listener: (context, liveState) {
+        if (liveState.selectedChannel != null) {
+          _playLiveChannel(liveState.selectedChannel!);
+        }
+      },
+      child: FScaffold(
+        header: FHeader.nested(
+          titleAlignment: AlignmentGeometry.bottomCenter,
+          prefixes: [
+            if (Navigator.of(context).canPop()) ...[
+              FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
+            ],
           ],
-        ],
-        title: const Text('Player'),
+          title: const Text('Player'),
+        ),
+        child: Video(controller: videoController),
       ),
-      child: Video(controller: videoController),
     );
+  }
+
+  Future<void> _playLiveChannel(LiveChannel selectedChannel) async {
+    final url = await context.read<IptvServiceCubit>().getLiveUrl(
+      selectedChannel.providerName,
+      selectedChannel.streamId,
+    );
+    if (url != null) {
+      await player.open(Media(url));
+    }
   }
 }
