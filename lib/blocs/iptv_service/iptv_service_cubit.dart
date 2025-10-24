@@ -6,7 +6,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../blocs/settings/iptv_provider.dart';
 import '../../blocs/settings/settings_cubit.dart';
-import '../../generated/imdb_api/imdb_api.swagger.dart';
 import '../../models/category.dart';
 import '../../models/live_channel.dart';
 import '../../models/movie_details.dart';
@@ -14,6 +13,7 @@ import '../../models/movie_item.dart';
 import '../../models/tv_show_details.dart';
 import '../../models/tv_show_item.dart';
 import '../../repositories/base_repository.dart';
+import '../../repositories/imdb_repository.dart';
 import '../../repositories/m3u_repository.dart';
 import '../../repositories/stream_base_repository.dart';
 import '../../repositories/xmltv_repository.dart';
@@ -23,11 +23,11 @@ import 'iptv_service_state.dart';
 
 class IptvServiceCubit extends Cubit<IptvServiceState> {
   final Dio dio;
-  final ImdbApi imdbApi;
+  final ImdbRepository imdbRepository;
   final SettingsCubit settingsCubit;
   StreamSubscription? _settingsSubscription;
 
-  IptvServiceCubit({required this.dio, required this.imdbApi, required this.settingsCubit})
+  IptvServiceCubit({required this.dio, required this.imdbRepository, required this.settingsCubit})
     : super(IptvServiceState(status: StateStatus.initial)) {
     _settingsSubscription = settingsCubit.stream.listen((data) async {
       await _load(data.providers);
@@ -63,7 +63,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
           case IptvProviderType.xmltv:
             return XmltvRepository(provider: p as XmltvIptvProvider, dio: dio);
           case IptvProviderType.m3u:
-            return M3uRepository(provider: p as M3uIptvProvider, dio: dio, imdbApi: imdbApi);
+            return M3uRepository(provider: p as M3uIptvProvider, dio: dio, imdbRepository: imdbRepository);
         }
       }).toList();
 

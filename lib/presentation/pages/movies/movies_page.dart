@@ -21,7 +21,9 @@ class MoviesPage extends StatelessWidget {
             suffixes: [FButton.icon(onPress: () {}, child: const Icon(FIcons.search))],
           ),
           child: switch (state.status) {
-            StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
+            StateStatus.initial || StateStatus.loading => const Center(
+              child: Column(mainAxisSize: MainAxisSize.min, children: [FCircularProgress()]),
+            ),
             StateStatus.failure => const Center(child: Text('Failed to load movies')),
             StateStatus.success => ListView.separated(
               itemCount: state.categories?.length ?? 0,

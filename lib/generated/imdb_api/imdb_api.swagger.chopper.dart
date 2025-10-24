@@ -171,6 +171,8 @@ final class _$ImdbApi extends ImdbApi {
   Future<Response<ImdbapiListTitleReleaseDatesResponse>>
   _titlesTitleIdReleaseDatesGet({
     required String? titleId,
+    int? pageSize,
+    String? pageToken,
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
           'Retrieve the release dates associated with a specific title.',
@@ -184,10 +186,15 @@ final class _$ImdbApi extends ImdbApi {
     ),
   }) {
     final Uri $url = Uri.parse('/titles/${titleId}/releaseDates');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageSize': pageSize,
+      'pageToken': pageToken,
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      parameters: $params,
       tag: swaggerMetaData,
     );
     return client.send<
@@ -673,6 +680,40 @@ final class _$ImdbApi extends ImdbApi {
       ImdbapiListNameRelationshipsResponse,
       ImdbapiListNameRelationshipsResponse
     >($request);
+  }
+
+  @override
+  Future<Response<ImdbapiListNameTriviaResponse>> _namesNameIdTriviaGet({
+    required String? nameId,
+    int? pageSize,
+    String? pageToken,
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the trivia associated with a specific name.',
+      summary: 'List trivia for a name',
+      operationId: 'IMDbAPIService_ListNameTrivia',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
+  }) {
+    final Uri $url = Uri.parse('/names/${nameId}/trivia');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'pageSize': pageSize,
+      'pageToken': pageToken,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+      tag: swaggerMetaData,
+    );
+    return client
+        .send<ImdbapiListNameTriviaResponse, ImdbapiListNameTriviaResponse>(
+          $request,
+        );
   }
 
   @override

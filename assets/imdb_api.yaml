@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: IMDbAPI
   description: IMDb API for accessing movie and TV show data
-  version: 2.7.7
+  version: 2.7.12
   contact:
     name: Telegram Group
     url: https://t.me/imdbapi
@@ -320,6 +320,21 @@ paths:
           description: Required. IMDb title ID in the format "tt1234567".
           in: path
           required: true
+          type: string
+        - name: pageSize
+          description: |-
+            Optional. The maximum number of credits to return per page.
+            If not specified, a default value will be used.
+
+            The value must be between 1 and 50. Default is 20.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageToken
+          description: Optional. Token for pagination, if applicable.
+          in: query
+          required: false
           type: string
       tags:
         - Title
@@ -819,6 +834,43 @@ paths:
           type: string
       tags:
         - Name
+  /names/{nameId}/trivia:
+    get:
+      summary: List trivia for a name
+      description: Retrieve the trivia associated with a specific name.
+      operationId: IMDbAPIService_ListNameTrivia
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/imdbapiListNameTriviaResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: nameId
+          description: Required. IMDB name ID in the format "nm1234567".
+          in: path
+          required: true
+          type: string
+        - name: pageSize
+          description: |-
+            Optional. The maximum number of trivia entries to return per page.
+            If not specified, a default value will be used.
+
+            The value must be between 1 and 50. Default is 20.
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageToken
+          description: Optional. Token for pagination, if applicable.
+          in: query
+          required: false
+          type: string
+      tags:
+        - Name
   /names:batchGet:
     get:
       summary: Batch get names by IDs
@@ -1244,6 +1296,23 @@ definitions:
           $ref: '#/definitions/imdbapiNameRelationship'
         description: List of relationships associated with the name.
     description: Response message for listing relationships associated with a name.
+  imdbapiListNameTriviaResponse:
+    type: object
+    properties:
+      triviaEntries:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/imdbapiNameTrivia'
+        description: List of trivia entries associated with the name.
+      totalCount:
+        type: integer
+        format: int32
+        description: Total count of trivia entries associated with the name.
+      nextPageToken:
+        type: string
+        description: Token for the next page of results, if applicable.
+    description: Response message for listing trivia associated with a name.
   imdbapiListStarMetersResponse:
     type: object
     properties:
@@ -1382,6 +1451,9 @@ definitions:
           type: object
           $ref: '#/definitions/imdbapiReleaseDate'
         description: List of release dates associated with the title.
+      nextPageToken:
+        type: string
+        description: Token for the next page of results, if applicable.
     description: Response message for listing release dates associated with a title.
   imdbapiListTitleSeasonsResponse:
     type: object
@@ -1554,6 +1626,24 @@ definitions:
       in the IMDb database, such as family members, spouses, parents, children, etc.
       Each relationship includes the related name, the type of relationship,
       and any additional attributes associated with the relationship.
+  imdbapiNameTrivia:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The unique identifier for the trivia.
+      text:
+        type: string
+        description: The trivia body text.
+      interestCount:
+        type: integer
+        format: int32
+        description: The number of users who have expressed interest in this trivia.
+      voteCount:
+        type: integer
+        format: int32
+        description: The number of votes this trivia has received.
+    description: NameTrivia represents a trivia fact about a person (name).
   imdbapiOpeningWeekendGross:
     type: object
     properties:
@@ -1860,7 +1950,7 @@ definitions:
     properties:
       '@type':
         type: string
-    additionalProperties: {}
+    additionalProperties: { }
   rpcStatus:
     type: object
     properties:

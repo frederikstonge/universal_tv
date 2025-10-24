@@ -7,29 +7,27 @@ import 'package:muxa_xtream/muxa_xtream.dart';
 import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
 import '../extensions/m3u_entry_extensions.dart';
-import '../generated/imdb_api/imdb_api.swagger.dart';
 import '../models/category.dart';
 import '../models/episode_details.dart';
 import '../models/live_channel.dart';
 import '../models/movie_details.dart';
 import '../models/movie_item.dart';
-import '../models/repositories/imdb_entry.dart';
 import '../models/repositories/m3u_entry.dart';
 import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
+import 'imdb_repository.dart';
 import 'stream_base_repository.dart';
 
 class M3uRepository extends StreamBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
-  final ImdbApi imdbApi;
+  final ImdbRepository imdbRepository;
 
   final List<M3uEntry> _entries = [];
-  final List<ImdbEntry> _imdbEntries = [];
 
   int id = 0;
 
-  M3uRepository({required this.provider, required this.dio, required this.imdbApi});
+  M3uRepository({required this.provider, required this.dio, required this.imdbRepository});
 
   @override
   String get name => provider.name;
@@ -37,6 +35,7 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<void> load() async {
     id = 0;
+    await imdbRepository.clearCache();
     _entries.clear();
     for (final link in provider.urls) {
       if (link.contains('{page}')) {
@@ -84,17 +83,8 @@ class M3uRepository extends StreamBaseRepository {
         )
         .toList();
 
-    final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toSet().toList();
-
-    for (final ids in imdbTitlesIds.slices(5)) {
-      try {
-        final result = await imdbApi.titlesBatchGetGet(titleIds: ids);
-        final titles = result.body?.titles?.map((e) => ImdbEntry.fromImdbapiTitle(e)).toList() ?? [];
-        _imdbEntries.addAll(titles);
-      } catch (e) {
-        // ignore errors from imdb api
-      }
-    }
+    final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toList();
+    await imdbRepository.preload(imdbTitlesIds);
 
     _entries.addAll(entries);
     return true;
@@ -103,7 +93,6 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<void> dispose() async {
     _entries.clear();
-    _imdbEntries.clear();
   }
 
   @override
@@ -125,7 +114,7 @@ class M3uRepository extends StreamBaseRepository {
   Future<List<Category>> getMovieCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.movies).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
+    final imdbEntries = await imdbRepository.getEntries(imdbIds);
 
     return imdbEntries
         .expand((e) => e.genres ?? [])
@@ -140,7 +129,7 @@ class M3uRepository extends StreamBaseRepository {
   Future<List<Category>> getTvShowCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
     final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
+    final imdbEntries = await imdbRepository.getEntries(imdbIds);
 
     return imdbEntries
         .expand((e) => e.genres ?? [])
@@ -156,7 +145,7 @@ class M3uRepository extends StreamBaseRepository {
   Future<List<MovieItem>> getMovies() async {
     final movieEntries = _entries.where((e) => e.type == IptvType.movies).toList();
     final imdbIds = movieEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
+    final imdbEntries = await imdbRepository.getEntries(imdbIds);
     final vodItems = movieEntries.map((e) {
       final imdbId = e.imdbId;
       final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
@@ -176,7 +165,7 @@ class M3uRepository extends StreamBaseRepository {
   Future<List<TvShowItem>> getTvShows() async {
     final tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows).toList();
     final imdbIds = tvShowEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = _imdbEntries.where((element) => imdbIds.contains(element.id)).toList();
+    final imdbEntries = await imdbRepository.getEntries(imdbIds);
     final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
       final imdbId = e.value.first.imdbId;
       final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
@@ -219,7 +208,7 @@ class M3uRepository extends StreamBaseRepository {
     }
 
     final imdbId = entry.imdbId;
-    final imdbEntry = _imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
+    final imdbEntry = imdbId != null ? await imdbRepository.getEntry(imdbId) : null;
 
     return MovieDetails(
       streamId: vodId,
@@ -243,10 +232,10 @@ class M3uRepository extends StreamBaseRepository {
     final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
 
     final imdbId = entry.imdbId;
-    final imdbEntry = _imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
+    final imdbEntry = imdbId != null ? await imdbRepository.getEntry(imdbId) : null;
 
-    final episodesInfo = await imdbApi.titlesTitleIdEpisodesGet(titleId: imdbId);
-    final seasons = episodesInfo.body?.episodes?.groupListsBy((g) => g.season);
+    final episodesInfo = imdbId != null ? await imdbRepository.getEpisodeDetails(imdbId) : null;
+    final seasons = episodesInfo?.episodes?.groupListsBy((g) => g.season);
 
     return TvShowDetails(
       seriesId: seriesId,
@@ -257,7 +246,7 @@ class M3uRepository extends StreamBaseRepository {
             (s, e) => MapEntry(
               s,
               e.map((episode) {
-                final episodeImdbEntry = episodesInfo.body?.episodes?.firstWhereOrNull(
+                final episodeImdbEntry = episodesInfo?.episodes?.firstWhereOrNull(
                   (ep) =>
                       ep.episodeNumber == episode.episodeNumber &&
                       (int.tryParse(ep.season ?? '') ?? seasons?.keys.toList().indexOf(ep.season)) ==

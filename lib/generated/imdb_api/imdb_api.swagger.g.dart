@@ -421,6 +421,26 @@ Map<String, dynamic> _$ImdbapiListNameRelationshipsResponseToJson(
   'relationships': instance.relationships?.map((e) => e.toJson()).toList(),
 };
 
+ImdbapiListNameTriviaResponse _$ImdbapiListNameTriviaResponseFromJson(
+  Map<String, dynamic> json,
+) => ImdbapiListNameTriviaResponse(
+  triviaEntries:
+      (json['triviaEntries'] as List<dynamic>?)
+          ?.map((e) => ImdbapiNameTrivia.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  totalCount: (json['totalCount'] as num?)?.toInt(),
+  nextPageToken: json['nextPageToken'] as String?,
+);
+
+Map<String, dynamic> _$ImdbapiListNameTriviaResponseToJson(
+  ImdbapiListNameTriviaResponse instance,
+) => <String, dynamic>{
+  'triviaEntries': instance.triviaEntries?.map((e) => e.toJson()).toList(),
+  'totalCount': instance.totalCount,
+  'nextPageToken': instance.nextPageToken,
+};
+
 ImdbapiListStarMetersResponse _$ImdbapiListStarMetersResponseFromJson(
   Map<String, dynamic> json,
 ) => ImdbapiListStarMetersResponse(
@@ -612,12 +632,14 @@ _$ImdbapiListTitleReleaseDatesResponseFromJson(Map<String, dynamic> json) =>
               )
               .toList() ??
           [],
+      nextPageToken: json['nextPageToken'] as String?,
     );
 
 Map<String, dynamic> _$ImdbapiListTitleReleaseDatesResponseToJson(
   ImdbapiListTitleReleaseDatesResponse instance,
 ) => <String, dynamic>{
   'releaseDates': instance.releaseDates?.map((e) => e.toJson()).toList(),
+  'nextPageToken': instance.nextPageToken,
 };
 
 ImdbapiListTitleSeasonsResponse _$ImdbapiListTitleSeasonsResponseFromJson(
@@ -792,6 +814,22 @@ Map<String, dynamic> _$ImdbapiNameRelationshipToJson(
   'relationType': instance.relationType,
   'attributes': instance.attributes,
 };
+
+ImdbapiNameTrivia _$ImdbapiNameTriviaFromJson(Map<String, dynamic> json) =>
+    ImdbapiNameTrivia(
+      id: json['id'] as String?,
+      text: json['text'] as String?,
+      interestCount: (json['interestCount'] as num?)?.toInt(),
+      voteCount: (json['voteCount'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$ImdbapiNameTriviaToJson(ImdbapiNameTrivia instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'text': instance.text,
+      'interestCount': instance.interestCount,
+      'voteCount': instance.voteCount,
+    };
 
 ImdbapiOpeningWeekendGross _$ImdbapiOpeningWeekendGrossFromJson(
   Map<String, dynamic> json,

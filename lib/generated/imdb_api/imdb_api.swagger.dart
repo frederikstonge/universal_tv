@@ -269,22 +269,36 @@ abstract class ImdbApi extends ChopperService {
 
   ///List release dates for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
+  ///@param pageSize Optional. The maximum number of credits to return per page. If not specified, a default value will be used.  The value must be between 1 and 50. Default is 20.
+  ///@param pageToken Optional. Token for pagination, if applicable.
   Future<chopper.Response<ImdbapiListTitleReleaseDatesResponse>>
-  titlesTitleIdReleaseDatesGet({required String? titleId}) {
+  titlesTitleIdReleaseDatesGet({
+    required String? titleId,
+    int? pageSize,
+    String? pageToken,
+  }) {
     generatedMapping.putIfAbsent(
       ImdbapiListTitleReleaseDatesResponse,
       () => ImdbapiListTitleReleaseDatesResponse.fromJsonFactory,
     );
 
-    return _titlesTitleIdReleaseDatesGet(titleId: titleId);
+    return _titlesTitleIdReleaseDatesGet(
+      titleId: titleId,
+      pageSize: pageSize,
+      pageToken: pageToken,
+    );
   }
 
   ///List release dates for a title
   ///@param titleId Required. IMDb title ID in the format "tt1234567".
+  ///@param pageSize Optional. The maximum number of credits to return per page. If not specified, a default value will be used.  The value must be between 1 and 50. Default is 20.
+  ///@param pageToken Optional. Token for pagination, if applicable.
   @GET(path: '/titles/{titleId}/releaseDates')
   Future<chopper.Response<ImdbapiListTitleReleaseDatesResponse>>
   _titlesTitleIdReleaseDatesGet({
     @Path('titleId') required String? titleId,
+    @Query('pageSize') int? pageSize,
+    @Query('pageToken') String? pageToken,
     @chopper.Tag()
     SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
       description:
@@ -894,6 +908,50 @@ abstract class ImdbApi extends ChopperService {
           'Retrieve the relationships associated with a specific name.',
       summary: 'List relationships for a name',
       operationId: 'IMDbAPIService_ListNameRelationships',
+      consumes: [],
+      produces: [],
+      security: [],
+      tags: ["Name"],
+      deprecated: false,
+    ),
+  });
+
+  ///List trivia for a name
+  ///@param nameId Required. IMDB name ID in the format "nm1234567".
+  ///@param pageSize Optional. The maximum number of trivia entries to return per page. If not specified, a default value will be used.  The value must be between 1 and 50. Default is 20.
+  ///@param pageToken Optional. Token for pagination, if applicable.
+  Future<chopper.Response<ImdbapiListNameTriviaResponse>> namesNameIdTriviaGet({
+    required String? nameId,
+    int? pageSize,
+    String? pageToken,
+  }) {
+    generatedMapping.putIfAbsent(
+      ImdbapiListNameTriviaResponse,
+      () => ImdbapiListNameTriviaResponse.fromJsonFactory,
+    );
+
+    return _namesNameIdTriviaGet(
+      nameId: nameId,
+      pageSize: pageSize,
+      pageToken: pageToken,
+    );
+  }
+
+  ///List trivia for a name
+  ///@param nameId Required. IMDB name ID in the format "nm1234567".
+  ///@param pageSize Optional. The maximum number of trivia entries to return per page. If not specified, a default value will be used.  The value must be between 1 and 50. Default is 20.
+  ///@param pageToken Optional. Token for pagination, if applicable.
+  @GET(path: '/names/{nameId}/trivia')
+  Future<chopper.Response<ImdbapiListNameTriviaResponse>>
+  _namesNameIdTriviaGet({
+    @Path('nameId') required String? nameId,
+    @Query('pageSize') int? pageSize,
+    @Query('pageToken') String? pageToken,
+    @chopper.Tag()
+    SwaggerMetaData swaggerMetaData = const SwaggerMetaData(
+      description: 'Retrieve the trivia associated with a specific name.',
+      summary: 'List trivia for a name',
+      operationId: 'IMDbAPIService_ListNameTrivia',
       consumes: [],
       produces: [],
       security: [],
@@ -2664,6 +2722,91 @@ extension $ImdbapiListNameRelationshipsResponseExtension
 }
 
 @JsonSerializable(explicitToJson: true)
+class ImdbapiListNameTriviaResponse {
+  const ImdbapiListNameTriviaResponse({
+    this.triviaEntries,
+    this.totalCount,
+    this.nextPageToken,
+  });
+
+  factory ImdbapiListNameTriviaResponse.fromJson(Map<String, dynamic> json) =>
+      _$ImdbapiListNameTriviaResponseFromJson(json);
+
+  static const toJsonFactory = _$ImdbapiListNameTriviaResponseToJson;
+  Map<String, dynamic> toJson() => _$ImdbapiListNameTriviaResponseToJson(this);
+
+  @JsonKey(name: 'triviaEntries', defaultValue: <ImdbapiNameTrivia>[])
+  final List<ImdbapiNameTrivia>? triviaEntries;
+  @JsonKey(name: 'totalCount')
+  final int? totalCount;
+  @JsonKey(name: 'nextPageToken')
+  final String? nextPageToken;
+  static const fromJsonFactory = _$ImdbapiListNameTriviaResponseFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ImdbapiListNameTriviaResponse &&
+            (identical(other.triviaEntries, triviaEntries) ||
+                const DeepCollectionEquality().equals(
+                  other.triviaEntries,
+                  triviaEntries,
+                )) &&
+            (identical(other.totalCount, totalCount) ||
+                const DeepCollectionEquality().equals(
+                  other.totalCount,
+                  totalCount,
+                )) &&
+            (identical(other.nextPageToken, nextPageToken) ||
+                const DeepCollectionEquality().equals(
+                  other.nextPageToken,
+                  nextPageToken,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(triviaEntries) ^
+      const DeepCollectionEquality().hash(totalCount) ^
+      const DeepCollectionEquality().hash(nextPageToken) ^
+      runtimeType.hashCode;
+}
+
+extension $ImdbapiListNameTriviaResponseExtension
+    on ImdbapiListNameTriviaResponse {
+  ImdbapiListNameTriviaResponse copyWith({
+    List<ImdbapiNameTrivia>? triviaEntries,
+    int? totalCount,
+    String? nextPageToken,
+  }) {
+    return ImdbapiListNameTriviaResponse(
+      triviaEntries: triviaEntries ?? this.triviaEntries,
+      totalCount: totalCount ?? this.totalCount,
+      nextPageToken: nextPageToken ?? this.nextPageToken,
+    );
+  }
+
+  ImdbapiListNameTriviaResponse copyWithWrapped({
+    Wrapped<List<ImdbapiNameTrivia>?>? triviaEntries,
+    Wrapped<int?>? totalCount,
+    Wrapped<String?>? nextPageToken,
+  }) {
+    return ImdbapiListNameTriviaResponse(
+      triviaEntries: (triviaEntries != null
+          ? triviaEntries.value
+          : this.triviaEntries),
+      totalCount: (totalCount != null ? totalCount.value : this.totalCount),
+      nextPageToken: (nextPageToken != null
+          ? nextPageToken.value
+          : this.nextPageToken),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class ImdbapiListStarMetersResponse {
   const ImdbapiListStarMetersResponse({this.names, this.nextPageToken});
 
@@ -3324,7 +3467,10 @@ extension $ImdbapiListTitleParentsGuideResponseExtension
 
 @JsonSerializable(explicitToJson: true)
 class ImdbapiListTitleReleaseDatesResponse {
-  const ImdbapiListTitleReleaseDatesResponse({this.releaseDates});
+  const ImdbapiListTitleReleaseDatesResponse({
+    this.releaseDates,
+    this.nextPageToken,
+  });
 
   factory ImdbapiListTitleReleaseDatesResponse.fromJson(
     Map<String, dynamic> json,
@@ -3336,6 +3482,8 @@ class ImdbapiListTitleReleaseDatesResponse {
 
   @JsonKey(name: 'releaseDates', defaultValue: <ImdbapiReleaseDate>[])
   final List<ImdbapiReleaseDate>? releaseDates;
+  @JsonKey(name: 'nextPageToken')
+  final String? nextPageToken;
   static const fromJsonFactory = _$ImdbapiListTitleReleaseDatesResponseFromJson;
 
   @override
@@ -3346,6 +3494,11 @@ class ImdbapiListTitleReleaseDatesResponse {
                 const DeepCollectionEquality().equals(
                   other.releaseDates,
                   releaseDates,
+                )) &&
+            (identical(other.nextPageToken, nextPageToken) ||
+                const DeepCollectionEquality().equals(
+                  other.nextPageToken,
+                  nextPageToken,
                 )));
   }
 
@@ -3354,26 +3507,34 @@ class ImdbapiListTitleReleaseDatesResponse {
 
   @override
   int get hashCode =>
-      const DeepCollectionEquality().hash(releaseDates) ^ runtimeType.hashCode;
+      const DeepCollectionEquality().hash(releaseDates) ^
+      const DeepCollectionEquality().hash(nextPageToken) ^
+      runtimeType.hashCode;
 }
 
 extension $ImdbapiListTitleReleaseDatesResponseExtension
     on ImdbapiListTitleReleaseDatesResponse {
   ImdbapiListTitleReleaseDatesResponse copyWith({
     List<ImdbapiReleaseDate>? releaseDates,
+    String? nextPageToken,
   }) {
     return ImdbapiListTitleReleaseDatesResponse(
       releaseDates: releaseDates ?? this.releaseDates,
+      nextPageToken: nextPageToken ?? this.nextPageToken,
     );
   }
 
   ImdbapiListTitleReleaseDatesResponse copyWithWrapped({
     Wrapped<List<ImdbapiReleaseDate>?>? releaseDates,
+    Wrapped<String?>? nextPageToken,
   }) {
     return ImdbapiListTitleReleaseDatesResponse(
       releaseDates: (releaseDates != null
           ? releaseDates.value
           : this.releaseDates),
+      nextPageToken: (nextPageToken != null
+          ? nextPageToken.value
+          : this.nextPageToken),
     );
   }
 }
@@ -4096,6 +4257,95 @@ extension $ImdbapiNameRelationshipExtension on ImdbapiNameRelationship {
           ? relationType.value
           : this.relationType),
       attributes: (attributes != null ? attributes.value : this.attributes),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ImdbapiNameTrivia {
+  const ImdbapiNameTrivia({
+    this.id,
+    this.text,
+    this.interestCount,
+    this.voteCount,
+  });
+
+  factory ImdbapiNameTrivia.fromJson(Map<String, dynamic> json) =>
+      _$ImdbapiNameTriviaFromJson(json);
+
+  static const toJsonFactory = _$ImdbapiNameTriviaToJson;
+  Map<String, dynamic> toJson() => _$ImdbapiNameTriviaToJson(this);
+
+  @JsonKey(name: 'id')
+  final String? id;
+  @JsonKey(name: 'text')
+  final String? text;
+  @JsonKey(name: 'interestCount')
+  final int? interestCount;
+  @JsonKey(name: 'voteCount')
+  final int? voteCount;
+  static const fromJsonFactory = _$ImdbapiNameTriviaFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ImdbapiNameTrivia &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.text, text) ||
+                const DeepCollectionEquality().equals(other.text, text)) &&
+            (identical(other.interestCount, interestCount) ||
+                const DeepCollectionEquality().equals(
+                  other.interestCount,
+                  interestCount,
+                )) &&
+            (identical(other.voteCount, voteCount) ||
+                const DeepCollectionEquality().equals(
+                  other.voteCount,
+                  voteCount,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(text) ^
+      const DeepCollectionEquality().hash(interestCount) ^
+      const DeepCollectionEquality().hash(voteCount) ^
+      runtimeType.hashCode;
+}
+
+extension $ImdbapiNameTriviaExtension on ImdbapiNameTrivia {
+  ImdbapiNameTrivia copyWith({
+    String? id,
+    String? text,
+    int? interestCount,
+    int? voteCount,
+  }) {
+    return ImdbapiNameTrivia(
+      id: id ?? this.id,
+      text: text ?? this.text,
+      interestCount: interestCount ?? this.interestCount,
+      voteCount: voteCount ?? this.voteCount,
+    );
+  }
+
+  ImdbapiNameTrivia copyWithWrapped({
+    Wrapped<String?>? id,
+    Wrapped<String?>? text,
+    Wrapped<int?>? interestCount,
+    Wrapped<int?>? voteCount,
+  }) {
+    return ImdbapiNameTrivia(
+      id: (id != null ? id.value : this.id),
+      text: (text != null ? text.value : this.text),
+      interestCount: (interestCount != null
+          ? interestCount.value
+          : this.interestCount),
+      voteCount: (voteCount != null ? voteCount.value : this.voteCount),
     );
   }
 }
