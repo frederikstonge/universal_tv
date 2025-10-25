@@ -43,16 +43,6 @@ class ImdbRepository {
     return null;
   }
 
-  Future<List<ImdbEntry>> getEntries(List<String> imdbIds) async {
-    final box = await cacheBox;
-    final entries = box.values.where((e) => imdbIds.contains(e.id)).toList();
-    final idsToFetch = imdbIds.toSet().difference(entries.map((e) => e.id).toSet()).toList();
-    final fetchedEntries = await preload(idsToFetch);
-    entries.addAll(fetchedEntries);
-
-    return entries;
-  }
-
   Future<ImdbEpisodesEntry?> getEpisodeDetails(String imdbId) async {
     // This method can be expanded to fetch and cache episode details if needed
     try {
@@ -69,7 +59,7 @@ class ImdbRepository {
     return null;
   }
 
-  Future<List<ImdbEntry>> preload(List<String> imdbIds) async {
+  Future<List<ImdbEntry>> getEntries(List<String> imdbIds) async {
     final box = await cacheBox;
     final imdbTitlesIds = imdbIds.toSet().toList().where((id) => !box.containsKey(_getCacheKey(id))).toList();
 

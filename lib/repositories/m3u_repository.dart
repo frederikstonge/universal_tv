@@ -84,7 +84,7 @@ class M3uRepository extends StreamBaseRepository {
         .toList();
 
     final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toList();
-    await imdbRepository.preload(imdbTitlesIds);
+    await imdbRepository.getEntries(imdbTitlesIds);
 
     _entries.addAll(entries);
     return true;
