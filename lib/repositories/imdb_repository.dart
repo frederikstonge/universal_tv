@@ -29,6 +29,10 @@ class ImdbRepository {
         final imdbEntry = ImdbEntry.fromImdbapiTitle(response.body!);
         await box.put(cacheKey, imdbEntry);
         return imdbEntry;
+      } else {
+        if (kDebugMode) {
+          debugPrint('ImdbRepository preload - title not found: $imdbId');
+        }
       }
     } catch (e) {
       if (kDebugMode) {

@@ -24,10 +24,8 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   void initState() {
     player = Player();
     videoController = VideoController(player);
-    final liveState = context.read<LiveCubit>().state;
-    if (liveState.selectedChannel != null) {
-      _playLiveChannel(liveState.selectedChannel!);
-    }
+    final liveCubit = context.read<LiveCubit>();
+    _playLiveChannel(liveCubit.state.selectedChannel);
 
     super.initState();
   }
@@ -42,9 +40,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   Widget build(BuildContext context) {
     return BlocListener<LiveCubit, LiveState>(
       listener: (context, liveState) {
-        if (liveState.selectedChannel != null) {
-          _playLiveChannel(liveState.selectedChannel!);
-        }
+        _playLiveChannel(liveState.selectedChannel);
       },
       child: FScaffold(
         header: FHeader.nested(
@@ -61,11 +57,15 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
     );
   }
 
-  Future<void> _playLiveChannel(LiveChannel selectedChannel) async {
-    final url = await context.read<IptvServiceCubit>().getLiveUrl(
-      selectedChannel.providerName,
-      selectedChannel.streamId,
-    );
+  Future<void> _playLiveChannel(LiveChannel? selectedChannel) async {
+    final iptvServiceCubit = context.read<IptvServiceCubit>();
+    if (selectedChannel == null) {
+      await Navigator.of(context).maybePop();
+      return;
+    }
+
+    final url = await iptvServiceCubit.getLiveUrl(selectedChannel.providerName, selectedChannel.streamId);
+
     if (url != null) {
       await player.open(Media(url));
     }
