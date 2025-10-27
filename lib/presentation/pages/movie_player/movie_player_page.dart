@@ -42,13 +42,13 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MovieDetailsCubit, MovieDetailsState>(
+    return BlocConsumer<MovieDetailsCubit, MovieDetailsState>(
       listener: (context, movieState) {
         if (movieState.status == StateStatus.success && movieState.movie != null) {
           _playMovie(movieState.movie!);
         }
       },
-      child: FScaffold(
+      builder: (context, movieState) => FScaffold(
         header: FHeader.nested(
           titleAlignment: AlignmentGeometry.bottomCenter,
           prefixes: [
@@ -56,7 +56,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
             ],
           ],
-          title: const Text('Player'),
+          title: movieState.movie != null ? Text(movieState.movie!.name) : const Text('No Movie Selected'),
         ),
         child: Video(controller: videoController),
       ),

@@ -38,11 +38,11 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LiveCubit, LiveState>(
+    return BlocConsumer<LiveCubit, LiveState>(
       listener: (context, liveState) {
         _playLiveChannel(liveState.selectedChannel);
       },
-      child: FScaffold(
+      builder: (context, liveState) => FScaffold(
         header: FHeader.nested(
           titleAlignment: AlignmentGeometry.bottomCenter,
           prefixes: [
@@ -50,7 +50,9 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
               FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
             ],
           ],
-          title: const Text('Player'),
+          title: liveState.selectedChannel != null
+              ? Text(liveState.selectedChannel!.name)
+              : const Text('No Channel Selected'),
         ),
         child: Video(controller: videoController),
       ),

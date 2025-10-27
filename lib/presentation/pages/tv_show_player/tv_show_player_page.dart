@@ -44,7 +44,7 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TvShowDetailsCubit, TvShowDetailsState>(
+    return BlocConsumer<TvShowDetailsCubit, TvShowDetailsState>(
       listener: (context, tvShowState) {
         if (tvShowState.status == StateStatus.success &&
             tvShowState.tvShow != null &&
@@ -52,7 +52,7 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
           _playTvShow(tvShowState.tvShow!, tvShowState.selectedEpisode!);
         }
       },
-      child: FScaffold(
+      builder: (context, tvShowState) => FScaffold(
         header: FHeader.nested(
           titleAlignment: AlignmentGeometry.bottomCenter,
           prefixes: [
@@ -60,7 +60,9 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
               FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
             ],
           ],
-          title: const Text('Player'),
+          title: tvShowState.selectedEpisode != null
+              ? Text(tvShowState.selectedEpisode!.title)
+              : const Text('No Episode Selected'),
         ),
         child: Video(controller: videoController),
       ),
