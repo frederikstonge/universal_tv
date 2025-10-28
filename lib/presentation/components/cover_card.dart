@@ -24,39 +24,41 @@ class _CoverCardState extends State<CoverCard> {
       onPress: widget.onTap,
       child: AspectRatio(
         aspectRatio: 3 / 4,
-        child: FCard(
-          style: (style) => style.copyWith(
-            decoration: style.decoration.copyWith(
-              border: isFocused ? Border.all(width: 3, color: FTheme.of(context).colors.primary) : null,
-              image: widget.posterUrl != null
-                  ? DecorationImage(image: CachedNetworkImageProvider(widget.posterUrl!), fit: BoxFit.cover)
-                  : null,
-              backgroundBlendMode: widget.posterUrl != null ? BlendMode.darken : null,
+        child: FFocusedOutline(
+          focused: isFocused,
+          child: FCard(
+            style: (style) => style.copyWith(
+              decoration: style.decoration.copyWith(
+                image: widget.posterUrl != null
+                    ? DecorationImage(image: CachedNetworkImageProvider(widget.posterUrl!), fit: BoxFit.cover)
+                    : null,
+                backgroundBlendMode: widget.posterUrl != null ? BlendMode.darken : null,
+              ),
             ),
+            image: widget.iconUrl != null
+                ? Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CachedNetworkImage(
+                        height: 40,
+                        width: 40,
+                        cacheKey: widget.iconUrl!,
+                        imageUrl: widget.iconUrl!,
+                        alignment: Alignment.center,
+                        progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
+                            ? FDeterminateProgress(value: downloadProgress.progress!)
+                            : FProgress(),
+                        errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                      ),
+                    ],
+                  )
+                : null,
+            title: isFocused || widget.iconUrl != null
+                ? Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis)
+                : null,
+            subtitle: isFocused || widget.iconUrl != null ? const Icon(FIcons.play) : null,
           ),
-          image: widget.iconUrl != null
-              ? Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CachedNetworkImage(
-                      height: 40,
-                      width: 40,
-                      cacheKey: widget.iconUrl!,
-                      imageUrl: widget.iconUrl!,
-                      alignment: Alignment.center,
-                      progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
-                          ? FDeterminateProgress(value: downloadProgress.progress!)
-                          : FProgress(),
-                      errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
-                    ),
-                  ],
-                )
-              : null,
-          title: isFocused || widget.iconUrl != null
-              ? Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis)
-              : null,
-          subtitle: isFocused || widget.iconUrl != null ? const Icon(FIcons.play) : null,
         ),
       ),
     );

@@ -9,6 +9,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetsApp.router(
+      localizationsDelegates: FLocalizations.localizationsDelegates,
+      supportedLocales: FLocalizations.supportedLocales,
       color: FThemes.slate.dark.colors.primary,
       title: 'Universal TV',
       builder: (context, child) => FTheme(data: FThemes.slate.dark, child: child!),
