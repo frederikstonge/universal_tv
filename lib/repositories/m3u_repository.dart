@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:muxa_xtream/muxa_xtream.dart';
 
 import '../../models/iptv_type.dart';
@@ -35,7 +36,6 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<void> load() async {
     id = 0;
-    await imdbRepository.clearCache();
     _entries.clear();
     for (final link in provider.urls) {
       if (link.contains('{page}')) {
@@ -74,6 +74,8 @@ class M3uRepository extends StreamBaseRepository {
       return false;
     }
 
+    _entries.addAll(entries);
+
     final entriesWithImdbIds = entries
         .where(
           (e) =>
@@ -86,7 +88,8 @@ class M3uRepository extends StreamBaseRepository {
     final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toList();
     await imdbRepository.getEntries(imdbTitlesIds);
 
-    _entries.addAll(entries);
+    debugPrint('ImdbRepository getEntries completed for ${provider.name}, ${imdbTitlesIds.length} entries');
+
     return true;
   }
 

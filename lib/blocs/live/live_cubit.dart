@@ -35,20 +35,25 @@ class LiveCubit extends Cubit<LiveState> {
   }
 
   Future<void> load() async {
-    if (iptvServiceCubit.state.status != StateStatus.success) {
+    if (iptvServiceCubit.state.status == StateStatus.loading) {
       return;
     }
 
     emit(state.copyWith(status: StateStatus.loading));
-    final liveChannelsFuture = iptvServiceCubit.getLiveStreams();
-    final categoriesFuture = iptvServiceCubit.getLiveCategories();
 
-    await Future.wait([liveChannelsFuture, categoriesFuture]);
+    try {
+      final liveChannelsFuture = iptvServiceCubit.getLiveStreams();
+      final categoriesFuture = iptvServiceCubit.getLiveCategories();
 
-    final liveChannels = await liveChannelsFuture;
-    final categories = await categoriesFuture;
+      await Future.wait([liveChannelsFuture, categoriesFuture]);
 
-    emit(state.copyWith(status: StateStatus.success, items: liveChannels, categories: categories));
+      final liveChannels = await liveChannelsFuture;
+      final categories = await categoriesFuture;
+
+      emit(state.copyWith(status: StateStatus.success, items: liveChannels, categories: categories));
+    } catch (e) {
+      emit(state.copyWith(status: StateStatus.failure));
+    }
   }
 
   void selectChannel(LiveChannel channel) {

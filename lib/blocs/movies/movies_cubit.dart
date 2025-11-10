@@ -34,19 +34,24 @@ class MoviesCubit extends Cubit<MoviesState> {
   }
 
   Future<void> load() async {
-    if (iptvServiceCubit.state.status != StateStatus.success) {
+    if (iptvServiceCubit.state.status == StateStatus.loading) {
       return;
     }
 
     emit(state.copyWith(status: StateStatus.loading));
-    final moviesFuture = iptvServiceCubit.getMovies();
-    final categoriesFuture = iptvServiceCubit.getMovieCategories();
 
-    await Future.wait([moviesFuture, categoriesFuture]);
+    try {
+      final moviesFuture = iptvServiceCubit.getMovies();
+      final categoriesFuture = iptvServiceCubit.getMovieCategories();
 
-    final movies = await moviesFuture;
-    final categories = await categoriesFuture;
+      await Future.wait([moviesFuture, categoriesFuture]);
 
-    emit(state.copyWith(status: StateStatus.success, items: movies, categories: categories));
+      final movies = await moviesFuture;
+      final categories = await categoriesFuture;
+
+      emit(state.copyWith(status: StateStatus.success, items: movies, categories: categories));
+    } catch (e) {
+      emit(state.copyWith(status: StateStatus.failure));
+    }
   }
 }
