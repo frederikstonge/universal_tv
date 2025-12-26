@@ -550,6 +550,231 @@ class _ImdbRatingCopyWithImpl<$R, $Out>
   ) => _ImdbRatingCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
+class ImdbInterestEntryMapper extends ClassMapperBase<ImdbInterestEntry> {
+  ImdbInterestEntryMapper._();
+
+  static ImdbInterestEntryMapper? _instance;
+  static ImdbInterestEntryMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = ImdbInterestEntryMapper._());
+      ImdbImageMapper.ensureInitialized();
+      ImdbInterestEntryMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'ImdbInterestEntry';
+
+  static String? _$id(ImdbInterestEntry v) => v.id;
+  static const Field<ImdbInterestEntry, String> _f$id = Field(
+    'id',
+    _$id,
+    opt: true,
+  );
+  static String? _$name(ImdbInterestEntry v) => v.name;
+  static const Field<ImdbInterestEntry, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
+  static String? _$description(ImdbInterestEntry v) => v.description;
+  static const Field<ImdbInterestEntry, String> _f$description = Field(
+    'description',
+    _$description,
+    opt: true,
+  );
+  static bool? _$isSubgenre(ImdbInterestEntry v) => v.isSubgenre;
+  static const Field<ImdbInterestEntry, bool> _f$isSubgenre = Field(
+    'isSubgenre',
+    _$isSubgenre,
+    opt: true,
+  );
+  static ImdbImage? _$primaryImage(ImdbInterestEntry v) => v.primaryImage;
+  static const Field<ImdbInterestEntry, ImdbImage> _f$primaryImage = Field(
+    'primaryImage',
+    _$primaryImage,
+    opt: true,
+  );
+  static List<ImdbInterestEntry>? _$similarInterests(ImdbInterestEntry v) =>
+      v.similarInterests;
+  static const Field<ImdbInterestEntry, List<ImdbInterestEntry>>
+  _f$similarInterests = Field(
+    'similarInterests',
+    _$similarInterests,
+    opt: true,
+  );
+
+  @override
+  final MappableFields<ImdbInterestEntry> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #description: _f$description,
+    #isSubgenre: _f$isSubgenre,
+    #primaryImage: _f$primaryImage,
+    #similarInterests: _f$similarInterests,
+  };
+
+  static ImdbInterestEntry _instantiate(DecodingData data) {
+    return ImdbInterestEntry(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+      isSubgenre: data.dec(_f$isSubgenre),
+      primaryImage: data.dec(_f$primaryImage),
+      similarInterests: data.dec(_f$similarInterests),
+    );
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static ImdbInterestEntry fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<ImdbInterestEntry>(map);
+  }
+
+  static ImdbInterestEntry fromJson(String json) {
+    return ensureInitialized().decodeJson<ImdbInterestEntry>(json);
+  }
+}
+
+mixin ImdbInterestEntryMappable {
+  String toJson() {
+    return ImdbInterestEntryMapper.ensureInitialized()
+        .encodeJson<ImdbInterestEntry>(this as ImdbInterestEntry);
+  }
+
+  Map<String, dynamic> toMap() {
+    return ImdbInterestEntryMapper.ensureInitialized()
+        .encodeMap<ImdbInterestEntry>(this as ImdbInterestEntry);
+  }
+
+  ImdbInterestEntryCopyWith<
+    ImdbInterestEntry,
+    ImdbInterestEntry,
+    ImdbInterestEntry
+  >
+  get copyWith =>
+      _ImdbInterestEntryCopyWithImpl<ImdbInterestEntry, ImdbInterestEntry>(
+        this as ImdbInterestEntry,
+        $identity,
+        $identity,
+      );
+  @override
+  String toString() {
+    return ImdbInterestEntryMapper.ensureInitialized().stringifyValue(
+      this as ImdbInterestEntry,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return ImdbInterestEntryMapper.ensureInitialized().equalsValue(
+      this as ImdbInterestEntry,
+      other,
+    );
+  }
+
+  @override
+  int get hashCode {
+    return ImdbInterestEntryMapper.ensureInitialized().hashValue(
+      this as ImdbInterestEntry,
+    );
+  }
+}
+
+extension ImdbInterestEntryValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, ImdbInterestEntry, $Out> {
+  ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, $Out>
+  get $asImdbInterestEntry => $base.as(
+    (v, t, t2) => _ImdbInterestEntryCopyWithImpl<$R, $Out>(v, t, t2),
+  );
+}
+
+abstract class ImdbInterestEntryCopyWith<
+  $R,
+  $In extends ImdbInterestEntry,
+  $Out
+>
+    implements ClassCopyWith<$R, $In, $Out> {
+  ImdbImageCopyWith<$R, ImdbImage, ImdbImage>? get primaryImage;
+  ListCopyWith<
+    $R,
+    ImdbInterestEntry,
+    ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, ImdbInterestEntry>
+  >?
+  get similarInterests;
+  $R call({
+    String? id,
+    String? name,
+    String? description,
+    bool? isSubgenre,
+    ImdbImage? primaryImage,
+    List<ImdbInterestEntry>? similarInterests,
+  });
+  ImdbInterestEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  );
+}
+
+class _ImdbInterestEntryCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, ImdbInterestEntry, $Out>
+    implements ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, $Out> {
+  _ImdbInterestEntryCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<ImdbInterestEntry> $mapper =
+      ImdbInterestEntryMapper.ensureInitialized();
+  @override
+  ImdbImageCopyWith<$R, ImdbImage, ImdbImage>? get primaryImage =>
+      $value.primaryImage?.copyWith.$chain((v) => call(primaryImage: v));
+  @override
+  ListCopyWith<
+    $R,
+    ImdbInterestEntry,
+    ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, ImdbInterestEntry>
+  >?
+  get similarInterests => $value.similarInterests != null
+      ? ListCopyWith(
+          $value.similarInterests!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(similarInterests: v),
+        )
+      : null;
+  @override
+  $R call({
+    Object? id = $none,
+    Object? name = $none,
+    Object? description = $none,
+    Object? isSubgenre = $none,
+    Object? primaryImage = $none,
+    Object? similarInterests = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != $none) #id: id,
+      if (name != $none) #name: name,
+      if (description != $none) #description: description,
+      if (isSubgenre != $none) #isSubgenre: isSubgenre,
+      if (primaryImage != $none) #primaryImage: primaryImage,
+      if (similarInterests != $none) #similarInterests: similarInterests,
+    }),
+  );
+  @override
+  ImdbInterestEntry $make(CopyWithData data) => ImdbInterestEntry(
+    id: data.get(#id, or: $value.id),
+    name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    isSubgenre: data.get(#isSubgenre, or: $value.isSubgenre),
+    primaryImage: data.get(#primaryImage, or: $value.primaryImage),
+    similarInterests: data.get(#similarInterests, or: $value.similarInterests),
+  );
+
+  @override
+  ImdbInterestEntryCopyWith<$R2, ImdbInterestEntry, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _ImdbInterestEntryCopyWithImpl<$R2, $Out2>($value, $cast, t);
+}
+
 class ImdbEpisodesEntryMapper extends ClassMapperBase<ImdbEpisodesEntry> {
   ImdbEpisodesEntryMapper._();
 

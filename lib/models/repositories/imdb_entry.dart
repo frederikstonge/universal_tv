@@ -17,6 +17,7 @@ class ImdbEntry with ImdbEntryMappable {
   final List<String>? genres;
   final ImdbRating? rating;
   final String? plot;
+  final List<ImdbInterestEntry>? interests;
 
   ImdbEntry({
     this.id,
@@ -30,6 +31,7 @@ class ImdbEntry with ImdbEntryMappable {
     this.genres,
     this.rating,
     this.plot,
+    this.interests,
   });
 
   factory ImdbEntry.fromImdbapiTitle(ImdbapiTitle title) {
@@ -45,6 +47,30 @@ class ImdbEntry with ImdbEntryMappable {
       genres: title.genres,
       rating: title.rating != null ? ImdbRating.fromImdbapiRating(title.rating!) : null,
       plot: title.plot,
+      interests: title.interests?.map((e) => ImdbInterestEntry.fromImdbapiInterest(e)).toList(),
+    );
+  }
+}
+
+@MappableClass()
+class ImdbInterestEntry with ImdbInterestEntryMappable {
+  final String? id;
+  final String? name;
+  final String? description;
+  final bool? isSubgenre;
+  final ImdbImage? primaryImage;
+  final List<ImdbInterestEntry>? similarInterests;
+
+  ImdbInterestEntry({this.id, this.name, this.description, this.isSubgenre, this.primaryImage, this.similarInterests});
+
+  factory ImdbInterestEntry.fromImdbapiInterest(ImdbapiInterest interest) {
+    return ImdbInterestEntry(
+      id: interest.id,
+      name: interest.name,
+      description: interest.description,
+      isSubgenre: interest.isSubgenre,
+      primaryImage: interest.primaryImage != null ? ImdbImage.fromImdbapiImage(interest.primaryImage!) : null,
+      similarInterests: interest.similarInterests?.map((e) => ImdbInterestEntry.fromImdbapiInterest(e)).toList(),
     );
   }
 }

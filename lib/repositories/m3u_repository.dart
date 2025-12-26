@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:muxa_xtream/muxa_xtream.dart';
 
 import '../../models/iptv_type.dart';
@@ -75,21 +74,6 @@ class M3uRepository extends StreamBaseRepository {
     }
 
     _entries.addAll(entries);
-
-    final entriesWithImdbIds = entries
-        .where(
-          (e) =>
-              (e.type == IptvType.movies || e.type == IptvType.tvshows) &&
-              e.imdbId != null &&
-              (e.imdbId?.startsWith('tt') ?? false),
-        )
-        .toList();
-
-    final imdbTitlesIds = entriesWithImdbIds.map((e) => e.imdbId).whereType<String>().toList();
-    await imdbRepository.getEntries(imdbTitlesIds);
-
-    debugPrint('ImdbRepository getEntries completed for ${provider.name}, ${imdbTitlesIds.length} entries');
-
     return true;
   }
 
@@ -116,11 +100,9 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<List<Category>> getMovieCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.movies).toList();
-    final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = await imdbRepository.getEntries(imdbIds);
 
-    return imdbEntries
-        .expand((e) => e.genres ?? [])
+    return entries
+        .map((e) => e.groupTitle)
         .whereType<String>()
         .toSet()
         .toList()
@@ -131,15 +113,12 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<List<Category>> getTvShowCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
-    final imdbIds = entries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = await imdbRepository.getEntries(imdbIds);
 
-    return imdbEntries
-        .expand((e) => e.genres ?? [])
-        .where((e) => e != null)
+    return entries
+        .map((e) => e.groupTitle)
+        .whereType<String>()
         .toSet()
         .toList()
-        .whereType<String>()
         .map((e) => Category(id: e, name: e, type: IptvType.tvshows, providerName: provider.name))
         .toList();
   }
@@ -147,16 +126,12 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<List<MovieItem>> getMovies() async {
     final movieEntries = _entries.where((e) => e.type == IptvType.movies).toList();
-    final imdbIds = movieEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = await imdbRepository.getEntries(imdbIds);
     final vodItems = movieEntries.map((e) {
-      final imdbId = e.imdbId;
-      final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
       return MovieItem(
         streamId: e.id,
         name: e.name,
-        categoryIds: imdbEntry?.genres ?? [e.groupTitle ?? provider.name],
-        posterUrl: imdbEntry?.primaryImage?.url ?? e.logoUrl,
+        categoryIds: [e.groupTitle ?? provider.name],
+        posterUrl: e.logoUrl,
         providerName: provider.name,
       );
     }).toList();
@@ -167,18 +142,13 @@ class M3uRepository extends StreamBaseRepository {
   @override
   Future<List<TvShowItem>> getTvShows() async {
     final tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows).toList();
-    final imdbIds = tvShowEntries.map((e) => e.imdbId).whereType<String>().toSet().toList();
-    final imdbEntries = await imdbRepository.getEntries(imdbIds);
     final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
-      final imdbId = e.value.first.imdbId;
-      final imdbEntry = imdbEntries.firstWhereOrNull((e) => e.id == imdbId);
       final entry = e.value.first;
       return TvShowItem(
         seriesId: entry.id,
-        name:
-            imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? entry.safeTvgName ?? entry.name,
-        categoryIds: imdbEntry?.genres ?? [provider.name],
-        posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
+        name: entry.safeTvgName ?? entry.name,
+        categoryIds: [entry.groupTitle ?? provider.name],
+        posterUrl: entry.logoUrl,
         providerName: provider.name,
       );
     }).toList();
