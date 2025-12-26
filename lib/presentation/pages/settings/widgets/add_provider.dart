@@ -14,7 +14,7 @@ class AddProvider extends StatefulWidget {
   State<AddProvider> createState() => _AddProviderState();
 }
 
-class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin {
+class _AddProviderState extends State<AddProvider> {
   late final GlobalKey<FormState> _formKey;
   late final FTimeFieldController _timePickerController;
   late final TextEditingController _nameController;
@@ -35,7 +35,7 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
     _urlController = TextEditingController();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
-    _timePickerController = FTimeFieldController(vsync: this, initialTime: FTime(23));
+    _timePickerController = FTimeFieldController(time: FTime(23));
     _selectedType = IptvProviderType.m3u;
     super.initState();
   }
@@ -100,25 +100,30 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
           children: [
             SizedBox(height: 16),
             FSelect(
+              control: .managed(
+                initial: _selectedType,
+                onChange: (value) {
+                  if (value == null) {
+                    return;
+                  }
+
+                  setState(() {
+                    _selectedType = value;
+                  });
+                },
+              ),
               label: Text('Type'),
               items: IptvProviderType.values.asMap().map((k, v) => MapEntry(v.name, v)),
-              initialValue: _selectedType,
-              onChange: (value) {
-                if (value == null) {
-                  return;
-                }
-
-                setState(() {
-                  _selectedType = value;
-                });
-              },
             ),
             SizedBox(height: 16),
-            FTextField(controller: _nameController, label: Text('Name')),
+            FTextField(
+              control: .managed(controller: _nameController),
+              label: Text('Name'),
+            ),
             SizedBox(height: 16),
             if (_selectedType == IptvProviderType.m3u) ...[
               FTextFormField.multiline(
-                controller: _urlsController,
+                control: .managed(controller: _urlsController),
                 label: Text('URLs'),
                 description: Text('Use {page} as a placeholder for pagination.'),
                 errorBuilder: (context, error) => Text(error),
@@ -141,7 +146,7 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
               ),
             ] else if (_selectedType == IptvProviderType.xtream) ...[
               FTextFormField(
-                controller: _urlController,
+                control: .managed(controller: _urlController),
                 label: Text('URL'),
                 errorBuilder: (context, error) => Text(error),
                 validator: (value) {
@@ -158,14 +163,21 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
                 },
               ),
               SizedBox(height: 16),
-              FTextField(controller: _usernameController, label: Text('Username')),
+              FTextField(
+                control: .managed(controller: _usernameController),
+                label: Text('Username'),
+              ),
               SizedBox(height: 16),
-              FTextField.password(controller: _passwordController),
+              FTextField.password(control: .managed(controller: _passwordController)),
               SizedBox(height: 16),
-              FTimeField.picker(label: Text('EPG Expiration'), hour24: true, controller: _timePickerController),
+              FTimeField.picker(
+                control: .managed(controller: _timePickerController),
+                label: Text('EPG Expiration'),
+                hour24: true,
+              ),
             ] else if (_selectedType == IptvProviderType.xmltv) ...[
               FTextFormField(
-                controller: _urlController,
+                control: .managed(controller: _urlController),
                 label: Text('URL'),
                 errorBuilder: (context, error) => Text(error),
                 validator: (value) {
@@ -181,7 +193,11 @@ class _AddProviderState extends State<AddProvider> with TickerProviderStateMixin
                 },
               ),
               SizedBox(height: 16),
-              FTimeField.picker(label: Text('EPG Expiration'), hour24: true, controller: _timePickerController),
+              FTimeField.picker(
+                control: .managed(controller: _timePickerController),
+                label: Text('EPG Expiration'),
+                hour24: true,
+              ),
             ],
             SizedBox(height: 16),
             FButton(

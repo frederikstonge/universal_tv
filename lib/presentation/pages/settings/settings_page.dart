@@ -41,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
           header: FHeader(title: const Text('Settings')),
           child: SingleChildScrollView(
             child: FTabs(
-              controller: _tabController,
+              control: .managed(controller: _tabController),
               scrollable: true,
               children: [
                 FTabEntry(
@@ -85,14 +85,14 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
   void onAdd(IptvProvider provider) {
     context.read<SettingsCubit>().addIptvProvider(provider);
     final length = context.read<SettingsCubit>().state.providers.length + 1;
-    _tabController = FTabController(length: length, vsync: this, initialIndex: length - 1);
+    _tabController = FTabController(length: length, vsync: this, index: length - 1);
     setState(() {});
   }
 
   void onDelete(IptvProvider provider) {
     context.read<SettingsCubit>().removeIptvProvider(provider);
     final length = context.read<SettingsCubit>().state.providers.length + 1;
-    _tabController = FTabController(length: length, vsync: this, initialIndex: length - 1);
+    _tabController = FTabController(length: length, vsync: this, index: length - 1);
     setState(() {});
   }
 }

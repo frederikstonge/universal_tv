@@ -16,7 +16,7 @@ class EditM3uProvider extends StatefulWidget {
   State<EditM3uProvider> createState() => _EditM3uProviderState();
 }
 
-class _EditM3uProviderState extends State<EditM3uProvider> with TickerProviderStateMixin {
+class _EditM3uProviderState extends State<EditM3uProvider> {
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _nameController;
   late final TextEditingController _urlsController;
@@ -54,10 +54,13 @@ class _EditM3uProviderState extends State<EditM3uProvider> with TickerProviderSt
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(controller: _nameController, label: Text('Name')),
+            FTextField(
+              control: .managed(controller: _nameController),
+              label: Text('Name'),
+            ),
             SizedBox(height: 16),
             FTextFormField.multiline(
-              controller: _urlsController,
+              control: .managed(controller: _urlsController),
               label: Text('URLs'),
               description: Text('Use {page} as a placeholder for pagination.'),
               errorBuilder: (context, error) => Text(error),

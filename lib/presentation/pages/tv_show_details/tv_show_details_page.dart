@@ -62,33 +62,28 @@ class TvShowDetailsPage extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: FSelect<int>(
-                                            items: state.tvShow!.seasons.map((i, e) => MapEntry('Season $i', i)),
-                                            initialValue: state.selectedSeason,
-                                            onChange: (value) {
+                                            control: .managed(initial: state.selectedSeason, onChange: (value) {
                                               if (value == null) {
                                                 return;
                                               }
 
                                               context.read<TvShowDetailsCubit>().selectSeason(value);
-                                            },
+                                            }), items: state.tvShow!.seasons.map((i, e) => MapEntry('Season $i', i)),
                                           ),
                                         ),
                                         const SizedBox(width: 8),
                                         Flexible(
                                           child: FSelect<EpisodeDetails>(
-                                            items: state.tvShow!.seasons[state.selectedSeason]!.asMap().map(
-                                              (i, e) => MapEntry('Episode ${e.episode}', e),
-                                            ),
-                                            initialValue:
-                                                state.selectedEpisode ??
-                                                state.tvShow!.seasons[state.selectedSeason]!.first,
-                                            onChange: (value) {
+                                            control: .managed(initial: state.selectedEpisode ??
+                                                state.tvShow!.seasons[state.selectedSeason]!.first, onChange: (value) {
                                               if (value == null) {
                                                 return;
                                               }
 
                                               context.read<TvShowDetailsCubit>().selectEpisode(value);
-                                            },
+                                            }), items: state.tvShow!.seasons[state.selectedSeason]!.asMap().map(
+                                              (i, e) => MapEntry('Episode ${e.episode}', e),
+                                            ),
                                           ),
                                         ),
                                       ],

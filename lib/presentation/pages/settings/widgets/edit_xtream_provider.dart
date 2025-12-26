@@ -15,7 +15,7 @@ class EditXtreamProvider extends StatefulWidget {
   State<EditXtreamProvider> createState() => _EditXtreamProviderState();
 }
 
-class _EditXtreamProviderState extends State<EditXtreamProvider> with TickerProviderStateMixin {
+class _EditXtreamProviderState extends State<EditXtreamProvider> {
   late final GlobalKey<FormState> _formKey;
   late final FTimeFieldController _timePickerController;
   late final TextEditingController _nameController;
@@ -41,7 +41,7 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> with TickerProv
     _urlController = TextEditingController(text: initialUrl);
     _usernameController = TextEditingController(text: initialUsername);
     _passwordController = TextEditingController(text: initialPassword);
-    _timePickerController = FTimeFieldController(vsync: this, initialTime: initialEpgExpiration);
+    _timePickerController = FTimeFieldController(time: initialEpgExpiration);
     super.initState();
   }
 
@@ -69,11 +69,14 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> with TickerProv
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(controller: _nameController, label: Text('Name')),
+            FTextField(
+              control: .managed(controller: _nameController),
+              label: Text('Name'),
+            ),
             SizedBox(height: 16),
 
             FTextFormField(
-              controller: _urlController,
+              control: .managed(controller: _urlController),
               label: Text('URL'),
               errorBuilder: (context, error) => Text(error),
               validator: (value) {
@@ -90,11 +93,18 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> with TickerProv
               },
             ),
             SizedBox(height: 16),
-            FTextField(controller: _usernameController, label: Text('Username')),
+            FTextField(
+              control: .managed(controller: _usernameController),
+              label: Text('Username'),
+            ),
             SizedBox(height: 16),
-            FTextField.password(controller: _passwordController),
+            FTextField.password(control: .managed(controller: _passwordController)),
             SizedBox(height: 16),
-            FTimeField.picker(label: Text('EPG Expiration'), hour24: true, controller: _timePickerController),
+            FTimeField.picker(
+              control: .managed(controller: _timePickerController),
+              label: Text('EPG Expiration'),
+              hour24: true,
+            ),
             SizedBox(height: 16),
             FButton(
               prefix: isLoading ? const FCircularProgress() : null,

@@ -15,7 +15,7 @@ class EditXmltvProvider extends StatefulWidget {
   State<EditXmltvProvider> createState() => _EditXmltvProviderState();
 }
 
-class _EditXmltvProviderState extends State<EditXmltvProvider> with TickerProviderStateMixin {
+class _EditXmltvProviderState extends State<EditXmltvProvider> {
   late final GlobalKey<FormState> _formKey;
   late final FTimeFieldController _timePickerController;
   late final TextEditingController _nameController;
@@ -34,7 +34,7 @@ class _EditXmltvProviderState extends State<EditXmltvProvider> with TickerProvid
     _formKey = GlobalKey<FormState>();
     _nameController = TextEditingController(text: initialName);
     _urlController = TextEditingController(text: initialUrl);
-    _timePickerController = FTimeFieldController(vsync: this, initialTime: initialEpgExpiration);
+    _timePickerController = FTimeFieldController(time: initialEpgExpiration);
     super.initState();
   }
 
@@ -58,11 +58,14 @@ class _EditXmltvProviderState extends State<EditXmltvProvider> with TickerProvid
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(controller: _nameController, label: Text('Name')),
+            FTextField(
+              control: .managed(controller: _nameController),
+              label: Text('Name'),
+            ),
             SizedBox(height: 16),
 
             FTextFormField(
-              controller: _urlController,
+              control: .managed(controller: _urlController),
               label: Text('URL'),
               errorBuilder: (context, error) => Text(error),
               validator: (value) {
@@ -78,7 +81,11 @@ class _EditXmltvProviderState extends State<EditXmltvProvider> with TickerProvid
               },
             ),
             SizedBox(height: 16),
-            FTimeField.picker(label: Text('EPG Expiration'), hour24: true, controller: _timePickerController),
+            FTimeField.picker(
+              control: .managed(controller: _timePickerController),
+              label: Text('EPG Expiration'),
+              hour24: true,
+            ),
 
             SizedBox(height: 16),
             FButton(
