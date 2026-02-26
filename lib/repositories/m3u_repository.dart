@@ -45,6 +45,15 @@ class M3uRepository extends StreamBaseRepository {
           final url = link.replaceAll('{page}', currentPage.toString());
           success = await _loadm3uData(url);
         } while (success);
+      } else if (link.contains('{skip}') && link.contains('{take}')) {
+        bool success;
+        var skip = 0;
+        final take = 1000;
+        do {
+          final url = link.replaceAll('{skip}', skip.toString()).replaceAll('{take}', take.toString());
+          success = await _loadm3uData(url);
+          skip += take;
+        } while (success);
       } else {
         await _loadm3uData(link);
       }
