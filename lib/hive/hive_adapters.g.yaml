@@ -5,7 +5,7 @@ nextTypeId: 3
 types:
   ImdbEntry:
     typeId: 0
-    nextIndex: 11
+    nextIndex: 12
     fields:
       id:
         index: 0
@@ -29,6 +29,8 @@ types:
         index: 9
       plot:
         index: 10
+      interests:
+        index: 11
   ImdbImage:
     typeId: 1
     nextIndex: 4

@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -99,7 +100,11 @@ extension SettingsStateValueCopy<$R, $Out>
 
 abstract class SettingsStateCopyWith<$R, $In extends SettingsState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, IptvProvider, ObjectCopyWith<$R, IptvProvider, IptvProvider>>
+  ListCopyWith<
+    $R,
+    IptvProvider,
+    IptvProviderCopyWith<$R, IptvProvider, IptvProvider>
+  >
   get providers;
   $R call({List<IptvProvider>? providers});
   SettingsStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -114,10 +119,14 @@ class _SettingsStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SettingsState> $mapper =
       SettingsStateMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, IptvProvider, ObjectCopyWith<$R, IptvProvider, IptvProvider>>
+  ListCopyWith<
+    $R,
+    IptvProvider,
+    IptvProviderCopyWith<$R, IptvProvider, IptvProvider>
+  >
   get providers => ListCopyWith(
     $value.providers,
-    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v, t) => v.copyWith.$chain(t),
     (v) => call(providers: v),
   );
   @override

@@ -28,13 +28,14 @@ class ImdbEntryAdapter extends TypeAdapter<ImdbEntry> {
       genres: (fields[8] as List?)?.cast<String>(),
       rating: fields[9] as ImdbRating?,
       plot: fields[10] as String?,
+      interests: (fields[11] as List?)?.cast<ImdbInterestEntry>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ImdbEntry obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class ImdbEntryAdapter extends TypeAdapter<ImdbEntry> {
       ..writeByte(9)
       ..write(obj.rating)
       ..writeByte(10)
-      ..write(obj.plot);
+      ..write(obj.plot)
+      ..writeByte(11)
+      ..write(obj.interests);
   }
 
   @override

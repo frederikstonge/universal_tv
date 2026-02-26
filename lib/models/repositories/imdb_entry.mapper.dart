@@ -2,6 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 // ignore_for_file: type=lint
+// ignore_for_file: invalid_use_of_protected_member
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
@@ -16,6 +17,7 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
       MapperContainer.globals.use(_instance = ImdbEntryMapper._());
       ImdbImageMapper.ensureInitialized();
       ImdbRatingMapper.ensureInitialized();
+      ImdbInterestEntryMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -85,6 +87,12 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
     _$plot,
     opt: true,
   );
+  static List<ImdbInterestEntry>? _$interests(ImdbEntry v) => v.interests;
+  static const Field<ImdbEntry, List<ImdbInterestEntry>> _f$interests = Field(
+    'interests',
+    _$interests,
+    opt: true,
+  );
 
   @override
   final MappableFields<ImdbEntry> fields = const {
@@ -99,6 +107,7 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
     #genres: _f$genres,
     #rating: _f$rating,
     #plot: _f$plot,
+    #interests: _f$interests,
   };
 
   static ImdbEntry _instantiate(DecodingData data) {
@@ -114,6 +123,7 @@ class ImdbEntryMapper extends ClassMapperBase<ImdbEntry> {
       genres: data.dec(_f$genres),
       rating: data.dec(_f$rating),
       plot: data.dec(_f$plot),
+      interests: data.dec(_f$interests),
     );
   }
 
@@ -179,6 +189,12 @@ abstract class ImdbEntryCopyWith<$R, $In extends ImdbEntry, $Out>
   ImdbImageCopyWith<$R, ImdbImage, ImdbImage>? get primaryImage;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get genres;
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating;
+  ListCopyWith<
+    $R,
+    ImdbInterestEntry,
+    ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, ImdbInterestEntry>
+  >?
+  get interests;
   $R call({
     String? id,
     String? type,
@@ -191,6 +207,7 @@ abstract class ImdbEntryCopyWith<$R, $In extends ImdbEntry, $Out>
     List<String>? genres,
     ImdbRating? rating,
     String? plot,
+    List<ImdbInterestEntry>? interests,
   });
   ImdbEntryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -219,6 +236,19 @@ class _ImdbEntryCopyWithImpl<$R, $Out>
   ImdbRatingCopyWith<$R, ImdbRating, ImdbRating>? get rating =>
       $value.rating?.copyWith.$chain((v) => call(rating: v));
   @override
+  ListCopyWith<
+    $R,
+    ImdbInterestEntry,
+    ImdbInterestEntryCopyWith<$R, ImdbInterestEntry, ImdbInterestEntry>
+  >?
+  get interests => $value.interests != null
+      ? ListCopyWith(
+          $value.interests!,
+          (v, t) => v.copyWith.$chain(t),
+          (v) => call(interests: v),
+        )
+      : null;
+  @override
   $R call({
     Object? id = $none,
     Object? type = $none,
@@ -231,6 +261,7 @@ class _ImdbEntryCopyWithImpl<$R, $Out>
     Object? genres = $none,
     Object? rating = $none,
     Object? plot = $none,
+    Object? interests = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != $none) #id: id,
@@ -244,6 +275,7 @@ class _ImdbEntryCopyWithImpl<$R, $Out>
       if (genres != $none) #genres: genres,
       if (rating != $none) #rating: rating,
       if (plot != $none) #plot: plot,
+      if (interests != $none) #interests: interests,
     }),
   );
   @override
@@ -259,6 +291,7 @@ class _ImdbEntryCopyWithImpl<$R, $Out>
     genres: data.get(#genres, or: $value.genres),
     rating: data.get(#rating, or: $value.rating),
     plot: data.get(#plot, or: $value.plot),
+    interests: data.get(#interests, or: $value.interests),
   );
 
   @override
