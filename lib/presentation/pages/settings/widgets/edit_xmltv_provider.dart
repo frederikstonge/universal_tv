@@ -120,7 +120,7 @@ class _EditXmltvProviderState extends State<EditXmltvProvider> {
             ),
             SizedBox(height: 16),
             FButton(
-              style: FButtonStyle.destructive(),
+              variant: FButtonVariant.destructive,
               prefix: Icon(FIcons.trash),
               onPress: () async {
                 widget.onDelete(widget.provider);

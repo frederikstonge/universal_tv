@@ -27,12 +27,12 @@ class _CoverCardState extends State<CoverCard> {
         child: FFocusedOutline(
           focused: isFocused,
           child: FCard(
-            style: (style) => style.copyWith(
-              decoration: style.decoration.copyWith(
+            style: FCardStyleDelta.delta(
+              decoration: BoxDecorationDelta.delta(
                 image: widget.posterUrl != null
                     ? DecorationImage(image: CachedNetworkImageProvider(widget.posterUrl!), fit: BoxFit.cover)
                     : null,
-                backgroundBlendMode: widget.posterUrl != null ? BlendMode.darken : null,
+                backgroundBlendMode: widget.posterUrl != null ? () => BlendMode.darken : null,
               ),
             ),
             image: widget.iconUrl != null
