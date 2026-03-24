@@ -19,9 +19,9 @@ class LiveChannel with LiveChannelMappable {
     required this.streamId,
     required this.name,
     required this.categoryId,
+    required this.providerName,
     this.logoUrl,
     this.epgChannelId,
-    required this.providerName,
   });
 
   factory LiveChannel.fromXtLiveChannel(XtLiveChannel xtChannel, String providerName) {

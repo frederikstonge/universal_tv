@@ -21,9 +21,9 @@ class EpisodeDetails with EpisodeDetailsMappable {
     required this.title,
     required this.season,
     required this.episode,
+    required this.providerName,
     this.duration,
     this.plot,
-    required this.providerName,
   });
 
   factory EpisodeDetails.fromXtEpisode(XtEpisode item, String providerName) {

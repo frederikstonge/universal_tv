@@ -15,13 +15,17 @@ import '../models/movie_item.dart';
 import '../models/repositories/m3u_entry.dart';
 import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
+import '../models/xmltv_base.dart';
+import '../models/xmltv_programme.dart';
 import 'stream_base_repository.dart';
+import 'xmltv_base_repository.dart';
 
-class M3uRepository extends StreamBaseRepository {
+class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
 
   final List<M3uEntry> _entries = [];
+  DateTime? _lastLoaded;
 
   M3uRepository({required this.provider, required this.dio});
 
@@ -53,6 +57,8 @@ class M3uRepository extends StreamBaseRepository {
         await _loadm3uData(link);
       }
     }
+
+    _lastLoaded = DateTime.now();
   }
 
   Future<bool> _loadm3uData(String link) async {
@@ -192,4 +198,28 @@ class M3uRepository extends StreamBaseRepository {
 
     return entry.url;
   }
+
+  @override
+  Future<List<XmltvProgramme>> getShortEpg({String? channelId}) {
+    final liveEntries = _entries.where(
+      (e) =>
+          e.type == IptvType.live &&
+          (channelId == null || e.epgChannelId == channelId) &&
+          e.startTime != null &&
+          e.endTime != null,
+    );
+    final expiration = _lastLoaded!.add(const Duration(hours: 24));
+    return Future.value(liveEntries.map((e) => XmltvProgramme.fromM3uEntry(e, expiration)).toList());
+  }
+
+  @override
+  Future<List<XmltvBase>> getXmltv() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> supportsShortEpg() => Future.value(true);
+
+  @override
+  Future<bool> supportsXmltv() => Future.value(false);
 }

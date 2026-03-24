@@ -18,8 +18,8 @@ class MovieItem with MovieItemMappable {
     required this.streamId,
     required this.name,
     required this.categoryIds,
-    this.posterUrl,
     required this.providerName,
+    this.posterUrl,
   });
 
   factory MovieItem.fromXtVodItem(XtVodItem item, String providerName) {

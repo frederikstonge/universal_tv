@@ -18,8 +18,8 @@ class TvShowItem with TvShowItemMappable {
     required this.seriesId,
     required this.name,
     required this.categoryIds,
-    this.posterUrl,
     required this.providerName,
+    this.posterUrl,
   });
 
   factory TvShowItem.fromXtSeriesItem(XtSeriesItem item, String providerName) {

@@ -13,10 +13,10 @@ class XmltvChannel extends XmltvBase with XmltvChannelMappable {
 
   XmltvChannel({
     required this.id,
-    this.displayName,
-    this.iconUrl,
     required super.providerName,
     required super.expiration,
+    this.displayName,
+    this.iconUrl,
   });
 
   factory XmltvChannel.fromXtXmltvChannel(XtXmltvChannel channel, String providerName, DateTime expiration) {

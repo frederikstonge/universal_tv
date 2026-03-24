@@ -89,6 +89,13 @@ extension M3uEntryExtensions on M3uEntry {
 
   String? get language => attributes.safeGet(M3uTags.tvgLanguage);
 
+  DateTime? get startTime =>
+      attributes.safeGet(M3uTags.extXStart) != null ? DateTime.tryParse(attributes.safeGet(M3uTags.extXStart)!) : null;
+
+  DateTime? get endTime => attributes.safeGet(M3uTags.extXStartDuration) != null && startTime != null
+      ? startTime!.add(Duration(seconds: int.parse(attributes.safeGet(M3uTags.extXStartDuration)!)))
+      : null;
+
   // ── Catchup ───────────────────────────────────────────────────────────
 
   String? get catchup => attributes.safeGet(M3uTags.catchup);

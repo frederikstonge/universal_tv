@@ -20,12 +20,12 @@ class MovieDetails with MovieDetailsMappable {
   const MovieDetails({
     required this.streamId,
     required this.name,
+    required this.providerName,
     this.plot,
     this.rating,
     this.year,
     this.duration,
     this.posterUrl,
-    required this.providerName,
   });
 
   factory MovieDetails.fromXtVodDetails(XtVodDetails item, String providerName) {

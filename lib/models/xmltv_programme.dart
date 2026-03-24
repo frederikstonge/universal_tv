@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
 
+import '../extensions/m3u_entry_extensions.dart';
+import 'repositories/m3u_entry.dart';
 import 'xmltv_base.dart';
 
 part 'xmltv_programme.mapper.dart';
@@ -17,12 +19,12 @@ class XmltvProgramme extends XmltvBase with XmltvProgrammeMappable {
   XmltvProgramme({
     required this.channelId,
     required this.start,
+    required super.providerName,
+    required super.expiration,
     this.stop,
     this.title,
     this.description,
     this.categories = const [],
-    required super.providerName,
-    required super.expiration,
   });
 
   factory XmltvProgramme.fromXtXmltvProgramme(XtXmltvProgramme programme, String providerName, DateTime expiration) {
@@ -47,6 +49,19 @@ class XmltvProgramme extends XmltvBase with XmltvProgrammeMappable {
       description: entry.description,
       categories: [],
       providerName: providerName,
+      expiration: expiration,
+    );
+  }
+
+  factory XmltvProgramme.fromM3uEntry(M3uEntry entry, DateTime expiration) {
+    return XmltvProgramme(
+      channelId: entry.epgChannelId ?? entry.tvgId ?? entry.id,
+      start: entry.startTime!,
+      stop: entry.endTime!,
+      title: entry.name,
+      description: entry.plot,
+      categories: [if (entry.groupTitle != null) entry.groupTitle!],
+      providerName: entry.providerName,
       expiration: expiration,
     );
   }

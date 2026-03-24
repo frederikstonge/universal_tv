@@ -19,10 +19,10 @@ class TvShowDetails with TvShowDetailsMappable {
   const TvShowDetails({
     required this.seriesId,
     required this.name,
-    this.plot,
     required this.seasons,
-    this.posterUrl,
     required this.providerName,
+    this.plot,
+    this.posterUrl,
   });
 
   factory TvShowDetails.fromXtSeriesItem(XtSeriesDetails item, String providerName) {
