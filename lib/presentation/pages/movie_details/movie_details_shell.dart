@@ -7,7 +7,7 @@ import 'movie_details_page.dart';
 
 class MovieDetailsShell extends StatelessWidget {
   final String providerName;
-  final int movieId;
+  final String movieId;
 
   const MovieDetailsShell({super.key, required this.providerName, required this.movieId});
 

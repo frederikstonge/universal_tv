@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
@@ -25,8 +26,6 @@ class M3uRepository extends StreamBaseRepository {
 
   final List<M3uEntry> _entries = [];
 
-  int id = 0;
-
   M3uRepository({required this.provider, required this.dio, required this.imdbRepository});
 
   @override
@@ -34,7 +33,6 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<void> load() async {
-    id = 0;
     _entries.clear();
     for (final link in provider.urls) {
       if (link.contains('{page}')) {
@@ -76,7 +74,7 @@ class M3uRepository extends StreamBaseRepository {
     try {
       final m3uDataStream = parseM3u(Stream.value(utf8.encode(data)));
       final m3uData = await m3uDataStream.toList();
-      final m3uEntries = m3uData.map((e) => M3uEntry.fromXtM3uEntry(id++, e, provider.name)).toList();
+      final m3uEntries = m3uData.map((e) => M3uEntry.fromXtM3uEntry(Uuid().v4(), e, provider.name)).toList();
       entries.addAll(m3uEntries);
     } catch (e) {
       return false;
@@ -134,10 +132,9 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<MovieItem>> getMovies({String? categoryId}) async {
-    var movieEntries = _entries.where((e) => e.type == IptvType.movies);
-    if (categoryId != null) {
-      movieEntries = movieEntries.where((e) => e.groupTitle == categoryId);
-    }
+    final movieEntries = _entries
+        .where((e) => e.type == IptvType.movies && (categoryId == null || e.groupTitle == categoryId))
+        .toList();
 
     final vodItems = movieEntries.map((e) {
       return MovieItem(
@@ -154,10 +151,9 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<TvShowItem>> getTvShows({String? categoryId}) async {
-    var tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows);
-    if (categoryId != null) {
-      tvShowEntries = tvShowEntries.where((e) => e.groupTitle == categoryId);
-    }
+    final tvShowEntries = _entries
+        .where((e) => e.type == IptvType.tvshows && (categoryId == null || e.groupTitle == categoryId))
+        .toList();
 
     final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
       final entry = e.value.first;
@@ -175,10 +171,9 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<LiveChannel>> getLiveStreams({String? categoryId}) async {
-    var liveEntries = _entries.where((e) => e.type == IptvType.live);
-    if (categoryId != null) {
-      liveEntries = liveEntries.where((e) => e.groupTitle == categoryId);
-    }
+    final liveEntries = _entries
+        .where((e) => e.type == IptvType.live && (categoryId == null || e.groupTitle == categoryId))
+        .toList();
 
     final liveChannels = liveEntries.map((e) {
       return LiveChannel(
@@ -195,7 +190,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<MovieDetails> getMovieDetails(int vodId) async {
+  Future<MovieDetails> getMovieDetails(String vodId) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == vodId && e.type == IptvType.movies);
     if (entry == null) {
       throw Exception('Movie not found');
@@ -217,7 +212,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<TvShowDetails> getTvShowDetails(int seriesId) async {
+  Future<TvShowDetails> getTvShowDetails(String seriesId) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == seriesId && e.type == IptvType.tvshows);
     if (entry == null) {
       throw Exception('TV Show not found');
@@ -267,7 +262,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<String> getLiveUrl(int streamId, {String? extension}) async {
+  Future<String> getLiveUrl(String streamId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.live);
     if (entry == null) {
       throw Exception('Stream not found');
@@ -277,7 +272,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<String> getMovieUrl(int streamId, {String? extension}) async {
+  Future<String> getMovieUrl(String streamId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == streamId && e.type == IptvType.movies);
     if (entry == null) {
       throw Exception('Movie not found');
@@ -287,7 +282,7 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<String> getTvShowUrl(int episodeId, {String? extension}) async {
+  Future<String> getTvShowUrl(String episodeId, {String? extension}) async {
     final entry = _entries.firstWhereOrNull((e) => e.id == episodeId && e.type == IptvType.tvshows);
     if (entry == null) {
       throw Exception('TV Show not found');

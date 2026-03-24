@@ -5,7 +5,7 @@ part 'episode_details.mapper.dart';
 
 @MappableClass()
 class EpisodeDetails with EpisodeDetailsMappable {
-  final int id;
+  final String id;
   final String title;
   final int season;
   final int episode;
@@ -25,7 +25,7 @@ class EpisodeDetails with EpisodeDetailsMappable {
 
   factory EpisodeDetails.fromXtEpisode(XtEpisode item, String providerName) {
     return EpisodeDetails(
-      id: item.id,
+      id: item.id.toString(),
       title: item.title,
       season: item.season,
       episode: item.episode,

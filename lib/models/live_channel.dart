@@ -5,7 +5,7 @@ part 'live_channel.mapper.dart';
 
 @MappableClass()
 class LiveChannel with LiveChannelMappable {
-  final int streamId;
+  final String streamId;
   final String name;
   final String? logoUrl;
   final String categoryId;
@@ -23,7 +23,7 @@ class LiveChannel with LiveChannelMappable {
 
   factory LiveChannel.fromXtLiveChannel(XtLiveChannel xtChannel, String providerName) {
     return LiveChannel(
-      streamId: xtChannel.streamId,
+      streamId: xtChannel.streamId.toString(),
       name: xtChannel.name,
       categoryId: xtChannel.categoryId,
       logoUrl: xtChannel.logoUrl,

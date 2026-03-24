@@ -22,8 +22,8 @@ class EpisodeDetailsMapper extends ClassMapperBase<EpisodeDetails> {
   @override
   final String id = 'EpisodeDetails';
 
-  static int _$id(EpisodeDetails v) => v.id;
-  static const Field<EpisodeDetails, int> _f$id = Field('id', _$id);
+  static String _$id(EpisodeDetails v) => v.id;
+  static const Field<EpisodeDetails, String> _f$id = Field('id', _$id);
   static String _$title(EpisodeDetails v) => v.title;
   static const Field<EpisodeDetails, String> _f$title = Field('title', _$title);
   static int _$season(EpisodeDetails v) => v.season;
@@ -137,7 +137,7 @@ extension EpisodeDetailsValueCopy<$R, $Out>
 abstract class EpisodeDetailsCopyWith<$R, $In extends EpisodeDetails, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
-    int? id,
+    String? id,
     String? title,
     int? season,
     int? episode,
@@ -160,7 +160,7 @@ class _EpisodeDetailsCopyWithImpl<$R, $Out>
       EpisodeDetailsMapper.ensureInitialized();
   @override
   $R call({
-    int? id,
+    String? id,
     String? title,
     int? season,
     int? episode,

@@ -22,8 +22,8 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
   @override
   final String id = 'MovieDetails';
 
-  static int _$streamId(MovieDetails v) => v.streamId;
-  static const Field<MovieDetails, int> _f$streamId = Field(
+  static String _$streamId(MovieDetails v) => v.streamId;
+  static const Field<MovieDetails, String> _f$streamId = Field(
     'streamId',
     _$streamId,
   );
@@ -153,7 +153,7 @@ extension MovieDetailsValueCopy<$R, $Out>
 abstract class MovieDetailsCopyWith<$R, $In extends MovieDetails, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     String? plot,
     double? rating,
@@ -175,7 +175,7 @@ class _MovieDetailsCopyWithImpl<$R, $Out>
       MovieDetailsMapper.ensureInitialized();
   @override
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     Object? plot = $none,
     Object? rating = $none,

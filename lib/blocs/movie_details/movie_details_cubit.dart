@@ -11,7 +11,7 @@ class MovieDetailsCubit extends Cubit<MovieDetailsState> {
 
   MovieDetailsCubit({required this.iptvServiceCubit}) : super(MovieDetailsState(status: StateStatus.initial));
 
-  Future<void> load(String providerName, int movieId) async {
+  Future<void> load(String providerName, String movieId) async {
     emit(state.copyWith(status: StateStatus.loading));
     try {
       final movieDetails = iptvServiceCubit.getMovieDetails(providerName, movieId);

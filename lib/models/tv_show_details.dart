@@ -7,7 +7,7 @@ part 'tv_show_details.mapper.dart';
 
 @MappableClass()
 class TvShowDetails with TvShowDetailsMappable {
-  final int seriesId;
+  final String seriesId;
   final String name;
   final String? plot;
   final Map<int, List<EpisodeDetails>> seasons; // seasonNumber -> episodes
@@ -25,7 +25,7 @@ class TvShowDetails with TvShowDetailsMappable {
 
   factory TvShowDetails.fromXtSeriesItem(XtSeriesDetails item, String providerName) {
     return TvShowDetails(
-      seriesId: item.seriesId,
+      seriesId: item.seriesId.toString(),
       name: item.name,
       plot: item.plot,
       seasons: item.seasons.map(

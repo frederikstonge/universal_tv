@@ -16,7 +16,7 @@ final router = GoRouter(
       name: 'movieDetails',
       builder: (context, state) {
         final providerName = state.pathParameters['providerName']!;
-        final movieId = int.parse(state.pathParameters['movieId']!);
+        final movieId = state.pathParameters['movieId']!;
         return MovieDetailsShell(providerName: providerName, movieId: movieId);
       },
       routes: [
@@ -25,7 +25,7 @@ final router = GoRouter(
           name: 'moviePlayer',
           builder: (context, state) {
             final providerName = state.pathParameters['providerName']!;
-            final movieId = int.parse(state.pathParameters['movieId']!);
+            final movieId = state.pathParameters['movieId']!;
             return MoviePlayerShell(providerName: providerName, movieId: movieId);
           },
         ),
@@ -36,7 +36,7 @@ final router = GoRouter(
       name: 'tvShowDetails',
       builder: (context, state) {
         final providerName = state.pathParameters['providerName']!;
-        final tvShowId = int.parse(state.pathParameters['tvShowId']!);
+        final tvShowId = state.pathParameters['tvShowId']!;
         return TvShowDetailsShell(providerName: providerName, tvShowId: tvShowId);
       },
       routes: [
@@ -45,7 +45,7 @@ final router = GoRouter(
           name: 'tvShowPlayer',
           builder: (context, state) {
             final providerName = state.pathParameters['providerName']!;
-            final tvShowId = int.parse(state.pathParameters['tvShowId']!);
+            final tvShowId = state.pathParameters['tvShowId']!;
             final selectedSeason = int.parse(state.uri.queryParameters['season']!);
             final selectedEpisode = int.parse(state.uri.queryParameters['episode']!);
 

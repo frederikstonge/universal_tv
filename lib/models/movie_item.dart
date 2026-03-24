@@ -5,7 +5,7 @@ part 'movie_item.mapper.dart';
 
 @MappableClass()
 class MovieItem with MovieItemMappable {
-  final int streamId;
+  final String streamId;
   final String name;
   final List<String> categoryIds;
   final String? posterUrl;
@@ -21,7 +21,7 @@ class MovieItem with MovieItemMappable {
 
   factory MovieItem.fromXtVodItem(XtVodItem item, String providerName) {
     return MovieItem(
-      streamId: item.streamId,
+      streamId: item.streamId.toString(),
       name: item.name,
       categoryIds: [item.categoryId],
       posterUrl: item.posterUrl,

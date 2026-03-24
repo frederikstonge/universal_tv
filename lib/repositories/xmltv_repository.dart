@@ -54,8 +54,8 @@ class XmltvRepository extends XmltvBaseRepository {
   }
 
   @override
-  Future<List<XmltvProgramme>> getShortEpg() async {
-    return _entries.whereType<XmltvProgramme>().toList();
+  Future<List<XmltvProgramme>> getShortEpg({String? channelId}) async {
+    return _entries.whereType<XmltvProgramme>().where((e) => channelId == null || e.channelId == channelId).toList();
   }
 
   @override

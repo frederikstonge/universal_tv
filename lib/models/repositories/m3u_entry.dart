@@ -5,7 +5,7 @@ part 'm3u_entry.mapper.dart';
 
 @MappableClass()
 class M3uEntry with M3uEntryMappable {
-  final int id;
+  final String id;
   final String url;
   final String name;
   final String? tvgId;
@@ -25,7 +25,7 @@ class M3uEntry with M3uEntryMappable {
     required this.providerName,
   });
 
-  factory M3uEntry.fromXtM3uEntry(int id, XtM3uEntry entry, String providerName) {
+  factory M3uEntry.fromXtM3uEntry(String id, XtM3uEntry entry, String providerName) {
     return M3uEntry(
       id: id,
       url: entry.url,

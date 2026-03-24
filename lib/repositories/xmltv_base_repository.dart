@@ -6,5 +6,5 @@ abstract class XmltvBaseRepository implements BaseRepository {
   Future<bool> supportsShortEpg();
   Future<bool> supportsXmltv();
   Future<List<XmltvBase>> getXmltv();
-  Future<List<XmltvProgramme>> getShortEpg();
+  Future<List<XmltvProgramme>> getShortEpg({String? channelId});
 }

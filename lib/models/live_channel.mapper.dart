@@ -22,8 +22,8 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
   @override
   final String id = 'LiveChannel';
 
-  static int _$streamId(LiveChannel v) => v.streamId;
-  static const Field<LiveChannel, int> _f$streamId = Field(
+  static String _$streamId(LiveChannel v) => v.streamId;
+  static const Field<LiveChannel, String> _f$streamId = Field(
     'streamId',
     _$streamId,
   );
@@ -134,7 +134,7 @@ extension LiveChannelValueCopy<$R, $Out>
 abstract class LiveChannelCopyWith<$R, $In extends LiveChannel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     String? categoryId,
     String? logoUrl,
@@ -154,7 +154,7 @@ class _LiveChannelCopyWithImpl<$R, $Out>
       LiveChannelMapper.ensureInitialized();
   @override
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     String? categoryId,
     Object? logoUrl = $none,

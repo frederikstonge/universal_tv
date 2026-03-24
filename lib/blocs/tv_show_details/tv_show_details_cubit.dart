@@ -13,7 +13,7 @@ class TvShowDetailsCubit extends Cubit<TvShowDetailsState> {
 
   TvShowDetailsCubit({required this.iptvServiceCubit}) : super(TvShowDetailsState(status: StateStatus.initial));
 
-  Future<void> load(String providerName, int tvShowId, {int? initialSeason, int? initialEpisode}) async {
+  Future<void> load(String providerName, String tvShowId, {int? initialSeason, int? initialEpisode}) async {
     emit(state.copyWith(status: StateStatus.loading));
     try {
       final tvShowDetails = await iptvServiceCubit.getTvShowDetails(providerName, tvShowId);

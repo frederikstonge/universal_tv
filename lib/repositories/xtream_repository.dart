@@ -78,14 +78,14 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<TvShowDetails> getTvShowDetails(int seriesId) async {
-    final tvShow = await client.getSeriesInfo(seriesId);
+  Future<TvShowDetails> getTvShowDetails(String seriesId) async {
+    final tvShow = await client.getSeriesInfo(int.parse(seriesId));
     return TvShowDetails.fromXtSeriesItem(tvShow, provider.name);
   }
 
   @override
-  Future<MovieDetails> getMovieDetails(int vodId) async {
-    final item = await client.getVodInfo(vodId);
+  Future<MovieDetails> getMovieDetails(String vodId) async {
+    final item = await client.getVodInfo(int.parse(vodId));
     return MovieDetails.fromXtVodDetails(item, provider.name);
   }
 
@@ -102,10 +102,10 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<List<XmltvProgramme>> getShortEpg() async {
+  Future<List<XmltvProgramme>> getShortEpg({String? channelId}) async {
     final capabilities = await client.capabilities();
     if (capabilities.supportsShortEpg) {
-      final items = await client.getShortEpg();
+      final items = await client.getShortEpg(epgChannelId: channelId);
       final expiration = DateTime.now().add(provider.epgExpiration);
       return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name, expiration)).toList();
     }
@@ -137,14 +137,14 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<String> getLiveUrl(int streamId, {String? extension}) async =>
-      liveUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
+  Future<String> getLiveUrl(String streamId, {String? extension}) async =>
+      liveUrl(portal, credentials, int.parse(streamId), extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getTvShowUrl(int episodeId, {String? extension}) async =>
-      seriesUrl(portal, credentials, episodeId, extension: extension ?? 'm3u8').toString();
+  Future<String> getTvShowUrl(String episodeId, {String? extension}) async =>
+      seriesUrl(portal, credentials, int.parse(episodeId), extension: extension ?? 'm3u8').toString();
 
   @override
-  Future<String> getMovieUrl(int streamId, {String? extension}) async =>
-      vodUrl(portal, credentials, streamId, extension: extension ?? 'm3u8').toString();
+  Future<String> getMovieUrl(String streamId, {String? extension}) async =>
+      vodUrl(portal, credentials, int.parse(streamId), extension: extension ?? 'm3u8').toString();
 }

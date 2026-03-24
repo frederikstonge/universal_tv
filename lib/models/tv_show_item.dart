@@ -5,7 +5,7 @@ part 'tv_show_item.mapper.dart';
 
 @MappableClass()
 class TvShowItem with TvShowItemMappable {
-  final int seriesId;
+  final String seriesId;
   final String name;
   final List<String> categoryIds;
   final String? posterUrl;
@@ -21,7 +21,7 @@ class TvShowItem with TvShowItemMappable {
 
   factory TvShowItem.fromXtSeriesItem(XtSeriesItem item, String providerName) {
     return TvShowItem(
-      seriesId: item.seriesId,
+      seriesId: item.seriesId.toString(),
       name: item.name,
       categoryIds: [item.categoryId],
       posterUrl: item.posterUrl,

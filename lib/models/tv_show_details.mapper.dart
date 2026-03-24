@@ -23,8 +23,8 @@ class TvShowDetailsMapper extends ClassMapperBase<TvShowDetails> {
   @override
   final String id = 'TvShowDetails';
 
-  static int _$seriesId(TvShowDetails v) => v.seriesId;
-  static const Field<TvShowDetails, int> _f$seriesId = Field(
+  static String _$seriesId(TvShowDetails v) => v.seriesId;
+  static const Field<TvShowDetails, String> _f$seriesId = Field(
     'seriesId',
     _$seriesId,
   );
@@ -142,7 +142,7 @@ abstract class TvShowDetailsCopyWith<$R, $In extends TvShowDetails, $Out>
   >
   get seasons;
   $R call({
-    int? seriesId,
+    String? seriesId,
     String? name,
     String? plot,
     Map<int, List<EpisodeDetails>>? seasons,
@@ -174,7 +174,7 @@ class _TvShowDetailsCopyWithImpl<$R, $Out>
   );
   @override
   $R call({
-    int? seriesId,
+    String? seriesId,
     String? name,
     Object? plot = $none,
     Map<int, List<EpisodeDetails>>? seasons,

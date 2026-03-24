@@ -22,8 +22,8 @@ class MovieItemMapper extends ClassMapperBase<MovieItem> {
   @override
   final String id = 'MovieItem';
 
-  static int _$streamId(MovieItem v) => v.streamId;
-  static const Field<MovieItem, int> _f$streamId = Field(
+  static String _$streamId(MovieItem v) => v.streamId;
+  static const Field<MovieItem, String> _f$streamId = Field(
     'streamId',
     _$streamId,
   );
@@ -126,7 +126,7 @@ abstract class MovieItemCopyWith<$R, $In extends MovieItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categoryIds;
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     List<String>? categoryIds,
     String? posterUrl,
@@ -152,7 +152,7 @@ class _MovieItemCopyWithImpl<$R, $Out>
   );
   @override
   $R call({
-    int? streamId,
+    String? streamId,
     String? name,
     List<String>? categoryIds,
     Object? posterUrl = $none,

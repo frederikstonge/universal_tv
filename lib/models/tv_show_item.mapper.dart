@@ -22,8 +22,8 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
   @override
   final String id = 'TvShowItem';
 
-  static int _$seriesId(TvShowItem v) => v.seriesId;
-  static const Field<TvShowItem, int> _f$seriesId = Field(
+  static String _$seriesId(TvShowItem v) => v.seriesId;
+  static const Field<TvShowItem, String> _f$seriesId = Field(
     'seriesId',
     _$seriesId,
   );
@@ -127,7 +127,7 @@ abstract class TvShowItemCopyWith<$R, $In extends TvShowItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get categoryIds;
   $R call({
-    int? seriesId,
+    String? seriesId,
     String? name,
     List<String>? categoryIds,
     String? posterUrl,
@@ -153,7 +153,7 @@ class _TvShowItemCopyWithImpl<$R, $Out>
   );
   @override
   $R call({
-    int? seriesId,
+    String? seriesId,
     String? name,
     List<String>? categoryIds,
     Object? posterUrl = $none,

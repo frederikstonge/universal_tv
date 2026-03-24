@@ -7,7 +7,7 @@ import 'tv_show_player_page.dart';
 
 class TvShowPlayerShell extends StatelessWidget {
   final String providerName;
-  final int tvShowId;
+  final String tvShowId;
   final int selectedSeason;
   final int selectedEpisode;
 

@@ -7,7 +7,7 @@ import 'tv_show_details_page.dart';
 
 class TvShowDetailsShell extends StatelessWidget {
   final String providerName;
-  final int tvShowId;
+  final String tvShowId;
 
   const TvShowDetailsShell({super.key, required this.providerName, required this.tvShowId});
 

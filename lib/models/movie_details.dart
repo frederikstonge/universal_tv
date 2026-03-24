@@ -5,7 +5,7 @@ part 'movie_details.mapper.dart';
 
 @MappableClass()
 class MovieDetails with MovieDetailsMappable {
-  final int streamId;
+  final String streamId;
   final String name;
   final String? plot;
   final double? rating;
@@ -27,7 +27,7 @@ class MovieDetails with MovieDetailsMappable {
 
   factory MovieDetails.fromXtVodDetails(XtVodDetails item, String providerName) {
     return MovieDetails(
-      streamId: item.streamId,
+      streamId: item.streamId.toString(),
       name: item.name,
       plot: item.plot,
       rating: item.rating,

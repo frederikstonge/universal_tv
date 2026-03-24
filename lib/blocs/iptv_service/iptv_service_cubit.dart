@@ -125,21 +125,21 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
     return series.expand((c) => c).toList();
   }
 
-  Future<MovieDetails?> getMovieDetails(String providerName, int vodId) async {
+  Future<MovieDetails?> getMovieDetails(String providerName, String vodId) async {
     final repository = state.repositories.whereType<StreamBaseRepository>().firstWhereOrNull(
       (r) => r.name == providerName,
     );
     return await repository?.getMovieDetails(vodId);
   }
 
-  Future<TvShowDetails?> getTvShowDetails(String providerName, int seriesId) async {
+  Future<TvShowDetails?> getTvShowDetails(String providerName, String seriesId) async {
     final repository = state.repositories.whereType<StreamBaseRepository>().firstWhereOrNull(
       (r) => r.name == providerName,
     );
     return await repository?.getTvShowDetails(seriesId);
   }
 
-  Future<String?> getLiveUrl(String providerName, int streamId) async {
+  Future<String?> getLiveUrl(String providerName, String streamId) async {
     final repository = state.repositories.whereType<StreamBaseRepository>().firstWhereOrNull(
       (r) => r.name == providerName,
     );
@@ -147,7 +147,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
     return await repository?.getLiveUrl(streamId);
   }
 
-  Future<String?> getMovieUrl(String providerName, int streamId) async {
+  Future<String?> getMovieUrl(String providerName, String streamId) async {
     final repository = state.repositories.whereType<StreamBaseRepository>().firstWhereOrNull(
       (r) => r.name == providerName,
     );
@@ -155,7 +155,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
     return await repository?.getMovieUrl(streamId);
   }
 
-  Future<String?> getTvShowUrl(String providerName, int episodeId) async {
+  Future<String?> getTvShowUrl(String providerName, String episodeId) async {
     final repository = state.repositories.whereType<StreamBaseRepository>().firstWhereOrNull(
       (r) => r.name == providerName,
     );

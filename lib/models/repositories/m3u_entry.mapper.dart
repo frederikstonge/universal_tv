@@ -22,8 +22,8 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
   @override
   final String id = 'M3uEntry';
 
-  static int _$id(M3uEntry v) => v.id;
-  static const Field<M3uEntry, int> _f$id = Field('id', _$id);
+  static String _$id(M3uEntry v) => v.id;
+  static const Field<M3uEntry, String> _f$id = Field('id', _$id);
   static String _$url(M3uEntry v) => v.url;
   static const Field<M3uEntry, String> _f$url = Field('url', _$url);
   static String _$name(M3uEntry v) => v.name;
@@ -144,7 +144,7 @@ abstract class M3uEntryCopyWith<$R, $In extends M3uEntry, $Out>
   MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
   get attributes;
   $R call({
-    int? id,
+    String? id,
     String? url,
     String? name,
     String? tvgId,
@@ -173,7 +173,7 @@ class _M3uEntryCopyWithImpl<$R, $Out>
   );
   @override
   $R call({
-    int? id,
+    String? id,
     String? url,
     String? name,
     Object? tvgId = $none,
