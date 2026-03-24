@@ -1,7 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
 
+import '../extensions/m3u_entry_extensions.dart';
 import 'episode_details.dart';
+import 'repositories/m3u_entry.dart';
 
 part 'tv_show_details.mapper.dart';
 
@@ -33,6 +35,23 @@ class TvShowDetails with TvShowDetailsMappable {
       ),
       posterUrl: item.posterUrl,
       providerName: providerName,
+    );
+  }
+
+  factory TvShowDetails.fromM3uEntries(List<M3uEntry> entries) {
+    final first = entries.first;
+    final episodesBySeasons = <int, List<EpisodeDetails>>{};
+    for (final entry in entries) {
+      final season = entry.seasonNumber;
+      episodesBySeasons.putIfAbsent(season, () => []).add(EpisodeDetails.fromM3uEntry(entry));
+    }
+    return TvShowDetails(
+      seriesId: first.id,
+      name: first.seriesName ?? first.name,
+      plot: first.plot,
+      seasons: episodesBySeasons,
+      posterUrl: first.posterUrl,
+      providerName: first.providerName,
     );
   }
 }

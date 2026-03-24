@@ -1,6 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:muxa_xtream/muxa_xtream.dart';
 
+import '../extensions/m3u_entry_extensions.dart';
+import 'repositories/m3u_entry.dart';
+
 part 'episode_details.mapper.dart';
 
 @MappableClass()
@@ -32,6 +35,18 @@ class EpisodeDetails with EpisodeDetailsMappable {
       duration: item.duration,
       plot: item.plot,
       providerName: providerName,
+    );
+  }
+
+  factory EpisodeDetails.fromM3uEntry(M3uEntry entry) {
+    return EpisodeDetails(
+      id: entry.id,
+      title: entry.name,
+      season: entry.seasonNumber,
+      episode: entry.episodeNumber,
+      duration: entry.duration,
+      plot: entry.plot,
+      providerName: entry.providerName,
     );
   }
 }

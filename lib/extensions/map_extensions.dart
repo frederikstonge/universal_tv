@@ -2,7 +2,9 @@ import 'package:collection/collection.dart';
 
 extension MapExtensions on Map<String, String?> {
   String? safeGet(String key) {
-    final safeItem = entries.firstWhereOrNull((i) => i.key.toLowerCase() == key.toLowerCase());
+    final safeItem = entries.firstWhereOrNull(
+      (i) => i.key.toLowerCase() == key.toLowerCase() || i.key.toLowerCase() == key.replaceAll('-', '_').toLowerCase(),
+    );
     return safeItem?.value;
   }
 
@@ -10,7 +12,12 @@ extension MapExtensions on Map<String, String?> {
     return entries
         .where(
           (attribute) =>
-              keys.any((a) => a.toLowerCase() == attribute.key.toLowerCase()) && attribute.value?.isNotEmpty == true,
+              keys.any(
+                (a) =>
+                    a.toLowerCase() == attribute.key.toLowerCase() ||
+                    a.toLowerCase() == attribute.key.replaceAll('-', '_').toLowerCase(),
+              ) &&
+              attribute.value?.isNotEmpty == true,
         )
         .map((e) => e.value!)
         .toList();

@@ -9,7 +9,6 @@ import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
 import '../extensions/m3u_entry_extensions.dart';
 import '../models/category.dart';
-import '../models/episode_details.dart';
 import '../models/live_channel.dart';
 import '../models/movie_details.dart';
 import '../models/movie_item.dart';
@@ -89,43 +88,20 @@ class M3uRepository extends StreamBaseRepository {
 
   @override
   Future<List<Category>> getLiveCategories() async {
-    final categories = _entries
-        .where((e) => e.type == IptvType.live)
-        .groupListsBy((e) => e.groupTitle)
-        .keys
-        .whereType<String>()
-        .toSet()
-        .toList()
-        .map((i) => Category(id: i, name: i, type: IptvType.live, providerName: provider.name))
-        .toList();
-
-    return categories;
+    final entries = _entries.where((e) => e.type == IptvType.live);
+    return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
   @override
   Future<List<Category>> getMovieCategories() async {
-    final entries = _entries.where((e) => e.type == IptvType.movies).toList();
-
-    return entries
-        .map((e) => e.groupTitle)
-        .whereType<String>()
-        .toSet()
-        .toList()
-        .map((e) => Category(id: e, name: e, type: IptvType.movies, providerName: provider.name))
-        .toList();
+    final entries = _entries.where((e) => e.type == IptvType.movies);
+    return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
   @override
   Future<List<Category>> getTvShowCategories() async {
-    final entries = _entries.where((e) => e.type == IptvType.tvshows).toList();
-
-    return entries
-        .map((e) => e.groupTitle)
-        .whereType<String>()
-        .toSet()
-        .toList()
-        .map((e) => Category(id: e, name: e, type: IptvType.tvshows, providerName: provider.name))
-        .toList();
+    final entries = _entries.where((e) => e.type == IptvType.tvshows);
+    return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
   @override
@@ -134,15 +110,7 @@ class M3uRepository extends StreamBaseRepository {
         .where((e) => e.type == IptvType.movies && (categoryId == null || e.groupTitle == categoryId))
         .toList();
 
-    final vodItems = movieEntries.map((e) {
-      return MovieItem(
-        streamId: e.id,
-        name: e.name,
-        categoryIds: [e.groupTitle ?? provider.name],
-        posterUrl: e.logoUrl,
-        providerName: provider.name,
-      );
-    }).toList();
+    final vodItems = movieEntries.map((e) => MovieItem.fromM3uEntry(e)).toList();
 
     return vodItems;
   }
@@ -153,16 +121,11 @@ class M3uRepository extends StreamBaseRepository {
         .where((e) => e.type == IptvType.tvshows && (categoryId == null || e.groupTitle == categoryId))
         .toList();
 
-    final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
-      final entry = e.value.first;
-      return TvShowItem(
-        seriesId: entry.id,
-        name: entry.safeTvgName ?? entry.name,
-        categoryIds: [entry.groupTitle ?? provider.name],
-        posterUrl: entry.logoUrl,
-        providerName: provider.name,
-      );
-    }).toList();
+    final seriesItems = tvShowEntries
+        .groupListsBy((e) => e.groupTitle)
+        .entries
+        .map((e) => TvShowItem.fromM3uEntry(e.value.first))
+        .toList();
 
     return seriesItems;
   }
@@ -173,16 +136,7 @@ class M3uRepository extends StreamBaseRepository {
         .where((e) => e.type == IptvType.live && (categoryId == null || e.groupTitle == categoryId))
         .toList();
 
-    final liveChannels = liveEntries.map((e) {
-      return LiveChannel(
-        streamId: e.id,
-        name: e.name,
-        categoryId: e.groupTitle ?? provider.name,
-        logoUrl: e.logoUrl,
-        epgChannelId: e.tvgId,
-        providerName: provider.name,
-      );
-    }).toList();
+    final liveChannels = liveEntries.map((e) => LiveChannel.fromM3uEntry(e)).toList();
 
     return liveChannels;
   }
@@ -194,16 +148,7 @@ class M3uRepository extends StreamBaseRepository {
       throw Exception('Movie not found');
     }
 
-    return MovieDetails(
-      streamId: vodId,
-      name: entry.name,
-      plot: null,
-      rating: null,
-      year: null,
-      posterUrl: entry.logoUrl,
-      duration: null,
-      providerName: provider.name,
-    );
+    return MovieDetails.fromM3uEntry(entry);
   }
 
   @override
@@ -215,31 +160,7 @@ class M3uRepository extends StreamBaseRepository {
 
     final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
 
-    return TvShowDetails(
-      seriesId: seriesId,
-      name: entry.groupTitle ?? entry.safeTvgName ?? entry.name,
-      seasons: entries
-          .groupListsBy((s) => s.seasonNumber)
-          .map(
-            (s, e) => MapEntry(
-              s,
-              e.map((episode) {
-                return EpisodeDetails(
-                  id: episode.id,
-                  title: episode.name,
-                  season: episode.seasonNumber,
-                  episode: episode.episodeNumber,
-                  duration: null,
-                  plot: null,
-                  providerName: provider.name,
-                );
-              }).toList(),
-            ),
-          ),
-      plot: null,
-      posterUrl: entry.logoUrl,
-      providerName: provider.name,
-    );
+    return TvShowDetails.fromM3uEntries(entries);
   }
 
   @override
