@@ -16,17 +16,15 @@ import '../models/movie_item.dart';
 import '../models/repositories/m3u_entry.dart';
 import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
-import 'imdb_repository.dart';
 import 'stream_base_repository.dart';
 
 class M3uRepository extends StreamBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
-  final ImdbRepository imdbRepository;
 
   final List<M3uEntry> _entries = [];
 
-  M3uRepository({required this.provider, required this.dio, required this.imdbRepository});
+  M3uRepository({required this.provider, required this.dio});
 
   @override
   String get name => provider.name;
@@ -196,17 +194,14 @@ class M3uRepository extends StreamBaseRepository {
       throw Exception('Movie not found');
     }
 
-    final imdbId = entry.imdbId;
-    final imdbEntry = imdbId != null ? await imdbRepository.getEntry(imdbId) : null;
-
     return MovieDetails(
       streamId: vodId,
       name: entry.name,
-      plot: imdbEntry?.plot,
-      rating: imdbEntry?.rating?.aggregateRating,
-      year: imdbEntry?.startYear,
-      posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
-      duration: imdbEntry?.runtimeSeconds != null ? Duration(seconds: imdbEntry!.runtimeSeconds!) : null,
+      plot: null,
+      rating: null,
+      year: null,
+      posterUrl: entry.logoUrl,
+      duration: null,
       providerName: provider.name,
     );
   }
@@ -220,43 +215,29 @@ class M3uRepository extends StreamBaseRepository {
 
     final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
 
-    final imdbId = entry.imdbId;
-    final imdbEntry = imdbId != null ? await imdbRepository.getEntry(imdbId) : null;
-
-    final episodesInfo = imdbId != null ? await imdbRepository.getEpisodeDetails(imdbId) : null;
-    final seasons = episodesInfo?.episodes?.groupListsBy((g) => g.season);
-
     return TvShowDetails(
       seriesId: seriesId,
-      name: imdbEntry?.primaryTitle ?? imdbEntry?.originalTitle ?? entry.groupTitle ?? entry.safeTvgName ?? entry.name,
+      name: entry.groupTitle ?? entry.safeTvgName ?? entry.name,
       seasons: entries
           .groupListsBy((s) => s.seasonNumber)
           .map(
             (s, e) => MapEntry(
               s,
               e.map((episode) {
-                final episodeImdbEntry = episodesInfo?.episodes?.firstWhereOrNull(
-                  (ep) =>
-                      ep.episodeNumber == episode.episodeNumber &&
-                      (int.tryParse(ep.season ?? '') ?? seasons?.keys.toList().indexOf(ep.season)) ==
-                          episode.seasonNumber,
-                );
                 return EpisodeDetails(
                   id: episode.id,
-                  title: episodeImdbEntry?.title ?? episode.name,
+                  title: episode.name,
                   season: episode.seasonNumber,
                   episode: episode.episodeNumber,
-                  duration: episodeImdbEntry?.runtimeSeconds != null
-                      ? Duration(seconds: episodeImdbEntry!.runtimeSeconds!)
-                      : null,
-                  plot: episodeImdbEntry?.plot,
+                  duration: null,
+                  plot: null,
                   providerName: provider.name,
                 );
               }).toList(),
             ),
           ),
-      plot: imdbEntry?.plot,
-      posterUrl: imdbEntry?.primaryImage?.url ?? entry.logoUrl,
+      plot: null,
+      posterUrl: entry.logoUrl,
       providerName: provider.name,
     );
   }
