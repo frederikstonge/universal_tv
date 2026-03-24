@@ -133,8 +133,12 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<MovieItem>> getMovies() async {
-    final movieEntries = _entries.where((e) => e.type == IptvType.movies).toList();
+  Future<List<MovieItem>> getMovies({String? categoryId}) async {
+    var movieEntries = _entries.where((e) => e.type == IptvType.movies);
+    if (categoryId != null) {
+      movieEntries = movieEntries.where((e) => e.groupTitle == categoryId);
+    }
+
     final vodItems = movieEntries.map((e) {
       return MovieItem(
         streamId: e.id,
@@ -149,8 +153,12 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<TvShowItem>> getTvShows() async {
-    final tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows).toList();
+  Future<List<TvShowItem>> getTvShows({String? categoryId}) async {
+    var tvShowEntries = _entries.where((e) => e.type == IptvType.tvshows);
+    if (categoryId != null) {
+      tvShowEntries = tvShowEntries.where((e) => e.groupTitle == categoryId);
+    }
+
     final seriesItems = tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) {
       final entry = e.value.first;
       return TvShowItem(
@@ -166,8 +174,12 @@ class M3uRepository extends StreamBaseRepository {
   }
 
   @override
-  Future<List<LiveChannel>> getLiveStreams() async {
-    final liveEntries = _entries.where((e) => e.type == IptvType.live).toList();
+  Future<List<LiveChannel>> getLiveStreams({String? categoryId}) async {
+    var liveEntries = _entries.where((e) => e.type == IptvType.live);
+    if (categoryId != null) {
+      liveEntries = liveEntries.where((e) => e.groupTitle == categoryId);
+    }
+
     final liveChannels = liveEntries.map((e) {
       return LiveChannel(
         streamId: e.id,

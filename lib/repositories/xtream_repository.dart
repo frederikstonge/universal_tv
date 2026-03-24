@@ -60,20 +60,20 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   }
 
   @override
-  Future<List<LiveChannel>> getLiveStreams() async {
-    final streams = await client.getLiveStreams();
+  Future<List<LiveChannel>> getLiveStreams({String? categoryId}) async {
+    final streams = await client.getLiveStreams(categoryId: categoryId);
     return streams.map((e) => LiveChannel.fromXtLiveChannel(e, provider.name)).toList();
   }
 
   @override
-  Future<List<MovieItem>> getMovies() async {
-    final movies = await client.getVodStreams();
+  Future<List<MovieItem>> getMovies({String? categoryId}) async {
+    final movies = await client.getVodStreams(categoryId: categoryId);
     return movies.map((e) => MovieItem.fromXtVodItem(e, provider.name)).toList();
   }
 
   @override
-  Future<List<TvShowItem>> getTvShows() async {
-    final tvShows = await client.getSeries();
+  Future<List<TvShowItem>> getTvShows({String? categoryId}) async {
+    final tvShows = await client.getSeries(categoryId: categoryId);
     return tvShows.map((e) => TvShowItem.fromXtSeriesItem(e, provider.name)).toList();
   }
 
