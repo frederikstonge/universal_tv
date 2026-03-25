@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'episode_details.dart';
@@ -25,15 +25,18 @@ class TvShowDetails with TvShowDetailsMappable {
     this.posterUrl,
   });
 
-  factory TvShowDetails.fromXtSeriesItem(XtSeriesDetails item, String providerName) {
+  factory TvShowDetails.fromXtSeriesItem(SeriesInfo item, String providerName) {
     return TvShowDetails(
-      seriesId: item.seriesId.toString(),
-      name: item.name,
-      plot: item.plot,
-      seasons: item.seasons.map(
-        (i, s) => MapEntry(i, s.map((e) => EpisodeDetails.fromXtEpisode(e, providerName)).toList()),
-      ),
-      posterUrl: item.posterUrl,
+      seriesId: item.info.name!.toString(),
+      name: item.info.name!,
+      plot: item.info.plot,
+      seasons:
+          item.episodes?.map(
+            (k, v) => MapEntry(int.parse(k), v.map((e) => EpisodeDetails.fromXtEpisode(e, providerName)).toList()),
+          ) ??
+          {},
+
+      posterUrl: item.info.cover,
       providerName: providerName,
     );
   }

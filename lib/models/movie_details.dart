@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'repositories/m3u_entry.dart';
@@ -28,15 +28,15 @@ class MovieDetails with MovieDetailsMappable {
     this.posterUrl,
   });
 
-  factory MovieDetails.fromXtVodDetails(XtVodDetails item, String providerName) {
+  factory MovieDetails.fromXtVodDetails(VodInfo item, String providerName) {
     return MovieDetails(
-      streamId: item.streamId.toString(),
-      name: item.name,
-      plot: item.plot,
-      rating: item.rating,
-      year: item.year,
-      duration: item.duration,
-      posterUrl: item.posterUrl,
+      streamId: item.movieData.streamId.toString(),
+      name: item.movieData.name.toString(),
+      plot: item.info.plot,
+      rating: item.info.rating,
+      year: item.info.releaseDate?.year,
+      duration: item.info.duration != null ? Duration(seconds: int.parse(item.info.duration!)) : null,
+      posterUrl: item.info.movieImage ?? item.info.coverBig ?? item.info.backdropPath?.firstOrNull,
       providerName: providerName,
     );
   }

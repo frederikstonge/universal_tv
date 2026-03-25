@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'repositories/m3u_entry.dart';
@@ -26,14 +26,14 @@ class EpisodeDetails with EpisodeDetailsMappable {
     this.plot,
   });
 
-  factory EpisodeDetails.fromXtEpisode(XtEpisode item, String providerName) {
+  factory EpisodeDetails.fromXtEpisode(Episode item, String providerName) {
     return EpisodeDetails(
       id: item.id.toString(),
-      title: item.title,
-      season: item.season,
-      episode: item.episode,
-      duration: item.duration,
-      plot: item.plot,
+      title: item.title ?? item.id.toString(),
+      season: item.season!,
+      episode: item.episodeNum!,
+      duration: item.info.duration != null ? Duration(seconds: int.parse(item.info.duration!)) : null,
+      plot: item.info.plot,
       providerName: providerName,
     );
   }

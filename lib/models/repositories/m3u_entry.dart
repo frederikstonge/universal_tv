@@ -1,5 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../extensions/m3u_tags.dart';
+import '../../extensions/map_extensions.dart';
 
 part 'm3u_entry.mapper.dart';
 
@@ -25,15 +28,15 @@ class M3uEntry with M3uEntryMappable {
     required this.providerName,
   });
 
-  factory M3uEntry.fromXtM3uEntry(String id, XtM3uEntry entry, String providerName) {
+  factory M3uEntry.fromM3uParsed(String name, String url, Map<String, String> attributes, String providerName) {
     return M3uEntry(
-      id: id,
-      url: entry.url,
-      name: entry.name,
-      tvgId: entry.tvgId,
-      groupTitle: entry.groupTitle,
-      logoUrl: entry.logoUrl,
-      attributes: entry.attrs,
+      id: Uuid().v4(),
+      url: url,
+      name: name,
+      tvgId: attributes.safeGet(M3uTags.tvgId),
+      groupTitle: attributes.safeGet(M3uTags.groupTitle),
+      logoUrl: attributes.safeGet(M3uTags.tvgLogo),
+      attributes: attributes,
       providerName: providerName,
     );
   }

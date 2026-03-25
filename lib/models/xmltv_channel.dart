@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import 'xmltv_base.dart';
 
@@ -19,11 +19,11 @@ class XmltvChannel extends XmltvBase with XmltvChannelMappable {
     this.iconUrl,
   });
 
-  factory XmltvChannel.fromXtXmltvChannel(XtXmltvChannel channel, String providerName, DateTime expiration) {
+  factory XmltvChannel.fromXtXmltvChannel(Channel channel, String providerName, DateTime expiration) {
     return XmltvChannel(
       id: channel.id,
-      displayName: channel.displayName,
-      iconUrl: channel.iconUrl,
+      displayName: channel.displayNames.firstOrNull?.value,
+      iconUrl: channel.icons.firstOrNull?.src,
       providerName: providerName,
       expiration: expiration,
     );

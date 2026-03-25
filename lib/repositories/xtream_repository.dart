@@ -1,7 +1,11 @@
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'dart:convert';
+
+import 'package:xtream_code_client/xtream_code_client.dart' hide Category;
+import 'package:xtream_code_client/xtream_code_client.dart' as xt show Category;
 
 import '../blocs/settings/iptv_provider.dart';
 import '../models/category.dart';
+import '../models/iptv_type.dart';
 import '../models/live_channel.dart';
 import '../models/movie_details.dart';
 import '../models/movie_item.dart';
@@ -15,14 +19,10 @@ import 'xmltv_base_repository.dart';
 
 class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   final XtreamIptvProvider provider;
-  late final XtreamPortal portal;
-  late final XtreamCredentials credentials;
   late final XtreamClient client;
 
   XtreamRepository({required this.provider}) {
-    portal = XtreamPortal(Uri.parse(provider.url));
-    credentials = XtreamCredentials(username: provider.userName, password: provider.password);
-    client = XtreamClient(portal, credentials);
+    client = XtreamClient(url: provider.url, username: provider.userName, password: provider.password);
   }
 
   @override
@@ -30,121 +30,99 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
 
   @override
   Future<void> load() async {
-    final health = await client.ping();
-    if (!health.ok) {
-      throw Exception('Failed to connect to Xtream server ${provider.name}: ${health.statusCode}');
+    final serverInfo = await client.serverInformation();
+    if (serverInfo.meta.statusCode < 200 || serverInfo.meta.statusCode >= 300) {
+      throw Exception(
+        'Failed to connect to Xtream server: ${serverInfo.meta.statusCode} ${jsonEncode(serverInfo.warnings)}',
+      );
     }
   }
 
   @override
   Future<void> dispose() async {
-    // No persistent data to clear
+    client.close();
   }
 
   @override
   Future<List<Category>> getLiveCategories() async {
-    final categories = await client.getLiveCategories();
-    return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
+    final categories = await client.liveStreamCategoriesData();
+    return categories.map((e) => Category.fromXtCategory(e, IptvType.live, provider.name)).toList();
   }
 
   @override
   Future<List<Category>> getMovieCategories() async {
-    final categories = await client.getVodCategories();
-    return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
+    final categories = await client.vodCategoriesData();
+    return categories.map((e) => Category.fromXtCategory(e, IptvType.movies, provider.name)).toList();
   }
 
   @override
   Future<List<Category>> getTvShowCategories() async {
-    final categories = await client.getSeriesCategories();
-    return categories.map((e) => Category.fromXtCategory(e, provider.name)).toList();
+    final categories = await client.seriesCategoriesData();
+    return categories.map((e) => Category.fromXtCategory(e, IptvType.tvshows, provider.name)).toList();
   }
 
   @override
   Future<List<LiveChannel>> getLiveStreams({String? categoryId}) async {
-    final streams = await client.getLiveStreams(categoryId: categoryId);
+    final category = categoryId != null ? xt.Category(categoryId: int.parse(categoryId)) : null;
+    final streams = await client.liveStreamItemsData(category: category);
     return streams.map((e) => LiveChannel.fromXtLiveChannel(e, provider.name)).toList();
   }
 
   @override
   Future<List<MovieItem>> getMovies({String? categoryId}) async {
-    final movies = await client.getVodStreams(categoryId: categoryId);
+    final category = categoryId != null ? xt.Category(categoryId: int.parse(categoryId)) : null;
+    final movies = await client.vodItemsData(category: category);
     return movies.map((e) => MovieItem.fromXtVodItem(e, provider.name)).toList();
   }
 
   @override
   Future<List<TvShowItem>> getTvShows({String? categoryId}) async {
-    final tvShows = await client.getSeries(categoryId: categoryId);
+    final category = categoryId != null ? xt.Category(categoryId: int.parse(categoryId)) : null;
+    final tvShows = await client.seriesItemsData(category: category);
     return tvShows.map((e) => TvShowItem.fromXtSeriesItem(e, provider.name)).toList();
   }
 
   @override
   Future<TvShowDetails> getTvShowDetails(String seriesId) async {
-    final tvShow = await client.getSeriesInfo(int.parse(seriesId));
+    final series = SeriesItem(seriesId: int.parse(seriesId));
+    final tvShow = await client.seriesInfoData(series);
     return TvShowDetails.fromXtSeriesItem(tvShow, provider.name);
   }
 
   @override
   Future<MovieDetails> getMovieDetails(String vodId) async {
-    final item = await client.getVodInfo(int.parse(vodId));
+    final vod = VodItem(streamId: int.parse(vodId));
+    final item = await client.vodInfoData(vod);
     return MovieDetails.fromXtVodDetails(item, provider.name);
   }
 
   @override
-  Future<bool> supportsShortEpg() async {
-    final capabilities = await client.capabilities();
-    return capabilities.supportsShortEpg;
-  }
-
-  @override
-  Future<bool> supportsXmltv() async {
-    final capabilities = await client.capabilities();
-    return capabilities.supportsXmltv;
-  }
-
-  @override
   Future<List<XmltvProgramme>> getShortEpg({String? channelId}) async {
-    final capabilities = await client.capabilities();
-    if (capabilities.supportsShortEpg) {
-      final items = await client.getShortEpg(epgChannelId: channelId);
-      final expiration = DateTime.now().add(provider.epgExpiration);
-      return items.map((e) => XmltvProgramme.fromXtEpg(e, provider.name, expiration)).toList();
-    }
-
-    return [];
+    final items = await client.epgLiteData();
+    final filteredItems = items.programmes.where((e) => channelId == null || e.channelId == channelId).toList();
+    final expiration = DateTime.now().add(provider.epgExpiration);
+    return filteredItems.map((e) => XmltvProgramme.fromXtEpg(e, provider.name, expiration)).toList();
   }
 
   @override
   Future<List<XmltvBase>> getXmltv() async {
-    final capabilities = await client.capabilities();
-    if (capabilities.supportsXmltv) {
-      final items = await client.getXmltv().toList();
-      final expiration = DateTime.now().add(provider.epgExpiration);
-      return items
-          .map((e) {
-            if (e is XtXmltvChannel) {
-              return XmltvChannel.fromXtXmltvChannel(e, provider.name, expiration);
-            } else if (e is XtXmltvProgramme) {
-              return XmltvProgramme.fromXtXmltvProgramme(e, provider.name, expiration);
-            }
-
-            return null;
-          })
-          .whereType<XmltvBase>()
-          .toList();
-    }
-
-    return [];
+    final items = await client.epgData();
+    final expiration = DateTime.now().add(provider.epgExpiration);
+    return [
+      ...items.channels.map((c) => XmltvChannel.fromXtXmltvChannel(c, provider.name, expiration)),
+      ...items.programmes.map((p) => XmltvProgramme.fromXtXmltvProgramme(p, provider.name, expiration)),
+    ];
   }
 
   @override
   Future<String> getLiveUrl(String streamId, {String? extension}) async =>
-      liveUrl(portal, credentials, int.parse(streamId), extension: extension ?? 'm3u8').toString();
+      client.streamUrl(int.parse(streamId), [extension ?? 'ts']).toString();
 
   @override
   Future<String> getTvShowUrl(String episodeId, {String? extension}) async =>
-      seriesUrl(portal, credentials, int.parse(episodeId), extension: extension ?? 'm3u8').toString();
+      client.seriesUrl(int.parse(episodeId), extension ?? 'm3u8').toString();
 
   @override
   Future<String> getMovieUrl(String streamId, {String? extension}) async =>
-      vodUrl(portal, credentials, int.parse(streamId), extension: extension ?? 'm3u8').toString();
+      client.movieUrl(int.parse(streamId), extension ?? 'm3u8').toString();
 }

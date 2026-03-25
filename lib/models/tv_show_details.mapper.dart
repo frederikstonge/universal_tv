@@ -30,45 +30,45 @@ class TvShowDetailsMapper extends ClassMapperBase<TvShowDetails> {
   );
   static String _$name(TvShowDetails v) => v.name;
   static const Field<TvShowDetails, String> _f$name = Field('name', _$name);
+  static Map<int, List<EpisodeDetails>> _$seasons(TvShowDetails v) => v.seasons;
+  static const Field<TvShowDetails, Map<int, List<EpisodeDetails>>> _f$seasons =
+      Field('seasons', _$seasons);
+  static String _$providerName(TvShowDetails v) => v.providerName;
+  static const Field<TvShowDetails, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static String? _$plot(TvShowDetails v) => v.plot;
   static const Field<TvShowDetails, String> _f$plot = Field(
     'plot',
     _$plot,
     opt: true,
   );
-  static Map<int, List<EpisodeDetails>> _$seasons(TvShowDetails v) => v.seasons;
-  static const Field<TvShowDetails, Map<int, List<EpisodeDetails>>> _f$seasons =
-      Field('seasons', _$seasons);
   static String? _$posterUrl(TvShowDetails v) => v.posterUrl;
   static const Field<TvShowDetails, String> _f$posterUrl = Field(
     'posterUrl',
     _$posterUrl,
     opt: true,
   );
-  static String _$providerName(TvShowDetails v) => v.providerName;
-  static const Field<TvShowDetails, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
-  );
 
   @override
   final MappableFields<TvShowDetails> fields = const {
     #seriesId: _f$seriesId,
     #name: _f$name,
-    #plot: _f$plot,
     #seasons: _f$seasons,
-    #posterUrl: _f$posterUrl,
     #providerName: _f$providerName,
+    #plot: _f$plot,
+    #posterUrl: _f$posterUrl,
   };
 
   static TvShowDetails _instantiate(DecodingData data) {
     return TvShowDetails(
       seriesId: data.dec(_f$seriesId),
       name: data.dec(_f$name),
-      plot: data.dec(_f$plot),
       seasons: data.dec(_f$seasons),
-      posterUrl: data.dec(_f$posterUrl),
       providerName: data.dec(_f$providerName),
+      plot: data.dec(_f$plot),
+      posterUrl: data.dec(_f$posterUrl),
     );
   }
 
@@ -144,10 +144,10 @@ abstract class TvShowDetailsCopyWith<$R, $In extends TvShowDetails, $Out>
   $R call({
     String? seriesId,
     String? name,
-    String? plot,
     Map<int, List<EpisodeDetails>>? seasons,
-    String? posterUrl,
     String? providerName,
+    String? plot,
+    String? posterUrl,
   });
   TvShowDetailsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -176,28 +176,28 @@ class _TvShowDetailsCopyWithImpl<$R, $Out>
   $R call({
     String? seriesId,
     String? name,
-    Object? plot = $none,
     Map<int, List<EpisodeDetails>>? seasons,
-    Object? posterUrl = $none,
     String? providerName,
+    Object? plot = $none,
+    Object? posterUrl = $none,
   }) => $apply(
     FieldCopyWithData({
       if (seriesId != null) #seriesId: seriesId,
       if (name != null) #name: name,
-      if (plot != $none) #plot: plot,
       if (seasons != null) #seasons: seasons,
-      if (posterUrl != $none) #posterUrl: posterUrl,
       if (providerName != null) #providerName: providerName,
+      if (plot != $none) #plot: plot,
+      if (posterUrl != $none) #posterUrl: posterUrl,
     }),
   );
   @override
   TvShowDetails $make(CopyWithData data) => TvShowDetails(
     seriesId: data.get(#seriesId, or: $value.seriesId),
     name: data.get(#name, or: $value.name),
-    plot: data.get(#plot, or: $value.plot),
     seasons: data.get(#seasons, or: $value.seasons),
-    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
     providerName: data.get(#providerName, or: $value.providerName),
+    plot: data.get(#plot, or: $value.plot),
+    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
   );
 
   @override

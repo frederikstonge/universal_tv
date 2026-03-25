@@ -33,6 +33,16 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
     'start',
     _$start,
   );
+  static String _$providerName(XmltvProgramme v) => v.providerName;
+  static const Field<XmltvProgramme, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
+  static DateTime _$expiration(XmltvProgramme v) => v.expiration;
+  static const Field<XmltvProgramme, DateTime> _f$expiration = Field(
+    'expiration',
+    _$expiration,
+  );
   static DateTime? _$stop(XmltvProgramme v) => v.stop;
   static const Field<XmltvProgramme, DateTime> _f$stop = Field(
     'stop',
@@ -58,27 +68,17 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
     opt: true,
     def: const [],
   );
-  static String _$providerName(XmltvProgramme v) => v.providerName;
-  static const Field<XmltvProgramme, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
-  );
-  static DateTime _$expiration(XmltvProgramme v) => v.expiration;
-  static const Field<XmltvProgramme, DateTime> _f$expiration = Field(
-    'expiration',
-    _$expiration,
-  );
 
   @override
   final MappableFields<XmltvProgramme> fields = const {
     #channelId: _f$channelId,
     #start: _f$start,
+    #providerName: _f$providerName,
+    #expiration: _f$expiration,
     #stop: _f$stop,
     #title: _f$title,
     #description: _f$description,
     #categories: _f$categories,
-    #providerName: _f$providerName,
-    #expiration: _f$expiration,
   };
 
   @override
@@ -92,12 +92,12 @@ class XmltvProgrammeMapper extends SubClassMapperBase<XmltvProgramme> {
     return XmltvProgramme(
       channelId: data.dec(_f$channelId),
       start: data.dec(_f$start),
+      providerName: data.dec(_f$providerName),
+      expiration: data.dec(_f$expiration),
       stop: data.dec(_f$stop),
       title: data.dec(_f$title),
       description: data.dec(_f$description),
       categories: data.dec(_f$categories),
-      providerName: data.dec(_f$providerName),
-      expiration: data.dec(_f$expiration),
     );
   }
 
@@ -168,12 +168,12 @@ abstract class XmltvProgrammeCopyWith<$R, $In extends XmltvProgramme, $Out>
   $R call({
     String? channelId,
     DateTime? start,
+    String? providerName,
+    DateTime? expiration,
     DateTime? stop,
     String? title,
     String? description,
     List<String>? categories,
-    String? providerName,
-    DateTime? expiration,
   });
   XmltvProgrammeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -199,34 +199,34 @@ class _XmltvProgrammeCopyWithImpl<$R, $Out>
   $R call({
     String? channelId,
     DateTime? start,
+    String? providerName,
+    DateTime? expiration,
     Object? stop = $none,
     Object? title = $none,
     Object? description = $none,
     List<String>? categories,
-    String? providerName,
-    DateTime? expiration,
   }) => $apply(
     FieldCopyWithData({
       if (channelId != null) #channelId: channelId,
       if (start != null) #start: start,
+      if (providerName != null) #providerName: providerName,
+      if (expiration != null) #expiration: expiration,
       if (stop != $none) #stop: stop,
       if (title != $none) #title: title,
       if (description != $none) #description: description,
       if (categories != null) #categories: categories,
-      if (providerName != null) #providerName: providerName,
-      if (expiration != null) #expiration: expiration,
     }),
   );
   @override
   XmltvProgramme $make(CopyWithData data) => XmltvProgramme(
     channelId: data.get(#channelId, or: $value.channelId),
     start: data.get(#start, or: $value.start),
+    providerName: data.get(#providerName, or: $value.providerName),
+    expiration: data.get(#expiration, or: $value.expiration),
     stop: data.get(#stop, or: $value.stop),
     title: data.get(#title, or: $value.title),
     description: data.get(#description, or: $value.description),
     categories: data.get(#categories, or: $value.categories),
-    providerName: data.get(#providerName, or: $value.providerName),
-    expiration: data.get(#expiration, or: $value.expiration),
   );
 
   @override

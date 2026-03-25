@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'repositories/m3u_entry.dart';
@@ -22,12 +22,12 @@ class TvShowItem with TvShowItemMappable {
     this.posterUrl,
   });
 
-  factory TvShowItem.fromXtSeriesItem(XtSeriesItem item, String providerName) {
+  factory TvShowItem.fromXtSeriesItem(SeriesItem item, String providerName) {
     return TvShowItem(
       seriesId: item.seriesId.toString(),
-      name: item.name,
-      categoryIds: [item.categoryId],
-      posterUrl: item.posterUrl,
+      name: item.name ?? item.seriesId?.toString() ?? '',
+      categoryIds: [if (item.categoryId != null) item.categoryId!.toString()],
+      posterUrl: item.cover,
       providerName: providerName,
     );
   }

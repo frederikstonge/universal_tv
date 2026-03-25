@@ -25,6 +25,12 @@ class CategoryMapper extends ClassMapperBase<Category> {
 
   static String _$id(Category v) => v.id;
   static const Field<Category, String> _f$id = Field('id', _$id);
+  static String? _$parentId(Category v) => v.parentId;
+  static const Field<Category, String> _f$parentId = Field(
+    'parentId',
+    _$parentId,
+    opt: true,
+  );
   static String _$name(Category v) => v.name;
   static const Field<Category, String> _f$name = Field('name', _$name);
   static IptvType _$type(Category v) => v.type;
@@ -38,6 +44,7 @@ class CategoryMapper extends ClassMapperBase<Category> {
   @override
   final MappableFields<Category> fields = const {
     #id: _f$id,
+    #parentId: _f$parentId,
     #name: _f$name,
     #type: _f$type,
     #providerName: _f$providerName,
@@ -46,6 +53,7 @@ class CategoryMapper extends ClassMapperBase<Category> {
   static Category _instantiate(DecodingData data) {
     return Category(
       id: data.dec(_f$id),
+      parentId: data.dec(_f$parentId),
       name: data.dec(_f$name),
       type: data.dec(_f$type),
       providerName: data.dec(_f$providerName),
@@ -109,7 +117,13 @@ extension CategoryValueCopy<$R, $Out> on ObjectCopyWith<$R, Category, $Out> {
 
 abstract class CategoryCopyWith<$R, $In extends Category, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name, IptvType? type, String? providerName});
+  $R call({
+    String? id,
+    String? parentId,
+    String? name,
+    IptvType? type,
+    String? providerName,
+  });
   CategoryCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -122,18 +136,25 @@ class _CategoryCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Category> $mapper =
       CategoryMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name, IptvType? type, String? providerName}) =>
-      $apply(
-        FieldCopyWithData({
-          if (id != null) #id: id,
-          if (name != null) #name: name,
-          if (type != null) #type: type,
-          if (providerName != null) #providerName: providerName,
-        }),
-      );
+  $R call({
+    String? id,
+    Object? parentId = $none,
+    String? name,
+    IptvType? type,
+    String? providerName,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (parentId != $none) #parentId: parentId,
+      if (name != null) #name: name,
+      if (type != null) #type: type,
+      if (providerName != null) #providerName: providerName,
+    }),
+  );
   @override
   Category $make(CopyWithData data) => Category(
     id: data.get(#id, or: $value.id),
+    parentId: data.get(#parentId, or: $value.parentId),
     name: data.get(#name, or: $value.name),
     type: data.get(#type, or: $value.type),
     providerName: data.get(#providerName, or: $value.providerName),

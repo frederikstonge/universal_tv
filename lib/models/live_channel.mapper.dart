@@ -34,6 +34,11 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
     'categoryId',
     _$categoryId,
   );
+  static String _$providerName(LiveChannel v) => v.providerName;
+  static const Field<LiveChannel, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static String? _$logoUrl(LiveChannel v) => v.logoUrl;
   static const Field<LiveChannel, String> _f$logoUrl = Field(
     'logoUrl',
@@ -46,20 +51,15 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
     _$epgChannelId,
     opt: true,
   );
-  static String _$providerName(LiveChannel v) => v.providerName;
-  static const Field<LiveChannel, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
-  );
 
   @override
   final MappableFields<LiveChannel> fields = const {
     #streamId: _f$streamId,
     #name: _f$name,
     #categoryId: _f$categoryId,
+    #providerName: _f$providerName,
     #logoUrl: _f$logoUrl,
     #epgChannelId: _f$epgChannelId,
-    #providerName: _f$providerName,
   };
 
   static LiveChannel _instantiate(DecodingData data) {
@@ -67,9 +67,9 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
       streamId: data.dec(_f$streamId),
       name: data.dec(_f$name),
       categoryId: data.dec(_f$categoryId),
+      providerName: data.dec(_f$providerName),
       logoUrl: data.dec(_f$logoUrl),
       epgChannelId: data.dec(_f$epgChannelId),
-      providerName: data.dec(_f$providerName),
     );
   }
 
@@ -137,9 +137,9 @@ abstract class LiveChannelCopyWith<$R, $In extends LiveChannel, $Out>
     String? streamId,
     String? name,
     String? categoryId,
+    String? providerName,
     String? logoUrl,
     String? epgChannelId,
-    String? providerName,
   });
   LiveChannelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -157,17 +157,17 @@ class _LiveChannelCopyWithImpl<$R, $Out>
     String? streamId,
     String? name,
     String? categoryId,
+    String? providerName,
     Object? logoUrl = $none,
     Object? epgChannelId = $none,
-    String? providerName,
   }) => $apply(
     FieldCopyWithData({
       if (streamId != null) #streamId: streamId,
       if (name != null) #name: name,
       if (categoryId != null) #categoryId: categoryId,
+      if (providerName != null) #providerName: providerName,
       if (logoUrl != $none) #logoUrl: logoUrl,
       if (epgChannelId != $none) #epgChannelId: epgChannelId,
-      if (providerName != null) #providerName: providerName,
     }),
   );
   @override
@@ -175,9 +175,9 @@ class _LiveChannelCopyWithImpl<$R, $Out>
     streamId: data.get(#streamId, or: $value.streamId),
     name: data.get(#name, or: $value.name),
     categoryId: data.get(#categoryId, or: $value.categoryId),
+    providerName: data.get(#providerName, or: $value.providerName),
     logoUrl: data.get(#logoUrl, or: $value.logoUrl),
     epgChannelId: data.get(#epgChannelId, or: $value.epgChannelId),
-    providerName: data.get(#providerName, or: $value.providerName),
   );
 
   @override

@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'repositories/m3u_entry.dart';
@@ -24,12 +24,12 @@ class LiveChannel with LiveChannelMappable {
     this.epgChannelId,
   });
 
-  factory LiveChannel.fromXtLiveChannel(XtLiveChannel xtChannel, String providerName) {
+  factory LiveChannel.fromXtLiveChannel(LiveStreamItem xtChannel, String providerName) {
     return LiveChannel(
       streamId: xtChannel.streamId.toString(),
-      name: xtChannel.name,
-      categoryId: xtChannel.categoryId,
-      logoUrl: xtChannel.logoUrl,
+      name: xtChannel.name ?? xtChannel.streamId.toString(),
+      categoryId: xtChannel.categoryId?.toString() ?? xtChannel.categoryIds?.firstOrNull?.toString() ?? '',
+      logoUrl: xtChannel.streamIcon ?? xtChannel.thumbnail,
       epgChannelId: xtChannel.epgChannelId,
       providerName: providerName,
     );

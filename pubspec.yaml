@@ -24,9 +24,9 @@ dependencies:
   media_kit: ^1.2.0
   media_kit_libs_video: ^1.0.6
   media_kit_video: ^2.0.1
-  muxa_xtream: ^0.1.2
   path_provider: ^2.1.5
   uuid: ^4.5.1
+  xtream_code_client: ^2.0.1
 
 dev_dependencies:
   build_runner: ^2.4.15

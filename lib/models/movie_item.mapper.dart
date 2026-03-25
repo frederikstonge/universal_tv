@@ -34,16 +34,16 @@ class MovieItemMapper extends ClassMapperBase<MovieItem> {
     'categoryIds',
     _$categoryIds,
   );
+  static String _$providerName(MovieItem v) => v.providerName;
+  static const Field<MovieItem, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static String? _$posterUrl(MovieItem v) => v.posterUrl;
   static const Field<MovieItem, String> _f$posterUrl = Field(
     'posterUrl',
     _$posterUrl,
     opt: true,
-  );
-  static String _$providerName(MovieItem v) => v.providerName;
-  static const Field<MovieItem, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
   );
 
   @override
@@ -51,8 +51,8 @@ class MovieItemMapper extends ClassMapperBase<MovieItem> {
     #streamId: _f$streamId,
     #name: _f$name,
     #categoryIds: _f$categoryIds,
-    #posterUrl: _f$posterUrl,
     #providerName: _f$providerName,
+    #posterUrl: _f$posterUrl,
   };
 
   static MovieItem _instantiate(DecodingData data) {
@@ -60,8 +60,8 @@ class MovieItemMapper extends ClassMapperBase<MovieItem> {
       streamId: data.dec(_f$streamId),
       name: data.dec(_f$name),
       categoryIds: data.dec(_f$categoryIds),
-      posterUrl: data.dec(_f$posterUrl),
       providerName: data.dec(_f$providerName),
+      posterUrl: data.dec(_f$posterUrl),
     );
   }
 
@@ -129,8 +129,8 @@ abstract class MovieItemCopyWith<$R, $In extends MovieItem, $Out>
     String? streamId,
     String? name,
     List<String>? categoryIds,
-    String? posterUrl,
     String? providerName,
+    String? posterUrl,
   });
   MovieItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -155,15 +155,15 @@ class _MovieItemCopyWithImpl<$R, $Out>
     String? streamId,
     String? name,
     List<String>? categoryIds,
-    Object? posterUrl = $none,
     String? providerName,
+    Object? posterUrl = $none,
   }) => $apply(
     FieldCopyWithData({
       if (streamId != null) #streamId: streamId,
       if (name != null) #name: name,
       if (categoryIds != null) #categoryIds: categoryIds,
-      if (posterUrl != $none) #posterUrl: posterUrl,
       if (providerName != null) #providerName: providerName,
+      if (posterUrl != $none) #posterUrl: posterUrl,
     }),
   );
   @override
@@ -171,8 +171,8 @@ class _MovieItemCopyWithImpl<$R, $Out>
     streamId: data.get(#streamId, or: $value.streamId),
     name: data.get(#name, or: $value.name),
     categoryIds: data.get(#categoryIds, or: $value.categoryIds),
-    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
     providerName: data.get(#providerName, or: $value.providerName),
+    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
   );
 
   @override

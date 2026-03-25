@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../models/iptv_type.dart';
 import '../blocs/settings/iptv_provider.dart';
@@ -17,6 +15,7 @@ import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
 import '../models/xmltv_base.dart';
 import '../models/xmltv_programme.dart';
+import '../parsers/m3u_parser.dart';
 import 'stream_base_repository.dart';
 import 'xmltv_base_repository.dart';
 
@@ -75,10 +74,9 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
 
     final List<M3uEntry> entries = [];
     try {
-      final m3uDataStream = parseM3u(Stream.value(utf8.encode(data)));
+      final m3uDataStream = M3uParser.parseM3u(Stream.value(utf8.encode(data)), provider.name);
       final m3uData = await m3uDataStream.toList();
-      final m3uEntries = m3uData.map((e) => M3uEntry.fromXtM3uEntry(Uuid().v4(), e, provider.name)).toList();
-      entries.addAll(m3uEntries);
+      entries.addAll(m3uData);
     } catch (e) {
       return false;
     }
@@ -214,12 +212,6 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
 
   @override
   Future<List<XmltvBase>> getXmltv() {
-    throw UnimplementedError();
+    return Future.value([]);
   }
-
-  @override
-  Future<bool> supportsShortEpg() => Future.value(true);
-
-  @override
-  Future<bool> supportsXmltv() => Future.value(false);
 }

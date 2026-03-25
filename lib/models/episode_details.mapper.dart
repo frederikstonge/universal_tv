@@ -33,6 +33,11 @@ class EpisodeDetailsMapper extends ClassMapperBase<EpisodeDetails> {
     'episode',
     _$episode,
   );
+  static String _$providerName(EpisodeDetails v) => v.providerName;
+  static const Field<EpisodeDetails, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static Duration? _$duration(EpisodeDetails v) => v.duration;
   static const Field<EpisodeDetails, Duration> _f$duration = Field(
     'duration',
@@ -45,11 +50,6 @@ class EpisodeDetailsMapper extends ClassMapperBase<EpisodeDetails> {
     _$plot,
     opt: true,
   );
-  static String _$providerName(EpisodeDetails v) => v.providerName;
-  static const Field<EpisodeDetails, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
-  );
 
   @override
   final MappableFields<EpisodeDetails> fields = const {
@@ -57,9 +57,9 @@ class EpisodeDetailsMapper extends ClassMapperBase<EpisodeDetails> {
     #title: _f$title,
     #season: _f$season,
     #episode: _f$episode,
+    #providerName: _f$providerName,
     #duration: _f$duration,
     #plot: _f$plot,
-    #providerName: _f$providerName,
   };
 
   static EpisodeDetails _instantiate(DecodingData data) {
@@ -68,9 +68,9 @@ class EpisodeDetailsMapper extends ClassMapperBase<EpisodeDetails> {
       title: data.dec(_f$title),
       season: data.dec(_f$season),
       episode: data.dec(_f$episode),
+      providerName: data.dec(_f$providerName),
       duration: data.dec(_f$duration),
       plot: data.dec(_f$plot),
-      providerName: data.dec(_f$providerName),
     );
   }
 
@@ -141,9 +141,9 @@ abstract class EpisodeDetailsCopyWith<$R, $In extends EpisodeDetails, $Out>
     String? title,
     int? season,
     int? episode,
+    String? providerName,
     Duration? duration,
     String? plot,
-    String? providerName,
   });
   EpisodeDetailsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -164,18 +164,18 @@ class _EpisodeDetailsCopyWithImpl<$R, $Out>
     String? title,
     int? season,
     int? episode,
+    String? providerName,
     Object? duration = $none,
     Object? plot = $none,
-    String? providerName,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (title != null) #title: title,
       if (season != null) #season: season,
       if (episode != null) #episode: episode,
+      if (providerName != null) #providerName: providerName,
       if (duration != $none) #duration: duration,
       if (plot != $none) #plot: plot,
-      if (providerName != null) #providerName: providerName,
     }),
   );
   @override
@@ -184,9 +184,9 @@ class _EpisodeDetailsCopyWithImpl<$R, $Out>
     title: data.get(#title, or: $value.title),
     season: data.get(#season, or: $value.season),
     episode: data.get(#episode, or: $value.episode),
+    providerName: data.get(#providerName, or: $value.providerName),
     duration: data.get(#duration, or: $value.duration),
     plot: data.get(#plot, or: $value.plot),
-    providerName: data.get(#providerName, or: $value.providerName),
   );
 
   @override

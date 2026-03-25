@@ -29,6 +29,11 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
   );
   static String _$name(MovieDetails v) => v.name;
   static const Field<MovieDetails, String> _f$name = Field('name', _$name);
+  static String _$providerName(MovieDetails v) => v.providerName;
+  static const Field<MovieDetails, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static String? _$plot(MovieDetails v) => v.plot;
   static const Field<MovieDetails, String> _f$plot = Field(
     'plot',
@@ -59,34 +64,29 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
     _$posterUrl,
     opt: true,
   );
-  static String _$providerName(MovieDetails v) => v.providerName;
-  static const Field<MovieDetails, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
-  );
 
   @override
   final MappableFields<MovieDetails> fields = const {
     #streamId: _f$streamId,
     #name: _f$name,
+    #providerName: _f$providerName,
     #plot: _f$plot,
     #rating: _f$rating,
     #year: _f$year,
     #duration: _f$duration,
     #posterUrl: _f$posterUrl,
-    #providerName: _f$providerName,
   };
 
   static MovieDetails _instantiate(DecodingData data) {
     return MovieDetails(
       streamId: data.dec(_f$streamId),
       name: data.dec(_f$name),
+      providerName: data.dec(_f$providerName),
       plot: data.dec(_f$plot),
       rating: data.dec(_f$rating),
       year: data.dec(_f$year),
       duration: data.dec(_f$duration),
       posterUrl: data.dec(_f$posterUrl),
-      providerName: data.dec(_f$providerName),
     );
   }
 
@@ -155,12 +155,12 @@ abstract class MovieDetailsCopyWith<$R, $In extends MovieDetails, $Out>
   $R call({
     String? streamId,
     String? name,
+    String? providerName,
     String? plot,
     double? rating,
     int? year,
     Duration? duration,
     String? posterUrl,
-    String? providerName,
   });
   MovieDetailsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -177,34 +177,34 @@ class _MovieDetailsCopyWithImpl<$R, $Out>
   $R call({
     String? streamId,
     String? name,
+    String? providerName,
     Object? plot = $none,
     Object? rating = $none,
     Object? year = $none,
     Object? duration = $none,
     Object? posterUrl = $none,
-    String? providerName,
   }) => $apply(
     FieldCopyWithData({
       if (streamId != null) #streamId: streamId,
       if (name != null) #name: name,
+      if (providerName != null) #providerName: providerName,
       if (plot != $none) #plot: plot,
       if (rating != $none) #rating: rating,
       if (year != $none) #year: year,
       if (duration != $none) #duration: duration,
       if (posterUrl != $none) #posterUrl: posterUrl,
-      if (providerName != null) #providerName: providerName,
     }),
   );
   @override
   MovieDetails $make(CopyWithData data) => MovieDetails(
     streamId: data.get(#streamId, or: $value.streamId),
     name: data.get(#name, or: $value.name),
+    providerName: data.get(#providerName, or: $value.providerName),
     plot: data.get(#plot, or: $value.plot),
     rating: data.get(#rating, or: $value.rating),
     year: data.get(#year, or: $value.year),
     duration: data.get(#duration, or: $value.duration),
     posterUrl: data.get(#posterUrl, or: $value.posterUrl),
-    providerName: data.get(#providerName, or: $value.providerName),
   );
 
   @override

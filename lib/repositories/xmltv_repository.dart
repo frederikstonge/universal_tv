@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../blocs/settings/iptv_provider.dart';
 import '../models/xmltv_base.dart';
@@ -23,18 +21,16 @@ class XmltvRepository extends XmltvBaseRepository {
   @override
   Future<void> load() async {
     final value = await dio.get<String>(provider.url);
-    final xmltvDataStream = parseXmltv(Stream.value(utf8.encode(value.data!)));
-    final xmltvData = await xmltvDataStream.toList();
+    final parser = EpgParser();
+    final xmltvData = parser.parse(value.data!);
 
     final expiration = DateTime.now().add(provider.epgExpiration);
 
-    final channels = xmltvData
-        .whereType<XtXmltvChannel>()
+    final channels = xmltvData.channels
         .map((e) => XmltvChannel.fromXtXmltvChannel(e, provider.name, expiration))
         .toList();
 
-    final programmes = xmltvData
-        .whereType<XtXmltvProgramme>()
+    final programmes = xmltvData.programmes
         .map((e) => XmltvProgramme.fromXtXmltvProgramme(e, provider.name, expiration))
         .toList();
 
@@ -56,15 +52,5 @@ class XmltvRepository extends XmltvBaseRepository {
   @override
   Future<List<XmltvProgramme>> getShortEpg({String? channelId}) async {
     return _entries.whereType<XmltvProgramme>().where((e) => channelId == null || e.channelId == channelId).toList();
-  }
-
-  @override
-  Future<bool> supportsShortEpg() async {
-    return true;
-  }
-
-  @override
-  Future<bool> supportsXmltv() async {
-    return true;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:muxa_xtream/muxa_xtream.dart';
+import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'repositories/m3u_entry.dart';
@@ -27,24 +27,24 @@ class XmltvProgramme extends XmltvBase with XmltvProgrammeMappable {
     this.categories = const [],
   });
 
-  factory XmltvProgramme.fromXtXmltvProgramme(XtXmltvProgramme programme, String providerName, DateTime expiration) {
+  factory XmltvProgramme.fromXtXmltvProgramme(Programme programme, String providerName, DateTime expiration) {
     return XmltvProgramme(
-      channelId: programme.channelId,
+      channelId: programme.channel,
       start: programme.start,
       stop: programme.stop,
-      title: programme.title,
-      description: programme.description,
-      categories: programme.categories,
+      title: programme.titles.firstOrNull?.value,
+      description: programme.descs.firstOrNull?.value,
+      categories: programme.categories.map((e) => e.value).toList(),
       providerName: providerName,
       expiration: expiration,
     );
   }
 
-  factory XmltvProgramme.fromXtEpg(XtEpgEntry entry, String providerName, DateTime expiration) {
+  factory XmltvProgramme.fromXtEpg(EpgLiteProgramme entry, String providerName, DateTime expiration) {
     return XmltvProgramme(
       channelId: entry.channelId,
-      start: entry.startUtc,
-      stop: entry.endUtc,
+      start: entry.start ?? DateTime.now(),
+      stop: entry.stop ?? DateTime.now().add(Duration(hours: 1)),
       title: entry.title,
       description: entry.description,
       categories: [],

@@ -34,16 +34,16 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
     'categoryIds',
     _$categoryIds,
   );
+  static String _$providerName(TvShowItem v) => v.providerName;
+  static const Field<TvShowItem, String> _f$providerName = Field(
+    'providerName',
+    _$providerName,
+  );
   static String? _$posterUrl(TvShowItem v) => v.posterUrl;
   static const Field<TvShowItem, String> _f$posterUrl = Field(
     'posterUrl',
     _$posterUrl,
     opt: true,
-  );
-  static String _$providerName(TvShowItem v) => v.providerName;
-  static const Field<TvShowItem, String> _f$providerName = Field(
-    'providerName',
-    _$providerName,
   );
 
   @override
@@ -51,8 +51,8 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
     #seriesId: _f$seriesId,
     #name: _f$name,
     #categoryIds: _f$categoryIds,
-    #posterUrl: _f$posterUrl,
     #providerName: _f$providerName,
+    #posterUrl: _f$posterUrl,
   };
 
   static TvShowItem _instantiate(DecodingData data) {
@@ -60,8 +60,8 @@ class TvShowItemMapper extends ClassMapperBase<TvShowItem> {
       seriesId: data.dec(_f$seriesId),
       name: data.dec(_f$name),
       categoryIds: data.dec(_f$categoryIds),
-      posterUrl: data.dec(_f$posterUrl),
       providerName: data.dec(_f$providerName),
+      posterUrl: data.dec(_f$posterUrl),
     );
   }
 
@@ -130,8 +130,8 @@ abstract class TvShowItemCopyWith<$R, $In extends TvShowItem, $Out>
     String? seriesId,
     String? name,
     List<String>? categoryIds,
-    String? posterUrl,
     String? providerName,
+    String? posterUrl,
   });
   TvShowItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -156,15 +156,15 @@ class _TvShowItemCopyWithImpl<$R, $Out>
     String? seriesId,
     String? name,
     List<String>? categoryIds,
-    Object? posterUrl = $none,
     String? providerName,
+    Object? posterUrl = $none,
   }) => $apply(
     FieldCopyWithData({
       if (seriesId != null) #seriesId: seriesId,
       if (name != null) #name: name,
       if (categoryIds != null) #categoryIds: categoryIds,
-      if (posterUrl != $none) #posterUrl: posterUrl,
       if (providerName != null) #providerName: providerName,
+      if (posterUrl != $none) #posterUrl: posterUrl,
     }),
   );
   @override
@@ -172,8 +172,8 @@ class _TvShowItemCopyWithImpl<$R, $Out>
     seriesId: data.get(#seriesId, or: $value.seriesId),
     name: data.get(#name, or: $value.name),
     categoryIds: data.get(#categoryIds, or: $value.categoryIds),
-    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
     providerName: data.get(#providerName, or: $value.providerName),
+    posterUrl: data.get(#posterUrl, or: $value.posterUrl),
   );
 
   @override
