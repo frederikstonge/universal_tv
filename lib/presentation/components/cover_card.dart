@@ -28,7 +28,7 @@ class _CoverCardState extends State<CoverCard> {
           focused: isFocused,
           child: FCard(
             style: FCardStyleDelta.delta(
-              decoration: BoxDecorationDelta.delta(
+              decoration: DecorationDelta.boxDelta(
                 image: widget.posterUrl != null
                     ? DecorationImage(image: CachedNetworkImageProvider(widget.posterUrl!), fit: BoxFit.cover)
                     : null,
