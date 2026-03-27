@@ -28,24 +28,6 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
   static const Field<M3uEntry, String> _f$url = Field('url', _$url);
   static String _$name(M3uEntry v) => v.name;
   static const Field<M3uEntry, String> _f$name = Field('name', _$name);
-  static String? _$tvgId(M3uEntry v) => v.tvgId;
-  static const Field<M3uEntry, String> _f$tvgId = Field(
-    'tvgId',
-    _$tvgId,
-    opt: true,
-  );
-  static String? _$groupTitle(M3uEntry v) => v.groupTitle;
-  static const Field<M3uEntry, String> _f$groupTitle = Field(
-    'groupTitle',
-    _$groupTitle,
-    opt: true,
-  );
-  static String? _$logoUrl(M3uEntry v) => v.logoUrl;
-  static const Field<M3uEntry, String> _f$logoUrl = Field(
-    'logoUrl',
-    _$logoUrl,
-    opt: true,
-  );
   static Map<String, String> _$attributes(M3uEntry v) => v.attributes;
   static const Field<M3uEntry, Map<String, String>> _f$attributes = Field(
     'attributes',
@@ -64,9 +46,6 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
     #id: _f$id,
     #url: _f$url,
     #name: _f$name,
-    #tvgId: _f$tvgId,
-    #groupTitle: _f$groupTitle,
-    #logoUrl: _f$logoUrl,
     #attributes: _f$attributes,
     #providerName: _f$providerName,
   };
@@ -76,9 +55,6 @@ class M3uEntryMapper extends ClassMapperBase<M3uEntry> {
       id: data.dec(_f$id),
       url: data.dec(_f$url),
       name: data.dec(_f$name),
-      tvgId: data.dec(_f$tvgId),
-      groupTitle: data.dec(_f$groupTitle),
-      logoUrl: data.dec(_f$logoUrl),
       attributes: data.dec(_f$attributes),
       providerName: data.dec(_f$providerName),
     );
@@ -147,9 +123,6 @@ abstract class M3uEntryCopyWith<$R, $In extends M3uEntry, $Out>
     String? id,
     String? url,
     String? name,
-    String? tvgId,
-    String? groupTitle,
-    String? logoUrl,
     Map<String, String>? attributes,
     String? providerName,
   });
@@ -176,9 +149,6 @@ class _M3uEntryCopyWithImpl<$R, $Out>
     String? id,
     String? url,
     String? name,
-    Object? tvgId = $none,
-    Object? groupTitle = $none,
-    Object? logoUrl = $none,
     Map<String, String>? attributes,
     String? providerName,
   }) => $apply(
@@ -186,9 +156,6 @@ class _M3uEntryCopyWithImpl<$R, $Out>
       if (id != null) #id: id,
       if (url != null) #url: url,
       if (name != null) #name: name,
-      if (tvgId != $none) #tvgId: tvgId,
-      if (groupTitle != $none) #groupTitle: groupTitle,
-      if (logoUrl != $none) #logoUrl: logoUrl,
       if (attributes != null) #attributes: attributes,
       if (providerName != null) #providerName: providerName,
     }),
@@ -198,9 +165,6 @@ class _M3uEntryCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     url: data.get(#url, or: $value.url),
     name: data.get(#name, or: $value.name),
-    tvgId: data.get(#tvgId, or: $value.tvgId),
-    groupTitle: data.get(#groupTitle, or: $value.groupTitle),
-    logoUrl: data.get(#logoUrl, or: $value.logoUrl),
     attributes: data.get(#attributes, or: $value.attributes),
     providerName: data.get(#providerName, or: $value.providerName),
   );

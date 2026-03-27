@@ -1,5 +1,5 @@
 import '../models/iptv_type.dart';
-import '../models/repositories/m3u_entry.dart';
+import '../models/m3u/m3u_entry.dart';
 import 'm3u_tags.dart';
 import 'map_extensions.dart';
 
@@ -26,6 +26,12 @@ extension M3uEntryExtensions on M3uEntry {
 
     return MapEntry(allMatches.first.group(1), allMatches.first.group(2));
   }
+
+  String? get tvgId => attributes.safeGet(M3uTags.tvgId);
+
+  String? get groupTitle => attributes.safeGet(M3uTags.groupTitle);
+
+  String? get logoUrl => attributes.safeGet(M3uTags.tvgLogo);
 
   String? get imdbId => attributes.safeGet(M3uTags.imdbId) ?? tvgId;
 

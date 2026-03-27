@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import '../models/repositories/m3u_entry.dart';
+import '../models/m3u/m3u_entry.dart';
 
 class M3uParser {
   static final _attrPattern = RegExp(r'''([\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([\w-]+))''');
   static final _extinfPattern = RegExp(r'^#EXTINF:[^ ]*');
 
-  /// Parses M3U/M3U8 playlists from a byte stream into [XtM3uEntry] items.
-  /// Tolerant to spacing and minor format variants; ignores comments/blank lines.
   static Stream<M3uEntry> parseM3u(Stream<List<int>> bytes, String providerName) async* {
     Map<String, String> pendingAttributes = {};
     String? pendingName;
@@ -23,7 +21,6 @@ class M3uParser {
       }
 
       if (trimmed.startsWith('#EXTINF')) {
-        // Example: #EXTINF:-1 tvg-id="ch.id" tvg-name="Channel" tvg-logo="http://logo" group-title="News", Channel Name
         final comma = trimmed.indexOf(',');
         final info = comma >= 0 ? trimmed.substring(0, comma) : trimmed;
         final title = comma >= 0 ? trimmed.substring(comma + 1).trim() : null;
@@ -44,7 +41,6 @@ class M3uParser {
         continue;
       }
 
-      // URL line; pair with last EXTINF title/attrs when present
       final url = trimmed;
       final name = pendingName ?? url;
       final attributes = pendingAttributes;
@@ -59,7 +55,6 @@ class M3uParser {
   }
 
   static Map<String, String> _parseExtinfAttributes(String info) {
-    // strip leading '#EXTINF:...'
     final attributePart = info.replaceFirst(_extinfPattern, '').trim();
     final attributes = <String, String>{};
     for (final match in _attrPattern.allMatches(attributePart)) {

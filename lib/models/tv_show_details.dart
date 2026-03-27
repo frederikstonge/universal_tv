@@ -3,7 +3,7 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'episode_details.dart';
-import 'repositories/m3u_entry.dart';
+import 'm3u/m3u_entry.dart';
 
 part 'tv_show_details.mapper.dart';
 

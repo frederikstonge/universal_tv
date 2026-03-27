@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
-import 'repositories/m3u_entry.dart';
+import 'm3u/m3u_entry.dart';
 import 'xmltv_base.dart';
 
 part 'xmltv_programme.mapper.dart';

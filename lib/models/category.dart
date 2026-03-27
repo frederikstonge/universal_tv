@@ -3,7 +3,7 @@ import 'package:xtream_code_client/xtream_code_client.dart' as xt;
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'iptv_type.dart';
-import 'repositories/m3u_entry.dart';
+import 'm3u/m3u_entry.dart';
 
 part 'category.mapper.dart';
 
