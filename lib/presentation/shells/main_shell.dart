@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 import '../pages/live/live_page.dart';
@@ -24,6 +25,11 @@ class _MainShellState extends State<MainShell> {
   int index = 0;
 
   late PageController pageController;
+  final FocusScopeNode _sidebarFocusNode = FocusScopeNode(
+    debugLabel: 'Sidebar',
+    traversalEdgeBehavior: TraversalEdgeBehavior.parentScope,
+  );
+  final FocusScopeNode _contentFocusNode = FocusScopeNode(debugLabel: 'Content');
 
   @override
   void initState() {
@@ -37,7 +43,47 @@ class _MainShellState extends State<MainShell> {
   void dispose() {
     pageController.removeListener(onPageChange);
     pageController.dispose();
+    _sidebarFocusNode.dispose();
+    _contentFocusNode.dispose();
     super.dispose();
+  }
+
+  bool _isFocusInScope(FocusScopeNode scope) {
+    FocusNode? current = FocusManager.instance.primaryFocus;
+    while (current != null) {
+      if (current == scope) return true;
+      current = current.parent;
+    }
+    return false;
+  }
+
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    if (event.logicalKey == LogicalKeyboardKey.arrowRight && _isFocusInScope(_sidebarFocusNode)) {
+      final focusedChild = _contentFocusNode.focusedChild;
+      if (focusedChild != null) {
+        focusedChild.requestFocus();
+      } else {
+        _contentFocusNode.traversalDescendants.firstOrNull?.requestFocus();
+      }
+      return KeyEventResult.handled;
+    }
+
+    if (event.logicalKey == LogicalKeyboardKey.arrowLeft && _isFocusInScope(_contentFocusNode)) {
+      final primaryFocus = FocusManager.instance.primaryFocus;
+      if (primaryFocus != null && !primaryFocus.focusInDirection(TraversalDirection.left)) {
+        final focusedChild = _sidebarFocusNode.focusedChild;
+        if (focusedChild != null) {
+          focusedChild.requestFocus();
+        } else {
+          _sidebarFocusNode.traversalDescendants.firstOrNull?.requestFocus();
+        }
+      }
+      return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
   }
 
   void onPageChange() {
@@ -57,6 +103,7 @@ class _MainShellState extends State<MainShell> {
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width <= breakpoints.sm;
     return FocusScope(
+      onKeyEvent: _handleKeyEvent,
       child: FScaffold(
         childPad: false,
         footer: isMobile
@@ -74,6 +121,7 @@ class _MainShellState extends State<MainShell> {
             ? null
             : FSidebar(
                 autofocus: true,
+                focusNode: _sidebarFocusNode,
                 header: FHeader.nested(title: Text('Universal TV')),
                 children: [
                   FSidebarGroup(
@@ -93,10 +141,13 @@ class _MainShellState extends State<MainShell> {
                   ),
                 ],
               ),
-        child: PageView(
-          controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: items.map((i) => i.page).toList(),
+        child: FocusScope(
+          node: _contentFocusNode,
+          child: PageView(
+            controller: pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: items.map((i) => i.page).toList(),
+          ),
         ),
       ),
     );
