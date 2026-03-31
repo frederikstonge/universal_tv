@@ -78,13 +78,19 @@ class _MainShellState extends State<MainShell> {
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
+    if (ModalRoute.of(context)?.isCurrent != true) return KeyEventResult.ignored;
+
+    final primaryFocus = FocusManager.instance.primaryFocus;
+    if (primaryFocus?.context?.findAncestorStateOfType<EditableTextState>() != null) {
+      return KeyEventResult.ignored;
+    }
+
     if (event.logicalKey == LogicalKeyboardKey.arrowRight && _isFocusInScope(_sidebarFocusNode)) {
       _focusContent();
       return KeyEventResult.handled;
     }
 
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft && _isFocusInScope(_contentFocusNode)) {
-      final primaryFocus = FocusManager.instance.primaryFocus;
       if (primaryFocus != null && !primaryFocus.focusInDirection(TraversalDirection.left)) {
         _focusSidebar();
       }
