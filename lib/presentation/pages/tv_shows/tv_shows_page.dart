@@ -18,7 +18,10 @@ class TvShowsPage extends StatelessWidget {
         return FScaffold(
           header: FHeader(
             title: const Text('TV Shows'),
-            suffixes: [FButton.icon(onPress: () {}, child: const Icon(FIcons.search))],
+            suffixes: [
+              FButton.icon(onPress: () {}, child: const Icon(FIcons.cast)),
+              FButton.icon(onPress: () {}, child: const Icon(FIcons.search)),
+            ],
           ),
           child: switch (state.status) {
             StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),

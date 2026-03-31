@@ -12,6 +12,7 @@ dependencies:
   cached_network_image: ^3.4.1
   collection: ^1.19.1
   cupertino_icons: ^1.0.8
+  dart_cast: ^0.4.1
   dart_mappable: ^4.6.1
   dio: ^5.8.0+1
   flutter:

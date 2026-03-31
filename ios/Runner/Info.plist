@@ -66,5 +66,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app discovers cast devices on your local network.</string>
+	<key>NSBonjourServices</key>
+	<array>
+	<string>_googlecast._tcp</string>
+	<string>_airplay._tcp</string>
+	</array>
 </dict>
 </plist>
