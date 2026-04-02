@@ -125,7 +125,7 @@ class _AddProviderState extends State<AddProvider> {
               FTextFormField.multiline(
                 control: .managed(controller: _urlsController),
                 label: Text('URLs'),
-                description: Text('Use {page} as a placeholder for pagination.'),
+                description: Text('Use {page} or {skip}/{take} as a placeholder for pagination.'),
                 errorBuilder: (context, error) => Text(error),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

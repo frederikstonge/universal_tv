@@ -6,7 +6,7 @@ import 'map_extensions.dart';
 extension M3uEntryExtensions on M3uEntry {
   static RegExp seasonEpisodePattern = RegExp(r's([0-9]+)[ ._x-]*e([0-9]+(?:(?:[a-i]|\\.[1-9])(?![0-9]))?)');
 
-  IptvType get type => IptvType.values.firstWhere((e) => e.name == safeTvgType, orElse: () => IptvType.unknown);
+  IptvType get type => IptvType.values.firstWhere((e) => e.name == safeTvgType, orElse: () => IptvType.live);
 
   String? get safeTvgName => attributes.safeGet(M3uTags.tvgName);
 

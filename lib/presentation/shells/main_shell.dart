@@ -57,29 +57,49 @@ class _MainShellState extends State<MainShell> {
     return false;
   }
 
+  void _focusSidebar() {
+    final focusedChild = _sidebarFocusNode.focusedChild;
+    if (focusedChild != null) {
+      focusedChild.requestFocus();
+    } else {
+      _sidebarFocusNode.traversalDescendants.firstOrNull?.requestFocus();
+    }
+  }
+
+  void _focusContent() {
+    final focusedChild = _contentFocusNode.focusedChild;
+    if (focusedChild != null) {
+      focusedChild.requestFocus();
+    } else {
+      _contentFocusNode.traversalDescendants.firstOrNull?.requestFocus();
+    }
+  }
+
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
+    if (ModalRoute.of(context)?.isCurrent != true) return KeyEventResult.ignored;
+
+    final primaryFocus = FocusManager.instance.primaryFocus;
+    if (primaryFocus?.context?.findAncestorStateOfType<EditableTextState>() != null) {
+      return KeyEventResult.ignored;
+    }
+
     if (event.logicalKey == LogicalKeyboardKey.arrowRight && _isFocusInScope(_sidebarFocusNode)) {
-      final focusedChild = _contentFocusNode.focusedChild;
-      if (focusedChild != null) {
-        focusedChild.requestFocus();
-      } else {
-        _contentFocusNode.traversalDescendants.firstOrNull?.requestFocus();
-      }
+      _focusContent();
       return KeyEventResult.handled;
     }
 
     if (event.logicalKey == LogicalKeyboardKey.arrowLeft && _isFocusInScope(_contentFocusNode)) {
-      final primaryFocus = FocusManager.instance.primaryFocus;
       if (primaryFocus != null && !primaryFocus.focusInDirection(TraversalDirection.left)) {
-        final focusedChild = _sidebarFocusNode.focusedChild;
-        if (focusedChild != null) {
-          focusedChild.requestFocus();
-        } else {
-          _sidebarFocusNode.traversalDescendants.firstOrNull?.requestFocus();
-        }
+        _focusSidebar();
       }
+      return KeyEventResult.handled;
+    }
+
+    if ((event.logicalKey == LogicalKeyboardKey.escape || event.logicalKey == LogicalKeyboardKey.goBack) &&
+        _isFocusInScope(_contentFocusNode)) {
+      _focusSidebar();
       return KeyEventResult.handled;
     }
 
@@ -102,51 +122,59 @@ class _MainShellState extends State<MainShell> {
     final breakpoints = context.theme.breakpoints;
     final width = MediaQuery.sizeOf(context).width;
     final isMobile = width <= breakpoints.sm;
-    return FocusScope(
-      onKeyEvent: _handleKeyEvent,
-      child: FScaffold(
-        childPad: false,
-        footer: isMobile
-            ? FBottomNavigationBar(
-                index: index,
-                onChange: onItemTapped,
-                children: items
-                    .asMap()
-                    .entries
-                    .map((e) => FBottomNavigationBarItem(icon: Icon(e.value.icon), label: Text(e.value.label)))
-                    .toList(),
-              )
-            : null,
-        sidebar: isMobile
-            ? null
-            : FSidebar(
-                autofocus: true,
-                focusNode: _sidebarFocusNode,
-                header: FHeader.nested(title: Text('Universal TV')),
-                children: [
-                  FSidebarGroup(
-                    label: const Text('Navigation'),
-                    children: items
-                        .asMap()
-                        .entries
-                        .mapIndexed(
-                          (i, e) => FSidebarItem(
-                            icon: Icon(e.value.icon),
-                            label: Text(e.value.label),
-                            selected: index == i,
-                            onPress: () => onItemTapped(i),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ],
-              ),
-        child: FocusScope(
-          node: _contentFocusNode,
-          child: PageView(
-            controller: pageController,
-            physics: NeverScrollableScrollPhysics(),
-            children: items.map((i) => i.page).toList(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && !isMobile && _isFocusInScope(_contentFocusNode)) {
+          _focusSidebar();
+        }
+      },
+      child: FocusScope(
+        onKeyEvent: !isMobile ? _handleKeyEvent : null,
+        child: FScaffold(
+          childPad: false,
+          footer: isMobile
+              ? FBottomNavigationBar(
+                  index: index,
+                  onChange: onItemTapped,
+                  children: items
+                      .asMap()
+                      .entries
+                      .map((e) => FBottomNavigationBarItem(icon: Icon(e.value.icon), label: Text(e.value.label)))
+                      .toList(),
+                )
+              : null,
+          sidebar: isMobile
+              ? null
+              : FSidebar(
+                  focusNode: _sidebarFocusNode,
+                  header: FHeader.nested(title: Text('Universal TV')),
+                  children: [
+                    FSidebarGroup(
+                      label: const Text('Navigation'),
+                      children: items
+                          .asMap()
+                          .entries
+                          .mapIndexed(
+                            (i, e) => FSidebarItem(
+                              icon: Icon(e.value.icon),
+                              label: Text(e.value.label),
+                              selected: index == i,
+                              onPress: () => onItemTapped(i),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                ),
+          child: FocusScope(
+            autofocus: true,
+            node: _contentFocusNode,
+            child: PageView(
+              controller: pageController,
+              physics: NeverScrollableScrollPhysics(),
+              children: items.map((i) => i.page).toList(),
+            ),
           ),
         ),
       ),

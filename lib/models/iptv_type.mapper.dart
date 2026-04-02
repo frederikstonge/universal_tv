@@ -33,8 +33,6 @@ class IptvTypeMapper extends EnumMapper<IptvType> {
         return IptvType.tvshows;
       case r'live':
         return IptvType.live;
-      case r'unknown':
-        return IptvType.unknown;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -49,8 +47,6 @@ class IptvTypeMapper extends EnumMapper<IptvType> {
         return r'tvshows';
       case IptvType.live:
         return r'live';
-      case IptvType.unknown:
-        return r'unknown';
     }
   }
 }

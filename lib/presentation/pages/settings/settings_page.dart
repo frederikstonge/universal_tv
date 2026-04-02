@@ -5,6 +5,7 @@ import 'package:forui/forui.dart';
 import '../../../blocs/settings/iptv_provider.dart';
 import '../../../blocs/settings/settings_cubit.dart';
 import '../../../blocs/settings/settings_state.dart';
+import '../../components/app_bar.dart';
 import 'widgets/add_provider.dart';
 import 'widgets/edit_m3u_provider.dart';
 import 'widgets/edit_xmltv_provider.dart';
@@ -38,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, settingsState) {
         return FScaffold(
-          header: FHeader(title: const Text('Settings')),
+          header: AppBar(title: Text('Settings')),
           child: SingleChildScrollView(
             child: FTabs(
               control: .managed(controller: _tabController),

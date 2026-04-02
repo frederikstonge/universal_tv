@@ -28,4 +28,13 @@ class XmltvChannel extends XmltvBase with XmltvChannelMappable {
       expiration: expiration,
     );
   }
+
+  factory XmltvChannel.fromXtEpgChannel(EpgLiteChannel channel, String providerName, DateTime expiration) {
+    return XmltvChannel(
+      id: channel.id,
+      displayName: channel.displayNames.firstOrNull,
+      providerName: providerName,
+      expiration: expiration,
+    );
+  }
 }

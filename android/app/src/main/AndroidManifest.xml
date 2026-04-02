@@ -4,6 +4,11 @@
 <!-- Add this for Android TV -->
 <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 <uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<!-- Android 12+ -->
+<uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
     <application
         android:label="universal_tv"
         android:name="${applicationName}"
