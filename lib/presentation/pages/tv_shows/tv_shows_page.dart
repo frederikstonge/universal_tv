@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../blocs/state_status.dart';
 import '../../../blocs/tv_shows/tv_shows_cubit.dart';
 import '../../../blocs/tv_shows/tv_shows_state.dart';
+import '../../components/app_bar.dart';
 import '../../components/cover_card.dart';
 
 class TvShowsPage extends StatelessWidget {
@@ -16,13 +17,7 @@ class TvShowsPage extends StatelessWidget {
     return BlocBuilder<TvShowsCubit, TvShowsState>(
       builder: (context, state) {
         return FScaffold(
-          header: FHeader(
-            title: const Text('TV Shows'),
-            suffixes: [
-              FButton.icon(onPress: () {}, child: const Icon(FIcons.cast)),
-              FButton.icon(onPress: () {}, child: const Icon(FIcons.search)),
-            ],
-          ),
+          header: AppBar(title: Text('TV Shows')),
           child: switch (state.status) {
             StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
             StateStatus.failure => const Center(child: Text('Failed to load tv shows')),

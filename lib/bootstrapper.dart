@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'app.dart';
-import 'blocs/cast/iptv_service_cubit.dart';
+import 'blocs/cast/cast_cubit.dart';
 import 'blocs/iptv_service/iptv_service_cubit.dart';
 import 'blocs/live/live_cubit.dart';
 import 'blocs/movies/movies_cubit.dart';
@@ -17,24 +17,26 @@ class Bootstrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (repositoryContext) => Dio())],
+      providers: [
+        RepositoryProvider(create: (repositoryContext) => Dio(), dispose: (value) => value.close(force: true)),
+        RepositoryProvider(
+          create: (repositoryContext) => CastService(
+            discoveryProviders: [DlnaDiscoveryProvider(), ChromecastDiscoveryProvider(), AirPlayDiscoveryProvider()],
+            sessionFactory: (device) => switch (device.protocol) {
+              CastProtocol.chromecast => ChromecastSession(device: device),
+              CastProtocol.airplay => AirPlaySession(device),
+              CastProtocol.dlna => DlnaSession.fromDevice(device),
+            },
+          ),
+          dispose: (value) => value.dispose(),
+        ),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (blocContext) => SettingsCubit()),
           BlocProvider(
             create: (blocContext) {
-              final castService = CastService(
-                discoveryProviders: [
-                  DlnaDiscoveryProvider(),
-                  ChromecastDiscoveryProvider(),
-                  AirPlayDiscoveryProvider(),
-                ],
-                sessionFactory: (device) => switch (device.protocol) {
-                  CastProtocol.chromecast => ChromecastSession(device: device),
-                  CastProtocol.airplay => AirPlaySession(device),
-                  CastProtocol.dlna => DlnaSession.fromDevice(device),
-                },
-              );
+              final castService = blocContext.read<CastService>();
               return CastCubit(castService: castService);
             },
           ),

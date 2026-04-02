@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../blocs/movies/movies_cubit.dart';
 import '../../../blocs/movies/movies_state.dart';
 import '../../../blocs/state_status.dart';
+import '../../components/app_bar.dart';
 import '../../components/cover_card.dart';
 
 class MoviesPage extends StatelessWidget {
@@ -16,13 +17,7 @@ class MoviesPage extends StatelessWidget {
     return BlocBuilder<MoviesCubit, MoviesState>(
       builder: (context, state) {
         return FScaffold(
-          header: FHeader(
-            title: const Text('Movies'),
-            suffixes: [
-              FButton.icon(onPress: () {}, child: const Icon(FIcons.cast)),
-              FButton.icon(onPress: () {}, child: const Icon(FIcons.search)),
-            ],
-          ),
+          header: AppBar(title: Text('Movies')),
           child: switch (state.status) {
             StateStatus.initial || StateStatus.loading => const Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [FCircularProgress()]),
