@@ -41,6 +41,7 @@ class TvShowsPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: CoverCard(
                               title: entry.name,
+                              providerName: entry.providerName,
                               posterUrl: entry.posterUrl,
                               onTap: () async {
                                 await GoRouter.of(context).pushNamed(

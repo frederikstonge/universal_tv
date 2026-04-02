@@ -8,6 +8,7 @@ import '../../../blocs/iptv_service/iptv_service_cubit.dart';
 import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
 import '../../../models/live_channel.dart';
+import '../../components/custom_video_controls.dart';
 
 class LivePlayerPage extends StatefulWidget {
   const LivePlayerPage({super.key});
@@ -54,7 +55,10 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
               ? Text(liveState.selectedChannel!.name)
               : const Text('No Channel Selected'),
         ),
-        child: Video(controller: videoController),
+        child: Video(
+          controller: videoController,
+          controls: (state) => CustomVideoControls(state: state, isLive: true),
+        ),
       ),
     );
   }

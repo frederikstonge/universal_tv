@@ -9,6 +9,7 @@ import '../../../blocs/movie_details/movie_details_cubit.dart';
 import '../../../blocs/movie_details/movie_details_state.dart';
 import '../../../blocs/state_status.dart';
 import '../../../models/movie_details.dart';
+import '../../components/custom_video_controls.dart';
 
 class MoviePlayerPage extends StatefulWidget {
   const MoviePlayerPage({super.key});
@@ -58,7 +59,10 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
           ],
           title: movieState.movie != null ? Text(movieState.movie!.name) : const Text('No Movie Selected'),
         ),
-        child: Video(controller: videoController),
+        child: Video(
+          controller: videoController,
+          controls: (state) => CustomVideoControls(state: state, isLive: false),
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import '../../../blocs/tv_show_details/tv_show_details_cubit.dart';
 import '../../../blocs/tv_show_details/tv_show_details_state.dart';
 import '../../../models/episode_details.dart';
 import '../../../models/tv_show_details.dart';
+import '../../components/custom_video_controls.dart';
 
 class TvShowPlayerPage extends StatefulWidget {
   const TvShowPlayerPage({super.key});
@@ -64,7 +65,10 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
               ? Text(tvShowState.selectedEpisode!.title)
               : const Text('No Episode Selected'),
         ),
-        child: Video(controller: videoController),
+        child: Video(
+          controller: videoController,
+          controls: (state) => CustomVideoControls(state: state, isLive: false),
+        ),
       ),
     );
   }
