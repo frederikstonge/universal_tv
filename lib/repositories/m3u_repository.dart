@@ -17,16 +17,18 @@ import '../models/xmltv_base.dart';
 import '../models/xmltv_programme.dart';
 import '../parsers/m3u_parser.dart';
 import 'stream_base_repository.dart';
+import 'tmdb_repository.dart';
 import 'xmltv_base_repository.dart';
 
 class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
+  final TmdbRepository tmdbRepository;
 
   final List<M3uEntry> _entries = [];
   DateTime? _lastLoaded;
 
-  M3uRepository({required this.provider, required this.dio});
+  M3uRepository({required this.provider, required this.dio, required this.tmdbRepository});
 
   @override
   String get name => provider.name;
@@ -81,6 +83,8 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
       return false;
     }
 
+    await tmdbRepository.preloadM3u(entries);
+
     _entries.addAll(entries);
     return true;
   }
@@ -99,12 +103,40 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   @override
   Future<List<Category>> getMovieCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.movies);
+    final tmdbEntries = await Future.wait(entries.map((e) => tmdbRepository.getM3u(e)));
+    final genreIds = tmdbEntries.nonNulls.expand((e) => e.genreIds ?? <int>[]).toSet();
+    if (genreIds.isNotEmpty) {
+      final allGenres = await tmdbRepository.getMovieGenres();
+      final tmdbCategories = allGenres.entries
+          .where((g) => genreIds.contains(g.key))
+          .map((g) => Category(id: g.key.toString(), name: g.value, type: IptvType.movies, providerName: provider.name))
+          .toList();
+      if (tmdbCategories.isNotEmpty) {
+        return tmdbCategories;
+      }
+    }
+
     return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
   @override
   Future<List<Category>> getTvShowCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.tvshows);
+    final tmdbEntries = await Future.wait(entries.map((e) => tmdbRepository.getM3u(e)));
+    final genreIds = tmdbEntries.nonNulls.expand((e) => e.genreIds ?? <int>[]).toSet();
+    if (genreIds.isNotEmpty) {
+      final allGenres = await tmdbRepository.getTvShowGenres();
+      final tmdbCategories = allGenres.entries
+          .where((g) => genreIds.contains(g.key))
+          .map(
+            (g) => Category(id: g.key.toString(), name: g.value, type: IptvType.tvshows, providerName: provider.name),
+          )
+          .toList();
+      if (tmdbCategories.isNotEmpty) {
+        return tmdbCategories;
+      }
+    }
+
     return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 

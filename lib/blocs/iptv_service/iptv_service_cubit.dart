@@ -15,6 +15,7 @@ import '../../models/tv_show_item.dart';
 import '../../repositories/base_repository.dart';
 import '../../repositories/m3u_repository.dart';
 import '../../repositories/stream_base_repository.dart';
+import '../../repositories/tmdb_repository.dart';
 import '../../repositories/xmltv_repository.dart';
 import '../../repositories/xtream_repository.dart';
 import '../state_status.dart';
@@ -22,10 +23,11 @@ import 'iptv_service_state.dart';
 
 class IptvServiceCubit extends Cubit<IptvServiceState> {
   final Dio dio;
+  final TmdbRepository tmdbRepository;
   final SettingsCubit settingsCubit;
   StreamSubscription? _settingsSubscription;
 
-  IptvServiceCubit({required this.dio, required this.settingsCubit})
+  IptvServiceCubit({required this.dio, required this.tmdbRepository, required this.settingsCubit})
     : super(IptvServiceState(status: StateStatus.initial)) {
     _settingsSubscription = settingsCubit.stream.listen((data) async {
       await _load(data.providers);
@@ -61,7 +63,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
           case IptvProviderType.xmltv:
             return XmltvRepository(provider: p as XmltvIptvProvider, dio: dio);
           case IptvProviderType.m3u:
-            return M3uRepository(provider: p as M3uIptvProvider, dio: dio);
+            return M3uRepository(provider: p as M3uIptvProvider, dio: dio, tmdbRepository: tmdbRepository);
         }
       }).toList();
 
