@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
@@ -49,19 +48,13 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
           _playMovie(movieState.movie!);
         }
       },
-      builder: (context, movieState) => FScaffold(
-        header: FHeader.nested(
-          titleAlignment: AlignmentGeometry.bottomCenter,
-          prefixes: [
-            if (Navigator.of(context).canPop()) ...[
-              FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
-            ],
-          ],
-          title: movieState.movie != null ? Text(movieState.movie!.name) : const Text('No Movie Selected'),
-        ),
-        child: Video(
-          controller: videoController,
-          controls: (state) => CustomVideoControls(state: state, isLive: false),
+      builder: (context, movieState) => Video(
+        controller: videoController,
+        controls: (state) => CustomVideoControls(
+          state: state,
+          isLive: false,
+          title: movieState.movie?.name,
+          logoUrl: movieState.movie?.posterUrl,
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
@@ -43,21 +42,13 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
       listener: (context, liveState) {
         _playLiveChannel(liveState.selectedChannel);
       },
-      builder: (context, liveState) => FScaffold(
-        header: FHeader.nested(
-          titleAlignment: AlignmentGeometry.bottomCenter,
-          prefixes: [
-            if (Navigator.of(context).canPop()) ...[
-              FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
-            ],
-          ],
-          title: liveState.selectedChannel != null
-              ? Text(liveState.selectedChannel!.name)
-              : const Text('No Channel Selected'),
-        ),
-        child: Video(
-          controller: videoController,
-          controls: (state) => CustomVideoControls(state: state, isLive: true),
+      builder: (context, liveState) => Video(
+        controller: videoController,
+        controls: (state) => CustomVideoControls(
+          state: state,
+          isLive: true,
+          title: liveState.selectedChannel?.name,
+          logoUrl: liveState.selectedChannel?.logoUrl,
         ),
       ),
     );
