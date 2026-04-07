@@ -10,6 +10,7 @@ import 'blocs/live/live_cubit.dart';
 import 'blocs/movies/movies_cubit.dart';
 import 'blocs/settings/settings_cubit.dart';
 import 'blocs/tv_shows/tv_shows_cubit.dart';
+import 'repositories/tmdb_repository.dart';
 
 class Bootstrapper extends StatelessWidget {
   const Bootstrapper({super.key});
@@ -19,6 +20,7 @@ class Bootstrapper extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (repositoryContext) => Dio(), dispose: (value) => value.close(force: true)),
+        RepositoryProvider(create: (repositoryContext) => TmdbRepository(dio: repositoryContext.read<Dio>())),
         RepositoryProvider(
           create: (repositoryContext) => CastService(
             discoveryProviders: [DlnaDiscoveryProvider(), ChromecastDiscoveryProvider(), AirPlayDiscoveryProvider()],
@@ -41,9 +43,11 @@ class Bootstrapper extends StatelessWidget {
             },
           ),
           BlocProvider(
-            create: (blocContext) =>
-                IptvServiceCubit(dio: blocContext.read<Dio>(), settingsCubit: blocContext.read<SettingsCubit>())
-                  ..initialize(blocContext.read<SettingsCubit>().state.providers),
+            create: (blocContext) => IptvServiceCubit(
+              dio: blocContext.read<Dio>(),
+              tmdbRepository: blocContext.read<TmdbRepository>(),
+              settingsCubit: blocContext.read<SettingsCubit>(),
+            )..initialize(blocContext.read<SettingsCubit>().state.providers),
           ),
           BlocProvider(
             create: (blocContext) => MoviesCubit(iptvServiceCubit: blocContext.read<IptvServiceCubit>())..load(),

@@ -41,6 +41,7 @@ class LivePage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: CoverCard(
                               title: entry.name,
+                              providerName: entry.providerName,
                               iconUrl: entry.logoUrl,
                               onTap: () async {
                                 context.read<LiveCubit>().selectChannel(entry);

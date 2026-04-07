@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
@@ -10,6 +9,7 @@ import '../../../blocs/tv_show_details/tv_show_details_cubit.dart';
 import '../../../blocs/tv_show_details/tv_show_details_state.dart';
 import '../../../models/episode_details.dart';
 import '../../../models/tv_show_details.dart';
+import '../../components/custom_video_controls.dart';
 
 class TvShowPlayerPage extends StatefulWidget {
   const TvShowPlayerPage({super.key});
@@ -52,20 +52,17 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
           _playTvShow(tvShowState.tvShow!, tvShowState.selectedEpisode!);
         }
       },
-      builder: (context, tvShowState) => FScaffold(
-        header: FHeader.nested(
-          titleAlignment: AlignmentGeometry.bottomCenter,
-          prefixes: [
-            if (Navigator.of(context).canPop()) ...[
-              FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: const Icon(FIcons.arrowLeft)),
-            ],
-          ],
-          title: tvShowState.selectedEpisode != null
-              ? Text(tvShowState.selectedEpisode!.title)
-              : const Text('No Episode Selected'),
-        ),
-        child: Video(controller: videoController),
-      ),
+      builder: (context, tvShowState) => tvShowState.selectedSeason != null && tvShowState.selectedEpisode != null
+          ? Video(
+              controller: videoController,
+              controls: (state) => CustomVideoControls(
+                state: state,
+                isLive: false,
+                title: tvShowState.selectedEpisode!.title,
+                logoUrl: tvShowState.tvShow!.posterUrl,
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 

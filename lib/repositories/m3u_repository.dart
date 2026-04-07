@@ -11,78 +11,96 @@ import '../models/live_channel.dart';
 import '../models/m3u/m3u_entry.dart';
 import '../models/movie_details.dart';
 import '../models/movie_item.dart';
+import '../models/tmdb/tmdb_entry.dart';
 import '../models/tv_show_details.dart';
 import '../models/tv_show_item.dart';
 import '../models/xmltv_base.dart';
 import '../models/xmltv_programme.dart';
 import '../parsers/m3u_parser.dart';
 import 'stream_base_repository.dart';
+import 'tmdb_repository.dart';
 import 'xmltv_base_repository.dart';
 
 class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   final M3uIptvProvider provider;
   final Dio dio;
+  final TmdbRepository tmdbRepository;
 
   final List<M3uEntry> _entries = [];
   DateTime? _lastLoaded;
 
-  M3uRepository({required this.provider, required this.dio});
+  M3uRepository({required this.provider, required this.dio, required this.tmdbRepository});
 
   @override
   String get name => provider.name;
 
   @override
-  Future<void> load() async {
+  Stream<void> load() async* {
     _entries.clear();
+
     for (final link in provider.urls) {
       if (link.contains('{page}')) {
-        bool success;
         var page = 1;
+        bool hasEntries;
         do {
-          final currentPage = page++;
-          final url = link.replaceAll('{page}', currentPage.toString());
-          success = await _loadm3uData(url);
-        } while (success);
+          final url = link.replaceAll('{page}', (page++).toString());
+          hasEntries = false;
+          await for (final _ in _loadm3uData(url)) {
+            hasEntries = true;
+          }
+          if (hasEntries) yield null;
+        } while (hasEntries);
       } else if (link.contains('{skip}') && link.contains('{take}')) {
-        bool success;
         var skip = 0;
         final take = 1000;
+        bool hasEntries;
         do {
           final url = link.replaceAll('{skip}', skip.toString()).replaceAll('{take}', take.toString());
-          success = await _loadm3uData(url);
+          hasEntries = false;
+          await for (final _ in _loadm3uData(url)) {
+            hasEntries = true;
+          }
+          if (hasEntries) yield null;
           skip += take;
-        } while (success);
+        } while (hasEntries);
       } else {
-        await _loadm3uData(link);
+        await for (final _ in _loadm3uData(link)) {}
+        yield null;
       }
     }
 
     _lastLoaded = DateTime.now();
   }
 
-  Future<bool> _loadm3uData(String link) async {
+  Stream<M3uEntry> _loadm3uData(String link) async* {
     String data;
     try {
       final response = await dio.get<String>(link);
       if (response.data == null || response.statusCode != 200) {
-        return false;
+        return;
       }
       data = response.data!;
     } catch (e) {
-      return false;
+      return;
     }
 
-    final List<M3uEntry> entries = [];
+    Stream<M3uEntry> m3uDataStream;
     try {
-      final m3uDataStream = M3uParser.parseM3u(Stream.value(utf8.encode(data)), provider.name);
-      final m3uData = await m3uDataStream.toList();
-      entries.addAll(m3uData);
+      m3uDataStream = M3uParser.parseM3u(Stream.value(utf8.encode(data)), provider.name);
     } catch (e) {
-      return false;
+      return;
     }
 
-    _entries.addAll(entries);
-    return true;
+    await for (final entry in m3uDataStream) {
+      await tmdbRepository.getM3u(entry);
+      _entries.add(entry);
+      yield entry;
+    }
+  }
+
+  String? _tmdbPosterUrl(TmdbEntry? tmdbEntry) {
+    if (tmdbEntry?.posterPath == null) return null;
+    return tmdbRepository.getImageUrl(tmdbEntry!.posterPath!);
   }
 
   @override
@@ -99,12 +117,40 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   @override
   Future<List<Category>> getMovieCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.movies);
+    final tmdbEntries = await Future.wait(entries.map((e) => tmdbRepository.getM3u(e)));
+    final genreIds = tmdbEntries.nonNulls.expand((e) => e.genreIds ?? <int>[]).toSet();
+    if (genreIds.isNotEmpty) {
+      final allGenres = await tmdbRepository.getMovieGenres();
+      final tmdbCategories = allGenres.entries
+          .where((g) => genreIds.contains(g.key))
+          .map((g) => Category(id: g.key.toString(), name: g.value, type: IptvType.movies, providerName: provider.name))
+          .toList();
+      if (tmdbCategories.isNotEmpty) {
+        return tmdbCategories;
+      }
+    }
+
     return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
   @override
   Future<List<Category>> getTvShowCategories() async {
     final entries = _entries.where((e) => e.type == IptvType.tvshows);
+    final tmdbEntries = await Future.wait(entries.map((e) => tmdbRepository.getM3u(e)));
+    final genreIds = tmdbEntries.nonNulls.expand((e) => e.genreIds ?? <int>[]).toSet();
+    if (genreIds.isNotEmpty) {
+      final allGenres = await tmdbRepository.getTvShowGenres();
+      final tmdbCategories = allGenres.entries
+          .where((g) => genreIds.contains(g.key))
+          .map(
+            (g) => Category(id: g.key.toString(), name: g.value, type: IptvType.tvshows, providerName: provider.name),
+          )
+          .toList();
+      if (tmdbCategories.isNotEmpty) {
+        return tmdbCategories;
+      }
+    }
+
     return entries.groupListsBy((e) => e.groupTitle).entries.map((e) => Category.fromM3uEntry(e.value.first)).toList();
   }
 
@@ -114,7 +160,12 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
         .where((e) => e.type == IptvType.movies && (categoryId == null || e.groupTitle == categoryId))
         .toList();
 
-    final vodItems = movieEntries.map((e) => MovieItem.fromM3uEntry(e)).toList();
+    final vodItems = await Future.wait(
+      movieEntries.map((e) async {
+        final tmdbEntry = await tmdbRepository.getM3u(e);
+        return MovieItem.fromM3uEntry(e, tmdbEntry: tmdbEntry, tmdbPosterUrl: _tmdbPosterUrl(tmdbEntry));
+      }),
+    );
 
     return vodItems;
   }
@@ -125,11 +176,13 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
         .where((e) => e.type == IptvType.tvshows && (categoryId == null || e.groupTitle == categoryId))
         .toList();
 
-    final seriesItems = tvShowEntries
-        .groupListsBy((e) => e.groupTitle)
-        .entries
-        .map((e) => TvShowItem.fromM3uEntry(e.value.first))
-        .toList();
+    final seriesItems = await Future.wait(
+      tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) async {
+        final first = e.value.first;
+        final tmdbEntry = await tmdbRepository.getM3u(first);
+        return TvShowItem.fromM3uEntry(first, tmdbEntry: tmdbEntry, tmdbPosterUrl: _tmdbPosterUrl(tmdbEntry));
+      }),
+    );
 
     return seriesItems;
   }
@@ -152,7 +205,8 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
       throw Exception('Movie not found');
     }
 
-    return MovieDetails.fromM3uEntry(entry);
+    final tmdbEntry = await tmdbRepository.getM3u(entry);
+    return MovieDetails.fromM3uEntry(entry, tmdbEntry: tmdbEntry, tmdbPosterUrl: _tmdbPosterUrl(tmdbEntry));
   }
 
   @override
@@ -163,8 +217,8 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
     }
 
     final entries = _entries.where((e) => e.groupTitle == entry.groupTitle && e.type == IptvType.tvshows).toList();
-
-    return TvShowDetails.fromM3uEntries(entries);
+    final tmdbEntry = await tmdbRepository.getM3u(entry);
+    return TvShowDetails.fromM3uEntries(entries, tmdbEntry: tmdbEntry, tmdbPosterUrl: _tmdbPosterUrl(tmdbEntry));
   }
 
   @override

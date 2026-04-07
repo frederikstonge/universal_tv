@@ -29,13 +29,14 @@ class XtreamRepository implements StreamBaseRepository, XmltvBaseRepository {
   String get name => provider.name;
 
   @override
-  Future<void> load() async {
+  Stream<void> load() async* {
     final serverInfo = await client.serverInformation();
     if (serverInfo.meta.statusCode < 200 || serverInfo.meta.statusCode >= 300) {
       throw Exception(
         'Failed to connect to Xtream server: ${serverInfo.meta.statusCode} ${jsonEncode(serverInfo.warnings)}',
       );
     }
+    yield null;
   }
 
   @override

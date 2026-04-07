@@ -4,11 +4,19 @@ import 'package:forui/forui.dart';
 
 class CoverCard extends StatefulWidget {
   final String title;
+  final String providerName;
+  final Function() onTap;
   final String? posterUrl;
   final String? iconUrl;
-  final Function() onTap;
 
-  const CoverCard({super.key, required this.title, this.posterUrl, this.iconUrl, required this.onTap});
+  const CoverCard({
+    super.key,
+    required this.title,
+    required this.providerName,
+    this.posterUrl,
+    this.iconUrl,
+    required this.onTap,
+  });
 
   @override
   State<CoverCard> createState() => _CoverCardState();
@@ -35,25 +43,32 @@ class _CoverCardState extends State<CoverCard> {
                 backgroundBlendMode: widget.posterUrl != null ? () => BlendMode.darken : null,
               ),
             ),
-            image: widget.iconUrl != null
-                ? Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CachedNetworkImage(
-                        height: 40,
-                        width: 40,
-                        cacheKey: widget.iconUrl!,
-                        imageUrl: widget.iconUrl!,
-                        alignment: Alignment.center,
-                        progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
-                            ? FDeterminateProgress(value: downloadProgress.progress!)
-                            : FProgress(),
-                        errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
-                      ),
-                    ],
-                  )
-                : null,
+            image: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: AlignmentGeometry.centerEnd,
+                  child: FBadge(child: Text(widget.providerName, style: const TextStyle(fontSize: 10))),
+                ),
+                if (widget.iconUrl != null) ...[
+                  Center(
+                    child: CachedNetworkImage(
+                      height: 40,
+                      width: 40,
+                      cacheKey: widget.iconUrl!,
+                      imageUrl: widget.iconUrl!,
+                      alignment: Alignment.center,
+                      progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
+                          ? FDeterminateProgress(value: downloadProgress.progress!)
+                          : FProgress(),
+                      errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                    ),
+                  ),
+                ],
+              ],
+            ),
             title: isFocused || widget.iconUrl != null
                 ? Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis)
                 : null,

@@ -4,6 +4,7 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 import '../extensions/m3u_entry_extensions.dart';
 import 'episode_details.dart';
 import 'm3u/m3u_entry.dart';
+import 'tmdb/tmdb_entry.dart';
 
 part 'tv_show_details.mapper.dart';
 
@@ -41,7 +42,7 @@ class TvShowDetails with TvShowDetailsMappable {
     );
   }
 
-  factory TvShowDetails.fromM3uEntries(List<M3uEntry> entries) {
+  factory TvShowDetails.fromM3uEntries(List<M3uEntry> entries, {TmdbEntry? tmdbEntry, String? tmdbPosterUrl}) {
     final first = entries.first;
     final episodesBySeasons = <int, List<EpisodeDetails>>{};
     for (final entry in entries) {
@@ -50,10 +51,10 @@ class TvShowDetails with TvShowDetailsMappable {
     }
     return TvShowDetails(
       seriesId: first.id,
-      name: first.seriesName ?? first.name,
-      plot: first.plot,
+      name: tmdbEntry?.title ?? first.seriesName ?? first.name,
+      plot: tmdbEntry?.overview ?? first.plot,
       seasons: episodesBySeasons,
-      posterUrl: first.posterUrl,
+      posterUrl: tmdbPosterUrl ?? first.posterUrl,
       providerName: first.providerName,
     );
   }

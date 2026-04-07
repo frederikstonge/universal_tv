@@ -1,5 +1,5 @@
 abstract class BaseRepository {
   String get name;
-  Future<void> load();
+  Stream<void> load();
   Future<void> dispose();
 }
