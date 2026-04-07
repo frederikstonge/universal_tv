@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+
+import 'video_controls_theme.dart';
 
 class CustomVideoControls extends StatefulWidget {
   final bool isLive;
@@ -14,6 +17,8 @@ class CustomVideoControls extends StatefulWidget {
   final bool showSubtitles;
   final bool showFullscreen;
   final Widget? bottomWidget;
+  final Duration seekDuration;
+  final VideoControlsTheme theme;
 
   const CustomVideoControls({
     super.key,
@@ -24,6 +29,8 @@ class CustomVideoControls extends StatefulWidget {
     this.showSubtitles = true,
     this.showFullscreen = true,
     this.bottomWidget,
+    this.seekDuration = const Duration(seconds: 10),
+    this.theme = const VideoControlsTheme(),
   });
 
   @override
@@ -31,12 +38,11 @@ class CustomVideoControls extends StatefulWidget {
 }
 
 class _CustomVideoControlsState extends State<CustomVideoControls> with TickerProviderStateMixin {
-  static const int HIDE_DELAY = 3000;
-  static const int ANIMATION_DURATION = 300;
   late final VideoController controller;
   late final AnimationController _spinController;
   late final AnimationController _panelController;
   Player get player => controller.player;
+  VideoControlsTheme get theme => widget.theme;
 
   bool _visible = true;
   bool _hovering = false;
@@ -63,7 +69,10 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
     super.initState();
     controller = widget.state.widget.controller;
     _spinController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _panelController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _panelController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: theme.timing.panelAnimationDuration),
+    );
 
     _playing = player.state.playing;
     _position = player.state.position;
@@ -115,12 +124,16 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
     final key = event.logicalKey;
 
     // When a slider is active: let left/right pass through so the slider
-    // handles them, and Select/Enter exits slider mode.
+    // handles them, block up/down to prevent focus escape, and Select/Enter/Escape exits slider mode.
     final slider = _activeSlider;
     if (slider != null) {
       if (key == LogicalKeyboardKey.arrowLeft || key == LogicalKeyboardKey.arrowRight) {
         _startHideTimer();
         return KeyEventResult.ignored;
+      }
+      if (key == LogicalKeyboardKey.arrowUp || key == LogicalKeyboardKey.arrowDown) {
+        _startHideTimer();
+        return KeyEventResult.handled;
       }
       if (key == LogicalKeyboardKey.select ||
           key == LogicalKeyboardKey.enter ||
@@ -172,7 +185,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
   void _startHideTimer() {
     _hideTimer?.cancel();
     if (_buffering) return;
-    _hideTimer = Timer(Duration(milliseconds: HIDE_DELAY), () {
+    _hideTimer = Timer(Duration(milliseconds: theme.timing.hideDelay), () {
       if (mounted && _playing && !_hovering) {
         setState(() => _visible = false);
       }
@@ -253,9 +266,9 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               onVerticalDragEnd: hasPanel
                   ? (details) {
                       if (details.primaryVelocity == null) return;
-                      if (details.primaryVelocity! > 100) {
+                      if (details.primaryVelocity! > theme.constraints.swipeVelocityThreshold) {
                         _openPanel();
-                      } else if (details.primaryVelocity! < -100) {
+                      } else if (details.primaryVelocity! < -theme.constraints.swipeVelocityThreshold) {
                         _closePanel();
                       }
                     }
@@ -263,7 +276,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               behavior: HitTestBehavior.opaque,
               child: AnimatedOpacity(
                 opacity: _visible ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: ANIMATION_DURATION),
+                duration: Duration(milliseconds: theme.timing.animationDuration),
                 child: ExcludeFocus(
                   excluding: !_visible,
                   child: IgnorePointer(
@@ -271,21 +284,26 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                     child: FocusTraversalGroup(
                       child: Stack(
                         children: [
-                          const Positioned.fill(
+                          Positioned.fill(
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
-                                  colors: [Color(0xBB000000), Color(0x00000000), Color(0x00000000), Color(0xBB000000)],
+                                  colors: [
+                                    theme.colors.overlayBackground,
+                                    theme.colors.transparentColor,
+                                    theme.colors.transparentColor,
+                                    theme.colors.overlayBackground,
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                           Positioned(
-                            left: 8,
-                            top: 8,
-                            right: 8,
+                            left: theme.spacing.topBarInset,
+                            top: theme.spacing.topBarInset,
+                            right: theme.spacing.topBarInset,
                             child: Row(
                               children: [
                                 if (Navigator.of(context).canPop())
@@ -299,28 +317,32 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         unawaited(Navigator.of(context).maybePop());
                                       }
                                     },
-                                    child: const Icon(FIcons.arrowLeft, size: 24, color: Color(0xFFFFFFFF)),
+                                    child: Icon(
+                                      FIcons.arrowLeft,
+                                      size: theme.iconSizes.back,
+                                      color: theme.colors.foreground,
+                                    ),
                                   ),
                                 if (widget.logoUrl != null) ...[
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: theme.spacing.controlsGap),
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
+                                    borderRadius: BorderRadius.circular(theme.sizes.logoBorderRadius),
                                     child: Image.network(
                                       widget.logoUrl!,
-                                      width: 32,
-                                      height: 32,
+                                      width: theme.sizes.logo,
+                                      height: theme.sizes.logo,
                                       fit: BoxFit.contain,
                                       errorBuilder: (_, _, _) => const SizedBox.shrink(),
                                     ),
                                   ),
                                 ],
-                                const SizedBox(width: 8),
+                                SizedBox(width: theme.spacing.controlsGap),
                                 Expanded(
                                   child: Text(
                                     widget.title,
-                                    style: const TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 16,
+                                    style: TextStyle(
+                                      color: theme.colors.foreground,
+                                      fontSize: theme.fontSizes.title,
                                       fontWeight: FontWeight.w600,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -334,8 +356,12 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                 ? AnimatedBuilder(
                                     animation: _spinController,
                                     builder: (_, child) =>
-                                        Transform.rotate(angle: _spinController.value * 2 * 3.14159265, child: child),
-                                    child: const Icon(FIcons.loader, size: 48, color: Color(0x99FFFFFF)),
+                                        Transform.rotate(angle: _spinController.value * 2 * pi, child: child),
+                                    child: Icon(
+                                      FIcons.loader,
+                                      size: theme.iconSizes.spinner,
+                                      color: theme.colors.foregroundDim,
+                                    ),
                                   )
                                 : Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -344,13 +370,17 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         FButton.icon(
                                           variant: .ghost,
                                           onPress: () {
-                                            final target = _position - const Duration(seconds: 10);
+                                            final target = _position - widget.seekDuration;
                                             player.seek(target < Duration.zero ? Duration.zero : target);
                                             _startHideTimer();
                                           },
-                                          child: const Icon(FIcons.skipBack, size: 32, color: Color(0xFFFFFFFF)),
+                                          child: Icon(
+                                            FIcons.skipBack,
+                                            size: theme.iconSizes.skip,
+                                            color: theme.colors.foreground,
+                                          ),
                                         ),
-                                        const SizedBox(width: 24),
+                                        SizedBox(width: theme.spacing.skipButtonGap),
                                       ],
                                       FButton.icon(
                                         variant: .ghost,
@@ -362,20 +392,24 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         },
                                         child: Icon(
                                           _playing ? FIcons.pause : FIcons.play,
-                                          size: 48,
-                                          color: const Color(0xFFFFFFFF),
+                                          size: theme.iconSizes.playPause,
+                                          color: theme.colors.foreground,
                                         ),
                                       ),
                                       if (!widget.isLive) ...[
-                                        const SizedBox(width: 24),
+                                        SizedBox(width: theme.spacing.skipButtonGap),
                                         FButton.icon(
                                           variant: .ghost,
                                           onPress: () {
-                                            final target = _position + const Duration(seconds: 10);
+                                            final target = _position + widget.seekDuration;
                                             player.seek(target > _duration ? _duration : target);
                                             _startHideTimer();
                                           },
-                                          child: const Icon(FIcons.skipForward, size: 32, color: Color(0xFFFFFFFF)),
+                                          child: Icon(
+                                            FIcons.skipForward,
+                                            size: theme.iconSizes.skip,
+                                            color: theme.colors.foreground,
+                                          ),
                                         ),
                                       ],
                                     ],
@@ -383,9 +417,9 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                           ),
                           if (!_panelOpen)
                             Positioned(
-                              left: 16,
-                              right: 16,
-                              bottom: 16,
+                              left: theme.spacing.bottomBarInset,
+                              right: theme.spacing.bottomBarInset,
+                              bottom: theme.spacing.bottomBarInset,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -394,9 +428,12 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                       children: [
                                         Text(
                                           '${_formatDuration(_position)} / ${_formatDuration(_duration)}',
-                                          style: const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12),
+                                          style: TextStyle(
+                                            color: theme.colors.foreground,
+                                            fontSize: theme.fontSizes.time,
+                                          ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        SizedBox(width: theme.spacing.controlsGap),
                                         Expanded(
                                           child: _ActivatableSlider(
                                             controller: _seekSliderController,
@@ -426,23 +463,28 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         ),
                                       ],
                                     ),
-                                  const SizedBox(height: 8),
+                                  SizedBox(height: theme.spacing.controlsGap),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       if (widget.isLive)
-                                        const DecoratedBox(
+                                        DecoratedBox(
                                           decoration: BoxDecoration(
-                                            color: Color(0xFFEF4444),
-                                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                                            color: theme.colors.liveBadge,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(theme.sizes.liveBadgeBorderRadius),
+                                            ),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: theme.spacing.liveBadgeHorizontal,
+                                              vertical: theme.spacing.liveBadgeVertical,
+                                            ),
                                             child: Text(
                                               'LIVE',
                                               style: TextStyle(
-                                                color: Color(0xFFFFFFFF),
-                                                fontSize: 12,
+                                                color: theme.colors.foreground,
+                                                fontSize: theme.fontSizes.live,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -457,19 +499,21 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         },
                                         child: Icon(
                                           _volume > 0 ? FIcons.volume2 : FIcons.volumeX,
-                                          size: 20,
-                                          color: const Color(0xFFFFFFFF),
+                                          size: theme.iconSizes.control,
+                                          color: theme.colors.foreground,
                                         ),
                                       ),
                                       _ActivatableSlider(
                                         controller: _volumeSliderController,
                                         debugLabel: 'VolumeSlider',
                                         child: SizedBox(
-                                          width: 100,
+                                          width: theme.sizes.volumeSliderWidth,
                                           child: FSlider(
-                                            style: const .delta(
-                                              thumbSize: 12,
-                                              childPadding: .value(.symmetric(horizontal: 6)),
+                                            style: FSliderStyleDelta.delta(
+                                              thumbSize: theme.sizes.volumeThumbSize,
+                                              childPadding: EdgeInsetsGeometryDelta.value(
+                                                EdgeInsets.symmetric(horizontal: theme.spacing.volumeSliderHorizontal),
+                                              ),
                                             ),
                                             control: .liftedContinuous(
                                               value: FSliderValue(max: _volume / 100),
@@ -487,6 +531,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                         _SubtitleButton(
                                           tracks: _subtitleTracks,
                                           active: _activeSubtitle,
+                                          theme: theme,
                                           onSelected: (track) {
                                             player.setSubtitleTrack(track);
                                             _startHideTimer();
@@ -501,8 +546,8 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                                           },
                                           child: Icon(
                                             isFullscreen(context) ? FIcons.minimize : FIcons.maximize,
-                                            size: 20,
-                                            color: const Color(0xFFFFFFFF),
+                                            size: theme.iconSizes.control,
+                                            color: theme.colors.foreground,
                                           ),
                                         ),
                                     ],
@@ -522,7 +567,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             AnimatedBuilder(
               animation: _panelController,
               builder: (context, child) {
-                final maxHeight = MediaQuery.of(context).size.height * 0.5;
+                final maxHeight = MediaQuery.of(context).size.height * theme.sizes.panelHeightRatio;
                 final offset = (1.0 - _panelController.value) * maxHeight;
                 return Positioned(
                   left: 0,
@@ -536,21 +581,21 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                       }
                     },
                     child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        color: Color(0xDD000000),
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                      decoration: BoxDecoration(
+                        color: theme.colors.panelBackground,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(theme.sizes.panelBorderRadius)),
                       ),
                       child: Column(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: theme.spacing.panelHandleVertical),
                             child: SizedBox(
-                              width: 40,
-                              height: 4,
+                              width: theme.sizes.panelHandleWidth,
+                              height: theme.sizes.panelHandleHeight,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                  color: Color(0x66FFFFFF),
-                                  borderRadius: BorderRadius.all(Radius.circular(2)),
+                                  color: theme.colors.panelHandle,
+                                  borderRadius: BorderRadius.all(Radius.circular(theme.sizes.panelHandleBorderRadius)),
                                 ),
                               ),
                             ),
@@ -573,17 +618,21 @@ class _SubtitleButton extends StatelessWidget {
   final List<SubtitleTrack> tracks;
   final SubtitleTrack active;
   final ValueChanged<SubtitleTrack> onSelected;
+  final VideoControlsTheme theme;
 
-  const _SubtitleButton({required this.tracks, required this.active, required this.onSelected});
+  const _SubtitleButton({required this.tracks, required this.active, required this.onSelected, required this.theme});
 
   @override
   Widget build(BuildContext context) {
     return FPopover(
       popoverBuilder: (context, controller) => ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 200, maxHeight: 300),
+        constraints: BoxConstraints(
+          maxWidth: theme.constraints.subtitlePopoverMaxWidth,
+          maxHeight: theme.constraints.subtitlePopoverMaxHeight,
+        ),
         child: ListView(
           shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: EdgeInsets.symmetric(vertical: theme.spacing.subtitleListVertical),
           children: [
             for (final track in tracks)
               GestureDetector(
@@ -592,20 +641,24 @@ class _SubtitleButton extends StatelessWidget {
                   controller.hide();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                  padding: EdgeInsets.symmetric(
+                    vertical: theme.spacing.subtitleItemVertical,
+                    horizontal: theme.spacing.subtitleItemHorizontal,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
                         child: Text(
                           _trackLabel(track),
                           style: TextStyle(
-                            color: const Color(0xFFFFFFFF),
-                            fontSize: 13,
+                            color: theme.colors.foreground,
+                            fontSize: theme.fontSizes.subtitle,
                             fontWeight: track == active ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
                       ),
-                      if (track == active) const Icon(FIcons.check, size: 16, color: Color(0xFFFFFFFF)),
+                      if (track == active)
+                        Icon(FIcons.check, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
                     ],
                   ),
                 ),
@@ -615,8 +668,8 @@ class _SubtitleButton extends StatelessWidget {
       ),
       child: Icon(
         FIcons.captions,
-        size: 20,
-        color: active.id != 'no' ? const Color(0xFFFFFFFF) : const Color(0x99FFFFFF),
+        size: theme.iconSizes.control,
+        color: active.id != 'no' ? theme.colors.foreground : theme.colors.foregroundDim,
       ),
     );
   }
@@ -629,7 +682,7 @@ class _SubtitleButton extends StatelessWidget {
   }
 }
 
-class _ActivatableSliderController {
+class _ActivatableSliderController extends ChangeNotifier {
   FocusNode? _containerNode;
   bool _active = false;
 
@@ -641,6 +694,7 @@ class _ActivatableSliderController {
 
   void activate() {
     _active = true;
+    notifyListeners();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final container = _containerNode;
       if (container == null) return;
@@ -653,11 +707,16 @@ class _ActivatableSliderController {
 
   void deactivate() {
     _active = false;
-    _containerNode?.requestFocus();
+    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _containerNode?.requestFocus();
+    });
   }
 
+  @override
   void dispose() {
     _containerNode = null;
+    super.dispose();
   }
 }
 
@@ -680,10 +739,16 @@ class _ActivatableSliderState extends State<_ActivatableSlider> {
   void initState() {
     super.initState();
     widget.controller._attach(_containerNode);
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  void _onControllerChanged() {
+    setState(() {});
   }
 
   @override
   void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
     _containerNode.dispose();
     super.dispose();
   }
@@ -702,15 +767,12 @@ class _ActivatableSliderState extends State<_ActivatableSlider> {
         if (event is! KeyDownEvent) return KeyEventResult.ignored;
         final key = event.logicalKey;
         if (key == LogicalKeyboardKey.select || key == LogicalKeyboardKey.enter) {
-          setState(() => widget.controller.activate());
+          widget.controller.activate();
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
       },
-      child: FFocusedOutline(
-        focused: _focused && !active,
-        child: widget.child,
-      ),
+      child: FFocusedOutline(focused: _focused && !active, child: widget.child),
     );
   }
 }
