@@ -52,15 +52,17 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
           _playTvShow(tvShowState.tvShow!, tvShowState.selectedEpisode!);
         }
       },
-      builder: (context, tvShowState) => Video(
-        controller: videoController,
-        controls: (state) => CustomVideoControls(
-          state: state,
-          isLive: false,
-          title: tvShowState.selectedEpisode?.title,
-          logoUrl: tvShowState.tvShow?.posterUrl,
-        ),
-      ),
+      builder: (context, tvShowState) => tvShowState.selectedSeason != null && tvShowState.selectedEpisode != null
+          ? Video(
+              controller: videoController,
+              controls: (state) => CustomVideoControls(
+                state: state,
+                isLive: false,
+                title: tvShowState.selectedEpisode!.title,
+                logoUrl: tvShowState.tvShow!.posterUrl,
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 

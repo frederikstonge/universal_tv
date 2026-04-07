@@ -48,15 +48,17 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
           _playMovie(movieState.movie!);
         }
       },
-      builder: (context, movieState) => Video(
-        controller: videoController,
-        controls: (state) => CustomVideoControls(
-          state: state,
-          isLive: false,
-          title: movieState.movie?.name,
-          logoUrl: movieState.movie?.posterUrl,
-        ),
-      ),
+      builder: (context, movieState) => movieState.movie != null
+          ? Video(
+              controller: videoController,
+              controls: (state) => CustomVideoControls(
+                state: state,
+                isLive: false,
+                title: movieState.movie!.name,
+                logoUrl: movieState.movie!.posterUrl,
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 

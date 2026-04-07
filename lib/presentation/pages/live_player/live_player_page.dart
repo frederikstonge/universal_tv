@@ -42,15 +42,17 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
       listener: (context, liveState) {
         _playLiveChannel(liveState.selectedChannel);
       },
-      builder: (context, liveState) => Video(
-        controller: videoController,
-        controls: (state) => CustomVideoControls(
-          state: state,
-          isLive: true,
-          title: liveState.selectedChannel?.name,
-          logoUrl: liveState.selectedChannel?.logoUrl,
-        ),
-      ),
+      builder: (context, liveState) => liveState.selectedChannel != null
+          ? Video(
+              controller: videoController,
+              controls: (state) => CustomVideoControls(
+                state: state,
+                isLive: true,
+                title: liveState.selectedChannel!.name,
+                logoUrl: liveState.selectedChannel!.logoUrl,
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 
