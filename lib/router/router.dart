@@ -4,6 +4,7 @@ import '../presentation/pages/cast/cast_page.dart';
 import '../presentation/pages/live_player/live_player_page.dart';
 import '../presentation/pages/movie_details/movie_details_shell.dart';
 import '../presentation/pages/movie_player/movie_player_shell.dart';
+import '../presentation/pages/settings/settings_page.dart';
 import '../presentation/pages/tv_show_details/tv_show_details_shell.dart';
 import '../presentation/pages/tv_show_player/tv_show_player_shell.dart';
 import '../presentation/shells/main_shell.dart';
@@ -73,5 +74,6 @@ final router = GoRouter(
       name: 'cast',
       pageBuilder: (context, state) => ModalSheetPage(builder: (context) => const CastPage()),
     ),
+    GoRoute(path: '/settings', name: 'settings', builder: (context, state) => const SettingsPage()),
   ],
 );

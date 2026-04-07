@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
 import '../../../blocs/state_status.dart';
-import '../../components/app_bar.dart';
 import '../../components/cover_card.dart';
 
 class LivePage extends StatelessWidget {
@@ -17,7 +16,6 @@ class LivePage extends StatelessWidget {
     return BlocBuilder<LiveCubit, LiveState>(
       builder: (context, state) {
         return FScaffold(
-          header: AppBar(title: Text('Live TV')),
           child: switch (state.status) {
             StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
             StateStatus.failure => const Center(child: Text('Failed to load live channels')),

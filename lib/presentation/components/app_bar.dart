@@ -8,7 +8,11 @@ class AppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FHeader(
+    final canPop = GoRouter.of(context).canPop();
+    return FHeader.nested(
+      prefixes: [
+        if (canPop) FButton.icon(onPress: () => GoRouter.of(context).pop(), child: const Icon(FIcons.chevronLeft)),
+      ],
       title: title,
       suffixes: [
         FButton.icon(
