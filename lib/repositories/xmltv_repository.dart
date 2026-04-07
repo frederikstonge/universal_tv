@@ -19,7 +19,7 @@ class XmltvRepository extends XmltvBaseRepository {
   String get name => provider.name;
 
   @override
-  Future<void> load() async {
+  Stream<void> load() async* {
     final value = await dio.get<String>(provider.url);
     final parser = EpgParser();
     final xmltvData = parser.parse(value.data!);
@@ -37,6 +37,7 @@ class XmltvRepository extends XmltvBaseRepository {
     final List<XmltvBase> data = [...channels, ...programmes];
 
     _entries.addAll(data);
+    yield null;
   }
 
   @override

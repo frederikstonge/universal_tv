@@ -3,6 +3,7 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'm3u/m3u_entry.dart';
+import 'tmdb/tmdb_entry.dart';
 
 part 'movie_item.mapper.dart';
 
@@ -32,12 +33,15 @@ class MovieItem with MovieItemMappable {
     );
   }
 
-  factory MovieItem.fromM3uEntry(M3uEntry entry) {
+  factory MovieItem.fromM3uEntry(M3uEntry entry, {TmdbEntry? tmdbEntry, String? tmdbPosterUrl}) {
     return MovieItem(
       streamId: entry.id,
-      name: entry.name,
-      categoryIds: [if (entry.groupTitle != null) entry.groupTitle!],
-      posterUrl: entry.posterUrl,
+      name: tmdbEntry?.title ?? entry.name,
+      categoryIds: [
+        ...?tmdbEntry?.genreIds?.map((id) => id.toString()),
+        if (entry.groupTitle != null) entry.groupTitle!,
+      ],
+      posterUrl: tmdbPosterUrl ?? entry.posterUrl,
       providerName: entry.providerName,
     );
   }

@@ -26,6 +26,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
   final TmdbRepository tmdbRepository;
   final SettingsCubit settingsCubit;
   StreamSubscription? _settingsSubscription;
+  final List<StreamSubscription> _loadSubscriptions = [];
 
   IptvServiceCubit({required this.dio, required this.tmdbRepository, required this.settingsCubit})
     : super(IptvServiceState(status: StateStatus.initial)) {
@@ -45,6 +46,12 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
 
     emit(state.copyWith(status: StateStatus.loading));
 
+    // Cancel any in-flight load streams
+    for (final sub in _loadSubscriptions) {
+      await sub.cancel();
+    }
+    _loadSubscriptions.clear();
+
     try {
       final currentRepositories = List<BaseRepository>.from(state.repositories);
       final removedRepositories = currentRepositories.where((r) => !providers.any((p) => p.name == r.name)).toList();
@@ -53,6 +60,7 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
 
       final newProviders = providers.where((p) => !currentRepositories.any((r) => r.name == p.name)).toList();
       if (newProviders.isEmpty) {
+        emit(state.copyWith(status: StateStatus.success));
         return;
       }
 
@@ -67,12 +75,28 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
         }
       }).toList();
 
-      if (newRepositories.isNotEmpty) {
-        await Future.wait(newRepositories.map((r) => r.load()).toList());
-        currentRepositories.addAll(newRepositories);
+      // Load repositories progressively — emit success on each yield from the stream
+      final completers = <Completer<void>>[];
+
+      for (final repo in newRepositories) {
+        final completer = Completer<void>();
+        completers.add(completer);
+
+        final subscription = repo.load().listen(
+          (_) {
+            if (!currentRepositories.contains(repo)) {
+              currentRepositories.add(repo);
+            }
+            emit(state.copyWith(status: StateStatus.success, repositories: List.of(currentRepositories)));
+          },
+          onDone: () => completer.complete(),
+          onError: (e) => completer.completeError(e),
+        );
+        _loadSubscriptions.add(subscription);
       }
 
-      emit(state.copyWith(status: StateStatus.success, repositories: currentRepositories));
+      await Future.wait(completers.map((c) => c.future));
+      _loadSubscriptions.clear();
     } catch (e) {
       emit(state.copyWith(status: StateStatus.failure));
       return;
@@ -83,6 +107,10 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
   Future<void> close() async {
     await _settingsSubscription?.cancel();
     _settingsSubscription = null;
+    for (final sub in _loadSubscriptions) {
+      await sub.cancel();
+    }
+    _loadSubscriptions.clear();
     await Future.wait(state.repositories.map((r) => r.dispose()).toList());
     return super.close();
   }

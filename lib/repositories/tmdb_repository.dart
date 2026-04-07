@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:dio/dio.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
@@ -13,11 +16,17 @@ class TmdbRepository {
   final Map<int, String> _movieGenresCache = {};
   final Map<int, String> _tvShowGenresCache = {};
 
+  // Rate limiter: 40 requests per second
+  static const int _maxRequestsPerSecond = 40;
+  final Queue<DateTime> _requestTimestamps = Queue();
+
   TmdbRepository({required this.dio});
 
   Future<void> preloadM3u(List<M3uEntry> entries) async {
-    for (final entry in entries) {
-      await getM3u(entry);
+    const batchSize = 10;
+    for (var i = 0; i < entries.length; i += batchSize) {
+      final batch = entries.skip(i).take(batchSize);
+      await Future.wait(batch.map((e) => getM3u(e)));
     }
   }
 
@@ -43,7 +52,7 @@ class TmdbRepository {
       return _tmdbCache[externalId]!;
     }
 
-    final response = await dio.get<String>(
+    final response = await _throttledGet<String>(
       'https://api.themoviedb.org/3/find/$externalId',
       queryParameters: {'external_source': externalSource},
       options: Options(
@@ -76,7 +85,7 @@ class TmdbRepository {
     };
 
     // TMDB doesn't have an endpoint to get by tmdb id, so we need to get all genres and filter them
-    final response = await dio.get<String>(
+    final response = await _throttledGet<String>(
       'https://api.themoviedb.org/3/$typePath/$tmdbId',
       options: Options(
         headers: {'Authorization': 'Bearer ${const String.fromEnvironment('TMDB_API_KEY', defaultValue: '')}'},
@@ -94,7 +103,7 @@ class TmdbRepository {
     }
 
     // TMDB doesn't have an endpoint to get genres by ids, so we need to get all genres and filter them
-    final response = await dio.get<Map<String, dynamic>>(
+    final response = await _throttledGet<Map<String, dynamic>>(
       'https://api.themoviedb.org/3/genre/movie/list',
       options: Options(
         headers: {'Authorization': 'Bearer ${const String.fromEnvironment('TMDB_API_KEY', defaultValue: '')}'},
@@ -112,7 +121,7 @@ class TmdbRepository {
     }
 
     // TMDB doesn't have an endpoint to get genres by ids, so we need to get all genres and filter them
-    final response = await dio.get<Map<String, dynamic>>(
+    final response = await _throttledGet<Map<String, dynamic>>(
       'https://api.themoviedb.org/3/genre/tv/list',
       options: Options(
         headers: {'Authorization': 'Bearer ${const String.fromEnvironment('TMDB_API_KEY', defaultValue: '')}'},
@@ -125,6 +134,29 @@ class TmdbRepository {
 
   String getImageUrl(String path, {ImageSize size = ImageSize.medium}) {
     return 'https://image.tmdb.org/t/p/${size.value}/$path';
+  }
+
+  Future<void> _waitForRateLimit() async {
+    final now = DateTime.now();
+    // Remove timestamps older than 1 second
+    while (_requestTimestamps.isNotEmpty && now.difference(_requestTimestamps.first).inMilliseconds >= 1000) {
+      _requestTimestamps.removeFirst();
+    }
+    if (_requestTimestamps.length >= _maxRequestsPerSecond) {
+      final oldest = _requestTimestamps.first;
+      final waitTime = Duration(milliseconds: 1000 - now.difference(oldest).inMilliseconds);
+      await Future.delayed(waitTime);
+    }
+    _requestTimestamps.add(DateTime.now());
+  }
+
+  Future<Response<T>> _throttledGet<T>(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    await _waitForRateLimit();
+    return dio.get<T>(path, queryParameters: queryParameters, options: options);
   }
 }
 

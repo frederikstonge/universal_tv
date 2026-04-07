@@ -3,6 +3,7 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'm3u/m3u_entry.dart';
+import 'tmdb/tmdb_entry.dart';
 
 part 'movie_details.mapper.dart';
 
@@ -41,15 +42,15 @@ class MovieDetails with MovieDetailsMappable {
     );
   }
 
-  factory MovieDetails.fromM3uEntry(M3uEntry entry) {
+  factory MovieDetails.fromM3uEntry(M3uEntry entry, {TmdbEntry? tmdbEntry, String? tmdbPosterUrl}) {
     return MovieDetails(
       streamId: entry.id,
-      name: entry.name,
-      plot: entry.plot,
-      rating: entry.rating,
-      year: entry.year,
+      name: tmdbEntry?.title ?? entry.name,
+      plot: tmdbEntry?.overview ?? entry.plot,
+      rating: tmdbEntry?.voteAverage ?? entry.rating,
+      year: tmdbEntry?.releaseDate != null ? DateTime.tryParse(tmdbEntry!.releaseDate!)?.year : entry.year,
       duration: entry.duration,
-      posterUrl: entry.posterUrl,
+      posterUrl: tmdbPosterUrl ?? entry.posterUrl,
       providerName: entry.providerName,
     );
   }
