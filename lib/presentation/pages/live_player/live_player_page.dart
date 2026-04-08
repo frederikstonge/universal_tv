@@ -8,6 +8,7 @@ import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
 import '../../../models/live_channel.dart';
 import '../../components/custom_video_controls.dart';
+import '../../components/tv_guide.dart';
 
 class LivePlayerPage extends StatefulWidget {
   const LivePlayerPage({super.key});
@@ -50,6 +51,13 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
                 isLive: true,
                 title: liveState.selectedChannel!.name,
                 logoUrl: liveState.selectedChannel!.logoUrl,
+                bottomWidget: TvGuide(
+                  showChannelColumn: true,
+                  showToolbar: true,
+                  onChannelSelected: (ch) {
+                    context.read<LiveCubit>().selectChannel(ch);
+                  },
+                ),
               ),
             )
           : const SizedBox.shrink(),

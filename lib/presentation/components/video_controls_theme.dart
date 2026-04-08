@@ -33,10 +33,6 @@ class VideoControlsColorTheme with VideoControlsColorThemeMappable {
   final Color foregroundDim;
   @MappableField(hook: ColorHook())
   final Color liveBadge;
-  @MappableField(hook: ColorHook())
-  final Color panelBackground;
-  @MappableField(hook: ColorHook())
-  final Color panelHandle;
 
   const VideoControlsColorTheme({
     this.overlayBackground = const Color(0xBB000000),
@@ -44,8 +40,6 @@ class VideoControlsColorTheme with VideoControlsColorThemeMappable {
     this.foreground = const Color(0xFFFFFFFF),
     this.foregroundDim = const Color(0x99FFFFFF),
     this.liveBadge = const Color(0xFFEF4444),
-    this.panelBackground = const Color(0xDD000000),
-    this.panelHandle = const Color(0x66FFFFFF),
   });
 }
 
@@ -74,24 +68,14 @@ class VideoControlsSizeTheme with VideoControlsSizeThemeMappable {
   final double logoBorderRadius;
   final double volumeSliderWidth;
   final double volumeThumbSize;
-  final double panelHandleWidth;
-  final double panelHandleHeight;
-  final double panelHandleBorderRadius;
-  final double panelBorderRadius;
   final double liveBadgeBorderRadius;
-  final double panelHeightRatio;
 
   const VideoControlsSizeTheme({
     this.logo = 32,
     this.logoBorderRadius = 4,
     this.volumeSliderWidth = 100,
     this.volumeThumbSize = 12,
-    this.panelHandleWidth = 40,
-    this.panelHandleHeight = 4,
-    this.panelHandleBorderRadius = 2,
-    this.panelBorderRadius = 12,
     this.liveBadgeBorderRadius = 4,
-    this.panelHeightRatio = 0.5,
   });
 }
 
@@ -111,7 +95,6 @@ class VideoControlsSpacingTheme with VideoControlsSpacingThemeMappable {
   final double bottomBarInset;
   final double controlsGap;
   final double skipButtonGap;
-  final double panelHandleVertical;
   final double subtitleItemVertical;
   final double subtitleItemHorizontal;
   final double liveBadgeHorizontal;
@@ -124,7 +107,6 @@ class VideoControlsSpacingTheme with VideoControlsSpacingThemeMappable {
     this.bottomBarInset = 16,
     this.controlsGap = 8,
     this.skipButtonGap = 24,
-    this.panelHandleVertical = 8,
     this.subtitleItemVertical = 6,
     this.subtitleItemHorizontal = 12,
     this.liveBadgeHorizontal = 8,

@@ -8,6 +8,52 @@
 
 part of 'live_state.dart';
 
+class LiveSortOrderMapper extends EnumMapper<LiveSortOrder> {
+  LiveSortOrderMapper._();
+
+  static LiveSortOrderMapper? _instance;
+  static LiveSortOrderMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = LiveSortOrderMapper._());
+    }
+    return _instance!;
+  }
+
+  static LiveSortOrder fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  LiveSortOrder decode(dynamic value) {
+    switch (value) {
+      case r'name':
+        return LiveSortOrder.name;
+      case r'category':
+        return LiveSortOrder.category;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(LiveSortOrder self) {
+    switch (self) {
+      case LiveSortOrder.name:
+        return r'name';
+      case LiveSortOrder.category:
+        return r'category';
+    }
+  }
+}
+
+extension LiveSortOrderMapperExtension on LiveSortOrder {
+  String toValue() {
+    LiveSortOrderMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<LiveSortOrder>(this) as String;
+  }
+}
+
 class LiveStateMapper extends ClassMapperBase<LiveState> {
   LiveStateMapper._();
 
@@ -18,6 +64,8 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
       StateStatusMapper.ensureInitialized();
       LiveChannelMapper.ensureInitialized();
       CategoryMapper.ensureInitialized();
+      XmltvProgrammeMapper.ensureInitialized();
+      LiveSortOrderMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -44,11 +92,21 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
     opt: true,
     def: const [],
   );
+  static Map<String, List<XmltvProgramme>>? _$epg(LiveState v) => v.epg;
+  static const Field<LiveState, Map<String, List<XmltvProgramme>>> _f$epg =
+      Field('epg', _$epg, opt: true, def: const {});
   static LiveChannel? _$selectedChannel(LiveState v) => v.selectedChannel;
   static const Field<LiveState, LiveChannel> _f$selectedChannel = Field(
     'selectedChannel',
     _$selectedChannel,
     opt: true,
+  );
+  static LiveSortOrder _$sortOrder(LiveState v) => v.sortOrder;
+  static const Field<LiveState, LiveSortOrder> _f$sortOrder = Field(
+    'sortOrder',
+    _$sortOrder,
+    opt: true,
+    def: LiveSortOrder.category,
   );
 
   @override
@@ -56,7 +114,9 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
     #status: _f$status,
     #items: _f$items,
     #categories: _f$categories,
+    #epg: _f$epg,
     #selectedChannel: _f$selectedChannel,
+    #sortOrder: _f$sortOrder,
   };
 
   static LiveState _instantiate(DecodingData data) {
@@ -64,7 +124,9 @@ class LiveStateMapper extends ClassMapperBase<LiveState> {
       status: data.dec(_f$status),
       items: data.dec(_f$items),
       categories: data.dec(_f$categories),
+      epg: data.dec(_f$epg),
       selectedChannel: data.dec(_f$selectedChannel),
+      sortOrder: data.dec(_f$sortOrder),
     );
   }
 
@@ -135,12 +197,21 @@ abstract class LiveStateCopyWith<$R, $In extends LiveState, $Out>
   get items;
   ListCopyWith<$R, Category, CategoryCopyWith<$R, Category, Category>>?
   get categories;
+  MapCopyWith<
+    $R,
+    String,
+    List<XmltvProgramme>,
+    ObjectCopyWith<$R, List<XmltvProgramme>, List<XmltvProgramme>>
+  >?
+  get epg;
   LiveChannelCopyWith<$R, LiveChannel, LiveChannel>? get selectedChannel;
   $R call({
     StateStatus? status,
     List<LiveChannel>? items,
     List<Category>? categories,
+    Map<String, List<XmltvProgramme>>? epg,
     LiveChannel? selectedChannel,
+    LiveSortOrder? sortOrder,
   });
   LiveStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -176,6 +247,20 @@ class _LiveStateCopyWithImpl<$R, $Out>
         )
       : null;
   @override
+  MapCopyWith<
+    $R,
+    String,
+    List<XmltvProgramme>,
+    ObjectCopyWith<$R, List<XmltvProgramme>, List<XmltvProgramme>>
+  >?
+  get epg => $value.epg != null
+      ? MapCopyWith(
+          $value.epg!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(epg: v),
+        )
+      : null;
+  @override
   LiveChannelCopyWith<$R, LiveChannel, LiveChannel>? get selectedChannel =>
       $value.selectedChannel?.copyWith.$chain((v) => call(selectedChannel: v));
   @override
@@ -183,13 +268,17 @@ class _LiveStateCopyWithImpl<$R, $Out>
     StateStatus? status,
     Object? items = $none,
     Object? categories = $none,
+    Object? epg = $none,
     Object? selectedChannel = $none,
+    LiveSortOrder? sortOrder,
   }) => $apply(
     FieldCopyWithData({
       if (status != null) #status: status,
       if (items != $none) #items: items,
       if (categories != $none) #categories: categories,
+      if (epg != $none) #epg: epg,
       if (selectedChannel != $none) #selectedChannel: selectedChannel,
+      if (sortOrder != null) #sortOrder: sortOrder,
     }),
   );
   @override
@@ -197,7 +286,9 @@ class _LiveStateCopyWithImpl<$R, $Out>
     status: data.get(#status, or: $value.status),
     items: data.get(#items, or: $value.items),
     categories: data.get(#categories, or: $value.categories),
+    epg: data.get(#epg, or: $value.epg),
     selectedChannel: data.get(#selectedChannel, or: $value.selectedChannel),
+    sortOrder: data.get(#sortOrder, or: $value.sortOrder),
   );
 
   @override

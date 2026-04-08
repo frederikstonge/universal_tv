@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/live_channel.dart';
+import '../../models/xmltv_programme.dart';
 import '../iptv_service/iptv_service_cubit.dart';
 import '../state_status.dart';
 import 'live_state.dart';
@@ -50,7 +52,21 @@ class LiveCubit extends Cubit<LiveState> {
       final liveChannels = await liveChannelsFuture;
       final categories = await categoriesFuture;
 
-      emit(state.copyWith(status: StateStatus.success, items: liveChannels, categories: categories));
+      Map<String, List<XmltvProgramme>> epgMap = {};
+      try {
+        final epgList = await iptvServiceCubit.getEpg();
+        final now = DateTime.now();
+        final pastCutoff = now.subtract(const Duration(days: 3));
+        final futureCutoff = now.add(const Duration(days: 4));
+        final filtered = epgList
+            .where((p) => p.start.isBefore(futureCutoff) && (p.stop?.isAfter(pastCutoff) ?? true))
+            .toList();
+        epgMap = groupBy(filtered, (p) => p.channelId);
+      } catch (_) {
+        // EPG is optional — channels still display without it
+      }
+
+      emit(state.copyWith(status: StateStatus.success, items: liveChannels, categories: categories, epg: epgMap));
     } catch (e) {
       emit(state.copyWith(status: StateStatus.failure));
     }
@@ -58,5 +74,9 @@ class LiveCubit extends Cubit<LiveState> {
 
   void selectChannel(LiveChannel channel) {
     emit(state.copyWith(selectedChannel: channel));
+  }
+
+  void setSortOrder(LiveSortOrder sortOrder) {
+    emit(state.copyWith(sortOrder: sortOrder));
   }
 }

@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
 import '../../../blocs/state_status.dart';
-import '../../components/cover_card.dart';
+import '../../components/tv_guide.dart';
 
 class LivePage extends StatelessWidget {
   const LivePage({super.key});
@@ -14,49 +14,18 @@ class LivePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LiveCubit, LiveState>(
-      builder: (context, state) {
-        return FScaffold(
-          child: switch (state.status) {
-            StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
-            StateStatus.failure => const Center(child: Text('Failed to load live channels')),
-            StateStatus.success => ListView.separated(
-              itemCount: state.categories?.length ?? 0,
-              separatorBuilder: (context, index) => const FDivider(),
-              itemBuilder: (context, index) {
-                final category = state.categories![index];
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    FHeader.nested(title: Text(category.name), titleAlignment: AlignmentGeometry.centerLeft),
-                    SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: state.items!.where((e) => e.categoryId == category.id).length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final entry = state.items!.where((e) => e.categoryId == category.id).elementAt(index);
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CoverCard(
-                              title: entry.name,
-                              providerName: entry.providerName,
-                              iconUrl: entry.logoUrl,
-                              onTap: () async {
-                                context.read<LiveCubit>().selectChannel(entry);
-                                await GoRouter.of(context).pushNamed('livePlayer');
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          },
-        );
-      },
+      builder: (context, state) => FScaffold(
+        child: switch (state.status) {
+          StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
+          StateStatus.failure => const Center(child: Text('Failed to load live channels')),
+          StateStatus.success => TvGuide(
+            onChannelSelected: (ch) async {
+              context.read<LiveCubit>().selectChannel(ch);
+              await GoRouter.of(context).pushNamed('livePlayer');
+            },
+          ),
+        },
+      ),
     );
   }
 }

@@ -69,23 +69,6 @@ class VideoControlsColorThemeMapper
     def: const Color(0xFFEF4444),
     hook: ColorHook(),
   );
-  static Color _$panelBackground(VideoControlsColorTheme v) =>
-      v.panelBackground;
-  static const Field<VideoControlsColorTheme, Color> _f$panelBackground = Field(
-    'panelBackground',
-    _$panelBackground,
-    opt: true,
-    def: const Color(0xDD000000),
-    hook: ColorHook(),
-  );
-  static Color _$panelHandle(VideoControlsColorTheme v) => v.panelHandle;
-  static const Field<VideoControlsColorTheme, Color> _f$panelHandle = Field(
-    'panelHandle',
-    _$panelHandle,
-    opt: true,
-    def: const Color(0x66FFFFFF),
-    hook: ColorHook(),
-  );
 
   @override
   final MappableFields<VideoControlsColorTheme> fields = const {
@@ -94,8 +77,6 @@ class VideoControlsColorThemeMapper
     #foreground: _f$foreground,
     #foregroundDim: _f$foregroundDim,
     #liveBadge: _f$liveBadge,
-    #panelBackground: _f$panelBackground,
-    #panelHandle: _f$panelHandle,
   };
 
   static VideoControlsColorTheme _instantiate(DecodingData data) {
@@ -105,8 +86,6 @@ class VideoControlsColorThemeMapper
       foreground: data.dec(_f$foreground),
       foregroundDim: data.dec(_f$foregroundDim),
       liveBadge: data.dec(_f$liveBadge),
-      panelBackground: data.dec(_f$panelBackground),
-      panelHandle: data.dec(_f$panelHandle),
     );
   }
 
@@ -186,8 +165,6 @@ abstract class VideoControlsColorThemeCopyWith<
     Color? foreground,
     Color? foregroundDim,
     Color? liveBadge,
-    Color? panelBackground,
-    Color? panelHandle,
   });
   VideoControlsColorThemeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -210,8 +187,6 @@ class _VideoControlsColorThemeCopyWithImpl<$R, $Out>
     Color? foreground,
     Color? foregroundDim,
     Color? liveBadge,
-    Color? panelBackground,
-    Color? panelHandle,
   }) => $apply(
     FieldCopyWithData({
       if (overlayBackground != null) #overlayBackground: overlayBackground,
@@ -219,8 +194,6 @@ class _VideoControlsColorThemeCopyWithImpl<$R, $Out>
       if (foreground != null) #foreground: foreground,
       if (foregroundDim != null) #foregroundDim: foregroundDim,
       if (liveBadge != null) #liveBadge: liveBadge,
-      if (panelBackground != null) #panelBackground: panelBackground,
-      if (panelHandle != null) #panelHandle: panelHandle,
     }),
   );
   @override
@@ -233,8 +206,6 @@ class _VideoControlsColorThemeCopyWithImpl<$R, $Out>
     foreground: data.get(#foreground, or: $value.foreground),
     foregroundDim: data.get(#foregroundDim, or: $value.foregroundDim),
     liveBadge: data.get(#liveBadge, or: $value.liveBadge),
-    panelBackground: data.get(#panelBackground, or: $value.panelBackground),
-    panelHandle: data.get(#panelHandle, or: $value.panelHandle),
   );
 
   @override
@@ -494,27 +465,6 @@ class VideoControlsSizeThemeMapper
     opt: true,
     def: 12,
   );
-  static double _$panelHandleWidth(VideoControlsSizeTheme v) =>
-      v.panelHandleWidth;
-  static const Field<VideoControlsSizeTheme, double> _f$panelHandleWidth =
-      Field('panelHandleWidth', _$panelHandleWidth, opt: true, def: 40);
-  static double _$panelHandleHeight(VideoControlsSizeTheme v) =>
-      v.panelHandleHeight;
-  static const Field<VideoControlsSizeTheme, double> _f$panelHandleHeight =
-      Field('panelHandleHeight', _$panelHandleHeight, opt: true, def: 4);
-  static double _$panelHandleBorderRadius(VideoControlsSizeTheme v) =>
-      v.panelHandleBorderRadius;
-  static const Field<VideoControlsSizeTheme, double>
-  _f$panelHandleBorderRadius = Field(
-    'panelHandleBorderRadius',
-    _$panelHandleBorderRadius,
-    opt: true,
-    def: 2,
-  );
-  static double _$panelBorderRadius(VideoControlsSizeTheme v) =>
-      v.panelBorderRadius;
-  static const Field<VideoControlsSizeTheme, double> _f$panelBorderRadius =
-      Field('panelBorderRadius', _$panelBorderRadius, opt: true, def: 12);
   static double _$liveBadgeBorderRadius(VideoControlsSizeTheme v) =>
       v.liveBadgeBorderRadius;
   static const Field<VideoControlsSizeTheme, double> _f$liveBadgeBorderRadius =
@@ -524,10 +474,6 @@ class VideoControlsSizeThemeMapper
         opt: true,
         def: 4,
       );
-  static double _$panelHeightRatio(VideoControlsSizeTheme v) =>
-      v.panelHeightRatio;
-  static const Field<VideoControlsSizeTheme, double> _f$panelHeightRatio =
-      Field('panelHeightRatio', _$panelHeightRatio, opt: true, def: 0.5);
 
   @override
   final MappableFields<VideoControlsSizeTheme> fields = const {
@@ -535,12 +481,7 @@ class VideoControlsSizeThemeMapper
     #logoBorderRadius: _f$logoBorderRadius,
     #volumeSliderWidth: _f$volumeSliderWidth,
     #volumeThumbSize: _f$volumeThumbSize,
-    #panelHandleWidth: _f$panelHandleWidth,
-    #panelHandleHeight: _f$panelHandleHeight,
-    #panelHandleBorderRadius: _f$panelHandleBorderRadius,
-    #panelBorderRadius: _f$panelBorderRadius,
     #liveBadgeBorderRadius: _f$liveBadgeBorderRadius,
-    #panelHeightRatio: _f$panelHeightRatio,
   };
 
   static VideoControlsSizeTheme _instantiate(DecodingData data) {
@@ -549,12 +490,7 @@ class VideoControlsSizeThemeMapper
       logoBorderRadius: data.dec(_f$logoBorderRadius),
       volumeSliderWidth: data.dec(_f$volumeSliderWidth),
       volumeThumbSize: data.dec(_f$volumeThumbSize),
-      panelHandleWidth: data.dec(_f$panelHandleWidth),
-      panelHandleHeight: data.dec(_f$panelHandleHeight),
-      panelHandleBorderRadius: data.dec(_f$panelHandleBorderRadius),
-      panelBorderRadius: data.dec(_f$panelBorderRadius),
       liveBadgeBorderRadius: data.dec(_f$liveBadgeBorderRadius),
-      panelHeightRatio: data.dec(_f$panelHeightRatio),
     );
   }
 
@@ -633,12 +569,7 @@ abstract class VideoControlsSizeThemeCopyWith<
     double? logoBorderRadius,
     double? volumeSliderWidth,
     double? volumeThumbSize,
-    double? panelHandleWidth,
-    double? panelHandleHeight,
-    double? panelHandleBorderRadius,
-    double? panelBorderRadius,
     double? liveBadgeBorderRadius,
-    double? panelHeightRatio,
   });
   VideoControlsSizeThemeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -660,26 +591,15 @@ class _VideoControlsSizeThemeCopyWithImpl<$R, $Out>
     double? logoBorderRadius,
     double? volumeSliderWidth,
     double? volumeThumbSize,
-    double? panelHandleWidth,
-    double? panelHandleHeight,
-    double? panelHandleBorderRadius,
-    double? panelBorderRadius,
     double? liveBadgeBorderRadius,
-    double? panelHeightRatio,
   }) => $apply(
     FieldCopyWithData({
       if (logo != null) #logo: logo,
       if (logoBorderRadius != null) #logoBorderRadius: logoBorderRadius,
       if (volumeSliderWidth != null) #volumeSliderWidth: volumeSliderWidth,
       if (volumeThumbSize != null) #volumeThumbSize: volumeThumbSize,
-      if (panelHandleWidth != null) #panelHandleWidth: panelHandleWidth,
-      if (panelHandleHeight != null) #panelHandleHeight: panelHandleHeight,
-      if (panelHandleBorderRadius != null)
-        #panelHandleBorderRadius: panelHandleBorderRadius,
-      if (panelBorderRadius != null) #panelBorderRadius: panelBorderRadius,
       if (liveBadgeBorderRadius != null)
         #liveBadgeBorderRadius: liveBadgeBorderRadius,
-      if (panelHeightRatio != null) #panelHeightRatio: panelHeightRatio,
     }),
   );
   @override
@@ -691,24 +611,10 @@ class _VideoControlsSizeThemeCopyWithImpl<$R, $Out>
       or: $value.volumeSliderWidth,
     ),
     volumeThumbSize: data.get(#volumeThumbSize, or: $value.volumeThumbSize),
-    panelHandleWidth: data.get(#panelHandleWidth, or: $value.panelHandleWidth),
-    panelHandleHeight: data.get(
-      #panelHandleHeight,
-      or: $value.panelHandleHeight,
-    ),
-    panelHandleBorderRadius: data.get(
-      #panelHandleBorderRadius,
-      or: $value.panelHandleBorderRadius,
-    ),
-    panelBorderRadius: data.get(
-      #panelBorderRadius,
-      or: $value.panelBorderRadius,
-    ),
     liveBadgeBorderRadius: data.get(
       #liveBadgeBorderRadius,
       or: $value.liveBadgeBorderRadius,
     ),
-    panelHeightRatio: data.get(#panelHeightRatio, or: $value.panelHeightRatio),
   );
 
   @override
@@ -936,10 +842,6 @@ class VideoControlsSpacingThemeMapper
   static double _$skipButtonGap(VideoControlsSpacingTheme v) => v.skipButtonGap;
   static const Field<VideoControlsSpacingTheme, double> _f$skipButtonGap =
       Field('skipButtonGap', _$skipButtonGap, opt: true, def: 24);
-  static double _$panelHandleVertical(VideoControlsSpacingTheme v) =>
-      v.panelHandleVertical;
-  static const Field<VideoControlsSpacingTheme, double> _f$panelHandleVertical =
-      Field('panelHandleVertical', _$panelHandleVertical, opt: true, def: 8);
   static double _$subtitleItemVertical(VideoControlsSpacingTheme v) =>
       v.subtitleItemVertical;
   static const Field<VideoControlsSpacingTheme, double>
@@ -991,7 +893,6 @@ class VideoControlsSpacingThemeMapper
     #bottomBarInset: _f$bottomBarInset,
     #controlsGap: _f$controlsGap,
     #skipButtonGap: _f$skipButtonGap,
-    #panelHandleVertical: _f$panelHandleVertical,
     #subtitleItemVertical: _f$subtitleItemVertical,
     #subtitleItemHorizontal: _f$subtitleItemHorizontal,
     #liveBadgeHorizontal: _f$liveBadgeHorizontal,
@@ -1006,7 +907,6 @@ class VideoControlsSpacingThemeMapper
       bottomBarInset: data.dec(_f$bottomBarInset),
       controlsGap: data.dec(_f$controlsGap),
       skipButtonGap: data.dec(_f$skipButtonGap),
-      panelHandleVertical: data.dec(_f$panelHandleVertical),
       subtitleItemVertical: data.dec(_f$subtitleItemVertical),
       subtitleItemHorizontal: data.dec(_f$subtitleItemHorizontal),
       liveBadgeHorizontal: data.dec(_f$liveBadgeHorizontal),
@@ -1095,7 +995,6 @@ abstract class VideoControlsSpacingThemeCopyWith<
     double? bottomBarInset,
     double? controlsGap,
     double? skipButtonGap,
-    double? panelHandleVertical,
     double? subtitleItemVertical,
     double? subtitleItemHorizontal,
     double? liveBadgeHorizontal,
@@ -1123,7 +1022,6 @@ class _VideoControlsSpacingThemeCopyWithImpl<$R, $Out>
     double? bottomBarInset,
     double? controlsGap,
     double? skipButtonGap,
-    double? panelHandleVertical,
     double? subtitleItemVertical,
     double? subtitleItemHorizontal,
     double? liveBadgeHorizontal,
@@ -1136,8 +1034,6 @@ class _VideoControlsSpacingThemeCopyWithImpl<$R, $Out>
       if (bottomBarInset != null) #bottomBarInset: bottomBarInset,
       if (controlsGap != null) #controlsGap: controlsGap,
       if (skipButtonGap != null) #skipButtonGap: skipButtonGap,
-      if (panelHandleVertical != null)
-        #panelHandleVertical: panelHandleVertical,
       if (subtitleItemVertical != null)
         #subtitleItemVertical: subtitleItemVertical,
       if (subtitleItemHorizontal != null)
@@ -1158,10 +1054,6 @@ class _VideoControlsSpacingThemeCopyWithImpl<$R, $Out>
         bottomBarInset: data.get(#bottomBarInset, or: $value.bottomBarInset),
         controlsGap: data.get(#controlsGap, or: $value.controlsGap),
         skipButtonGap: data.get(#skipButtonGap, or: $value.skipButtonGap),
-        panelHandleVertical: data.get(
-          #panelHandleVertical,
-          or: $value.panelHandleVertical,
-        ),
         subtitleItemVertical: data.get(
           #subtitleItemVertical,
           or: $value.subtitleItemVertical,

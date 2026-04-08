@@ -12,10 +12,12 @@ import '../../models/movie_details.dart';
 import '../../models/movie_item.dart';
 import '../../models/tv_show_details.dart';
 import '../../models/tv_show_item.dart';
+import '../../models/xmltv_programme.dart';
 import '../../repositories/base_repository.dart';
 import '../../repositories/m3u_repository.dart';
 import '../../repositories/stream_base_repository.dart';
 import '../../repositories/tmdb_repository.dart';
+import '../../repositories/xmltv_base_repository.dart';
 import '../../repositories/xmltv_repository.dart';
 import '../../repositories/xtream_repository.dart';
 import '../state_status.dart';
@@ -189,5 +191,12 @@ class IptvServiceCubit extends Cubit<IptvServiceState> {
     );
 
     return await repository?.getTvShowUrl(episodeId);
+  }
+
+  Future<List<XmltvProgramme>> getEpg() async {
+    final programmes = await Future.wait(
+      state.repositories.whereType<XmltvBaseRepository>().map((r) => r.getShortEpg()),
+    );
+    return programmes.expand((p) => p).toList();
   }
 }
