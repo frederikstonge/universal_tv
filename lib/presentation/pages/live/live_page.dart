@@ -13,9 +13,10 @@ class LivePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LiveCubit, LiveState>(
-      builder: (context, state) => FScaffold(
-        child: switch (state.status) {
+    return BlocSelector<LiveCubit, LiveState, StateStatus>(
+      selector: (state) => state.status,
+      builder: (context, status) => FScaffold(
+        child: switch (status) {
           StateStatus.initial || StateStatus.loading => const Center(child: FCircularProgress()),
           StateStatus.failure => const Center(child: Text('Failed to load live channels')),
           StateStatus.success => TvGuide(

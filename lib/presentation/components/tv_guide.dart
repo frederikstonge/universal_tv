@@ -9,6 +9,7 @@ import 'package:forui/forui.dart';
 
 import '../../blocs/live/live_cubit.dart';
 import '../../blocs/live/live_state.dart';
+import '../../models/category.dart';
 import '../../models/live_channel.dart';
 import '../../models/xmltv_programme.dart';
 
@@ -118,7 +119,7 @@ class TvGuideState extends State<TvGuide> {
                 onKeyEvent: _onGuideKey,
                 child: Row(
                   children: [
-                    if (widget.showChannelColumn) _buildChannelColumn(context, channels),
+                    if (widget.showChannelColumn) _buildChannelColumn(context, channels, state.categories),
                     Expanded(child: _buildGrid(context, channels, epg, start, now)),
                   ],
                 ),
@@ -136,22 +137,22 @@ class TvGuideState extends State<TvGuide> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-            child: Text('TV Guide', style: context.theme.typography.xl2.copyWith(fontWeight: FontWeight.bold)),
-          ),
           FButton(focusNode: _nowBtnFocus, onPress: () => _jumpToNow(), child: const Text('Now')),
           const SizedBox(width: 8),
-          SizedBox(
-            width: 180,
-            child: FSelect<LiveSortOrder>(
-              control: .managed(
-                initial: state.sortOrder,
-                onChange: (v) {
-                  if (v != null) context.read<LiveCubit>().setSortOrder(v);
-                },
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: 180),
+              child: FSelect<LiveSortOrder>(
+                control: .managed(
+                  initial: state.sortOrder,
+                  onChange: (v) {
+                    if (v != null) context.read<LiveCubit>().setSortOrder(v);
+                  },
+                ),
+                items: const {'Name': LiveSortOrder.name, 'Category': LiveSortOrder.category},
               ),
-              items: const {'Name': LiveSortOrder.name, 'Category': LiveSortOrder.category},
             ),
           ),
         ],
@@ -228,7 +229,7 @@ class TvGuideState extends State<TvGuide> {
 
   // ── Channel Column ──
 
-  Widget _buildChannelColumn(BuildContext context, List<LiveChannel> channels) {
+  Widget _buildChannelColumn(BuildContext context, List<LiveChannel> channels, List<Category>? categories) {
     return SizedBox(
       width: _kChannelColWidth,
       child: ScrollConfiguration(
@@ -245,6 +246,8 @@ class TvGuideState extends State<TvGuide> {
             itemCount: channels.length,
             itemBuilder: (context, i) {
               final ch = channels[i];
+              final category = ch.categoryId.isNotEmpty ? categories?.firstWhere((c) => c.id == ch.categoryId) : null;
+              final categoryName = category?.name ?? (ch.categoryId.isNotEmpty ? ch.categoryId : null);
               return ExcludeFocus(
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
@@ -266,11 +269,28 @@ class TvGuideState extends State<TvGuide> {
                           ),
                         const SizedBox(width: 6),
                         Expanded(
-                          child: Text(
-                            ch.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 11, color: context.theme.colors.foreground),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ch.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 11, color: context.theme.colors.foreground),
+                              ),
+                              if (categoryName != null)
+                                Text(
+                                  categoryName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    color: context.theme.colors.foreground,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                       ],
