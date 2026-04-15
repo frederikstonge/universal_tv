@@ -54,16 +54,19 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
                     label: Text(provider.name),
                     child: switch (provider.type) {
                       IptvProviderType.m3u => EditM3uProvider(
+                        key: ValueKey(provider.id),
                         provider: provider as M3uIptvProvider,
                         onSave: onSave,
                         onDelete: onDelete,
                       ),
                       IptvProviderType.xtream => EditXtreamProvider(
+                        key: ValueKey(provider.id),
                         provider: provider as XtreamIptvProvider,
                         onSave: onSave,
                         onDelete: onDelete,
                       ),
                       IptvProviderType.xmltv => EditXmltvProvider(
+                        key: ValueKey(provider.id),
                         provider: provider as XmltvIptvProvider,
                         onSave: onSave,
                         onDelete: onDelete,

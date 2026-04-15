@@ -69,7 +69,7 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> {
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(
+            FTextFormField(
               control: .managed(controller: _nameController),
               label: Text('Name'),
             ),
@@ -93,12 +93,12 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> {
               },
             ),
             SizedBox(height: 16),
-            FTextField(
+            FTextFormField(
               control: .managed(controller: _usernameController),
               label: Text('Username'),
             ),
             SizedBox(height: 16),
-            FTextField.password(control: .managed(controller: _passwordController)),
+            FTextFormField.password(control: .managed(controller: _passwordController)),
             SizedBox(height: 16),
             FTimeField.picker(
               control: .managed(controller: _timePickerController),

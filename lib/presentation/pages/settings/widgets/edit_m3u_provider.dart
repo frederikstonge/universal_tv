@@ -54,7 +54,7 @@ class _EditM3uProviderState extends State<EditM3uProvider> {
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(
+            FTextFormField(
               control: .managed(controller: _nameController),
               label: Text('Name'),
             ),

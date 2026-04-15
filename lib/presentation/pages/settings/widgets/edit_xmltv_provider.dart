@@ -58,7 +58,7 @@ class _EditXmltvProviderState extends State<EditXmltvProvider> {
         child: Column(
           children: [
             SizedBox(height: 16),
-            FTextField(
+            FTextFormField(
               control: .managed(controller: _nameController),
               label: Text('Name'),
             ),

@@ -116,7 +116,7 @@ class _AddProviderState extends State<AddProvider> {
               items: IptvProviderType.values.asMap().map((k, v) => MapEntry(v.name, v)),
             ),
             SizedBox(height: 16),
-            FTextField(
+            FTextFormField(
               control: .managed(controller: _nameController),
               label: Text('Name'),
             ),
@@ -163,12 +163,12 @@ class _AddProviderState extends State<AddProvider> {
                 },
               ),
               SizedBox(height: 16),
-              FTextField(
+              FTextFormField(
                 control: .managed(controller: _usernameController),
                 label: Text('Username'),
               ),
               SizedBox(height: 16),
-              FTextField.password(control: .managed(controller: _passwordController)),
+              FTextFormField.password(control: .managed(controller: _passwordController)),
               SizedBox(height: 16),
               FTimeField.picker(
                 control: .managed(controller: _timePickerController),
