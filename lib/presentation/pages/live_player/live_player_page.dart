@@ -7,8 +7,10 @@ import '../../../blocs/iptv_service/iptv_service_cubit.dart';
 import '../../../blocs/live/live_cubit.dart';
 import '../../../blocs/live/live_state.dart';
 import '../../../models/live_channel.dart';
-import '../../components/custom_video_controls.dart';
 import '../../components/tv_guide.dart';
+import '../../components/video_controls/custom_video_controls.dart';
+import '../../components/video_controls/forui_themes.dart';
+import '../../components/video_controls/video_controls_theme.dart';
 
 class LivePlayerPage extends StatefulWidget {
   const LivePlayerPage({super.key});
@@ -47,6 +49,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
           ? Video(
               controller: videoController,
               controls: (state) => CustomVideoControls(
+                theme: VideoControlsTheme(icons: ForuiIconsTheme(), widgets: ForuiWidgetsTheme()),
                 state: state,
                 isLive: true,
                 title: liveState.selectedChannel!.name,

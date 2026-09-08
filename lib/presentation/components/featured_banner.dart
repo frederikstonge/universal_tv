@@ -103,7 +103,11 @@ class _FeaturedBannerState extends State<FeaturedBanner> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 16),
-                    FButton(prefix: const Icon(FIcons.play), onPress: widget.onTap, child: const Text('View Details')),
+                    FButton(
+                      prefix: const Icon(FLucideIcons.play),
+                      onPress: widget.onTap,
+                      child: const Text('View Details'),
+                    ),
                   ],
                 ),
               ),
@@ -113,7 +117,7 @@ class _FeaturedBannerState extends State<FeaturedBanner> {
                 left: 28,
                 child: Row(
                   children: [
-                    Icon(FIcons.sparkles, size: 14, color: colors.foreground),
+                    Icon(FLucideIcons.sparkles, size: 14, color: colors.foreground),
                     const SizedBox(width: 6),
                     Text(
                       'Featured',

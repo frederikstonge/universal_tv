@@ -1,37 +1,10 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
 
-import 'package:dart_mappable/dart_mappable.dart';
-
-part 'video_controls_theme.mapper.dart';
-
-class ColorHook extends MappingHook {
-  const ColorHook();
-
-  @override
-  Object? beforeDecode(Object? value) {
-    if (value is int) return Color(value);
-    if (value is String) return Color(int.parse(value, radix: 16));
-    return value;
-  }
-
-  @override
-  Object? beforeEncode(Object? value) {
-    if (value is Color) return value.toARGB32();
-    return value;
-  }
-}
-
-@MappableClass()
-class VideoControlsColorTheme with VideoControlsColorThemeMappable {
-  @MappableField(hook: ColorHook())
+class VideoControlsColorTheme {
   final Color overlayBackground;
-  @MappableField(hook: ColorHook())
   final Color transparentColor;
-  @MappableField(hook: ColorHook())
   final Color foreground;
-  @MappableField(hook: ColorHook())
   final Color foregroundDim;
-  @MappableField(hook: ColorHook())
   final Color liveBadge;
 
   const VideoControlsColorTheme({
@@ -43,8 +16,7 @@ class VideoControlsColorTheme with VideoControlsColorThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsIconSizeTheme with VideoControlsIconSizeThemeMappable {
+class VideoControlsIconSizeTheme {
   final double back;
   final double playPause;
   final double skip;
@@ -62,8 +34,7 @@ class VideoControlsIconSizeTheme with VideoControlsIconSizeThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsSizeTheme with VideoControlsSizeThemeMappable {
+class VideoControlsSizeTheme {
   final double logo;
   final double logoBorderRadius;
   final double volumeSliderWidth;
@@ -79,8 +50,7 @@ class VideoControlsSizeTheme with VideoControlsSizeThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsFontSizeTheme with VideoControlsFontSizeThemeMappable {
+class VideoControlsFontSizeTheme {
   final double title;
   final double time;
   final double live;
@@ -89,8 +59,7 @@ class VideoControlsFontSizeTheme with VideoControlsFontSizeThemeMappable {
   const VideoControlsFontSizeTheme({this.title = 16, this.time = 12, this.live = 12, this.subtitle = 13});
 }
 
-@MappableClass()
-class VideoControlsSpacingTheme with VideoControlsSpacingThemeMappable {
+class VideoControlsSpacingTheme {
   final double topBarInset;
   final double bottomBarInset;
   final double controlsGap;
@@ -116,8 +85,7 @@ class VideoControlsSpacingTheme with VideoControlsSpacingThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsConstraintsTheme with VideoControlsConstraintsThemeMappable {
+class VideoControlsConstraintsTheme {
   final double subtitlePopoverMaxWidth;
   final double subtitlePopoverMaxHeight;
   final double swipeVelocityThreshold;
@@ -129,8 +97,7 @@ class VideoControlsConstraintsTheme with VideoControlsConstraintsThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsTimingTheme with VideoControlsTimingThemeMappable {
+class VideoControlsTimingTheme {
   final int hideDelay;
   final int animationDuration;
   final int panelAnimationDuration;
@@ -142,8 +109,81 @@ class VideoControlsTimingTheme with VideoControlsTimingThemeMappable {
   });
 }
 
-@MappableClass()
-class VideoControlsTheme with VideoControlsThemeMappable {
+class VideoControlsIconsTheme {
+  final IconData back;
+  final IconData loading;
+  final IconData skipBack;
+  final IconData skipForward;
+  final IconData play;
+  final IconData pause;
+  final IconData chevronDown;
+  final IconData chevronUp;
+  final IconData volume;
+  final IconData volumeMuted;
+  final IconData minimize;
+  final IconData maximize;
+  final IconData selected;
+  final IconData captions;
+
+  const VideoControlsIconsTheme({
+    required this.back,
+    required this.loading,
+    required this.skipBack,
+    required this.skipForward,
+    required this.play,
+    required this.pause,
+    required this.chevronDown,
+    required this.chevronUp,
+    required this.volume,
+    required this.volumeMuted,
+    required this.minimize,
+    required this.maximize,
+    required this.selected,
+    required this.captions,
+  });
+}
+
+class VideoControlsWidgetsTheme {
+  final Widget Function({
+    required BuildContext context,
+    required void Function() onTap,
+    required Widget child,
+    bool? autoFocus,
+    FocusNode? focusNode,
+  })
+  buttonBuilder;
+
+  final Widget Function({
+    required double value,
+    required void Function(double value) onMove,
+    void Function(double value)? onMoveEnd,
+    Widget Function(double value)? tooltipBuilder,
+    double? thumbSize,
+    EdgeInsets? childPadding,
+  })
+  sliderBuilder;
+
+  final Widget Function({
+    required BuildContext context,
+    required Widget Function(void Function() close) builder,
+    required double maxHeight,
+    required double maxWidth,
+  })
+  popoverBuilder;
+
+  final Widget Function({required BuildContext context, required bool focused, required Widget child}) focusedBuilder;
+
+  const VideoControlsWidgetsTheme({
+    required this.buttonBuilder,
+    required this.sliderBuilder,
+    required this.popoverBuilder,
+    required this.focusedBuilder,
+  });
+}
+
+class VideoControlsTheme {
+  final VideoControlsWidgetsTheme widgets;
+  final VideoControlsIconsTheme icons;
   final VideoControlsColorTheme colors;
   final VideoControlsIconSizeTheme iconSizes;
   final VideoControlsSizeTheme sizes;
@@ -153,6 +193,8 @@ class VideoControlsTheme with VideoControlsThemeMappable {
   final VideoControlsTimingTheme timing;
 
   const VideoControlsTheme({
+    required this.icons,
+    required this.widgets,
     this.colors = const VideoControlsColorTheme(),
     this.iconSizes = const VideoControlsIconSizeTheme(),
     this.sizes = const VideoControlsSizeTheme(),

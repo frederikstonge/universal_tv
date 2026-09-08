@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:forui/forui.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
@@ -26,12 +25,12 @@ class CustomVideoControls extends StatefulWidget {
     required this.state,
     required this.isLive,
     required this.title,
+    required this.theme,
     this.logoUrl,
     this.showSubtitles = true,
     this.showFullscreen = true,
     this.bottomWidget,
     this.seekDuration = const Duration(seconds: 10),
-    this.theme = const VideoControlsTheme(),
   });
 
   @override
@@ -359,9 +358,9 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
       child: Row(
         children: [
           if (Navigator.of(context).canPop())
-            FButton.icon(
-              variant: .ghost,
-              onPress: () async {
+            theme.widgets.buttonBuilder(
+              context: context,
+              onTap: () async {
                 if (isFullscreen(context)) {
                   await exitFullscreen(context);
                 }
@@ -369,7 +368,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                   unawaited(Navigator.of(context).maybePop());
                 }
               },
-              child: Icon(FLucideIcons.arrowLeft, size: theme.iconSizes.back, color: theme.colors.foreground),
+              child: Icon(theme.icons.back, size: theme.iconSizes.back, color: theme.colors.foreground),
             ),
           if (widget.logoUrl != null) ...[
             SizedBox(width: theme.spacing.controlsGap),
@@ -409,7 +408,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
         child: AnimatedBuilder(
           animation: _spinController,
           builder: (_, child) => Transform.rotate(angle: _spinController.value * 2 * pi, child: child),
-          child: Icon(FLucideIcons.loader, size: theme.iconSizes.spinner, color: theme.colors.foregroundDim),
+          child: Icon(theme.icons.loading, size: theme.iconSizes.spinner, color: theme.colors.foregroundDim),
         ),
       );
     }
@@ -419,41 +418,41 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!widget.isLive) ...[
-            FButton.icon(
-              variant: .ghost,
-              onPress: () {
+            theme.widgets.buttonBuilder(
+              context: context,
+              onTap: () {
                 final target = _position - widget.seekDuration;
                 player.seek(target < Duration.zero ? Duration.zero : target);
                 _resetHideTimer();
               },
-              child: Icon(FLucideIcons.skipBack, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(theme.icons.skipBack, size: theme.iconSizes.skip, color: theme.colors.foreground),
             ),
             SizedBox(width: theme.spacing.skipButtonGap),
           ],
-          FButton.icon(
-            variant: .ghost,
-            autofocus: true,
+          theme.widgets.buttonBuilder(
+            context: context,
+            autoFocus: true,
             focusNode: _playPauseFocusNode,
-            onPress: () {
+            onTap: () {
               player.playOrPause();
               _resetHideTimer();
             },
             child: Icon(
-              _playing ? FLucideIcons.pause : FLucideIcons.play,
+              _playing ? theme.icons.pause : theme.icons.play,
               size: theme.iconSizes.playPause,
               color: theme.colors.foreground,
             ),
           ),
           if (!widget.isLive) ...[
             SizedBox(width: theme.spacing.skipButtonGap),
-            FButton.icon(
-              variant: .ghost,
-              onPress: () {
+            theme.widgets.buttonBuilder(
+              context: context,
+              onTap: () {
                 final target = _position + widget.seekDuration;
                 player.seek(target > _duration ? _duration : target);
                 _resetHideTimer();
               },
-              child: Icon(FLucideIcons.skipForward, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(theme.icons.skipForward, size: theme.iconSizes.skip, color: theme.colors.foreground),
             ),
           ],
         ],
@@ -479,7 +478,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               onTap: _openPanel,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Icon(FLucideIcons.chevronDown, size: 16, color: theme.colors.foregroundDim),
+                child: Icon(theme.icons.chevronDown, size: 16, color: theme.colors.foregroundDim),
               ),
             ),
         ],
@@ -499,22 +498,22 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
           child: _ActivatableSlider(
             controller: _seekSliderController,
             debugLabel: 'SeekSlider',
-            child: FSlider(
-              control: .liftedContinuous(
-                value: FSliderValue(max: _seekPercent ?? _positionPercent),
-                onChange: (value) => setState(() => _seekPercent = value.max),
-              ),
-              onEnd: (value) {
-                final target = Duration(milliseconds: (value.max * _duration.inMilliseconds).round());
+            theme: theme,
+            child: theme.widgets.sliderBuilder(
+              value: _seekPercent ?? _positionPercent,
+              onMove: (value) {
+                setState(() => _seekPercent = value);
+              },
+              onMoveEnd: (value) {
+                final target = Duration(milliseconds: (value * _duration.inMilliseconds).round());
                 player.seek(target);
                 setState(() => _seekPercent = null);
                 _resetHideTimer();
               },
-              tooltipBuilder: (_, value) {
+              tooltipBuilder: (value) {
                 final time = Duration(milliseconds: (value * _duration.inMilliseconds).round());
                 return Text(_formatDuration(time));
               },
-              layout: .ltr,
             ),
           ),
         ),
@@ -548,14 +547,14 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             ),
           ),
         const Spacer(),
-        FButton.icon(
-          variant: .ghost,
-          onPress: () {
+        theme.widgets.buttonBuilder(
+          context: context,
+          onTap: () {
             player.setVolume(_volume > 0 ? 0 : 100);
             _resetHideTimer();
           },
           child: Icon(
-            _volume > 0 ? FLucideIcons.volume2 : FLucideIcons.volumeX,
+            _volume > 0 ? theme.icons.volume : theme.icons.volumeMuted,
             size: theme.iconSizes.control,
             color: theme.colors.foreground,
           ),
@@ -563,24 +562,18 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
         _ActivatableSlider(
           controller: _volumeSliderController,
           debugLabel: 'VolumeSlider',
+          theme: theme,
           child: SizedBox(
             width: theme.sizes.volumeSliderWidth,
-            child: FSlider(
-              style: FSliderStyleDelta.delta(
-                thumbSize: theme.sizes.volumeThumbSize,
-                childPadding: EdgeInsetsGeometryDelta.value(
-                  EdgeInsets.symmetric(horizontal: theme.spacing.volumeSliderHorizontal),
-                ),
-              ),
-              control: .liftedContinuous(
-                value: FSliderValue(max: _volume / 100),
-                onChange: (value) {
-                  player.setVolume(value.max * 100);
-                  _resetHideTimer();
-                },
-              ),
-              tooltipBuilder: (_, value) => Text('${(value * 100).round()}%'),
-              layout: .ltr,
+            child: theme.widgets.sliderBuilder(
+              value: _volume,
+              onMove: (value) {
+                player.setVolume(value);
+                _resetHideTimer();
+              },
+              thumbSize: theme.sizes.volumeThumbSize,
+              childPadding: EdgeInsets.symmetric(horizontal: theme.spacing.volumeSliderHorizontal),
+              tooltipBuilder: (value) => Text('${(value * 100).round()}%'),
             ),
           ),
         ),
@@ -595,14 +588,14 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             },
           ),
         if (widget.showFullscreen)
-          FButton.icon(
-            variant: .ghost,
-            onPress: () {
+          theme.widgets.buttonBuilder(
+            context: context,
+            onTap: () {
               toggleFullscreen(context);
               _resetHideTimer();
             },
             child: Icon(
-              isFullscreen(context) ? FLucideIcons.minimize : FLucideIcons.maximize,
+              isFullscreen(context) ? theme.icons.minimize : theme.icons.maximize,
               size: theme.iconSizes.control,
               color: theme.colors.foreground,
             ),
@@ -641,7 +634,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                         onTap: _closePanel,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Icon(FLucideIcons.chevronUp, size: 16, color: theme.colors.foregroundDim),
+                          child: Icon(theme.icons.chevronUp, size: 16, color: theme.colors.foregroundDim),
                         ),
                       ),
                       Expanded(child: widget.bottomWidget!),
@@ -669,13 +662,12 @@ class _SubtitleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FPopover(
-      popoverBuilder: (context, controller) => ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: theme.constraints.subtitlePopoverMaxWidth,
-          maxHeight: theme.constraints.subtitlePopoverMaxHeight,
-        ),
-        child: ListView(
+    return theme.widgets.popoverBuilder(
+      context: context,
+      maxWidth: theme.constraints.subtitlePopoverMaxWidth,
+      maxHeight: theme.constraints.subtitlePopoverMaxHeight,
+      builder: (close) {
+        return ListView(
           shrinkWrap: true,
           padding: EdgeInsets.symmetric(vertical: theme.spacing.subtitleListVertical),
           children: [
@@ -683,7 +675,7 @@ class _SubtitleButton extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   onSelected(track);
-                  controller.hide();
+                  close();
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -703,19 +695,14 @@ class _SubtitleButton extends StatelessWidget {
                         ),
                       ),
                       if (track == active)
-                        Icon(FLucideIcons.check, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
+                        Icon(theme.icons.selected, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
                     ],
                   ),
                 ),
               ),
           ],
-        ),
-      ),
-      child: Icon(
-        FLucideIcons.captions,
-        size: theme.iconSizes.control,
-        color: active.id != 'no' ? theme.colors.foreground : theme.colors.foregroundDim,
-      ),
+        );
+      },
     );
   }
 
@@ -771,8 +758,14 @@ class _ActivatableSlider extends StatefulWidget {
   final _ActivatableSliderController controller;
   final String debugLabel;
   final Widget child;
+  final VideoControlsTheme theme;
 
-  const _ActivatableSlider({required this.controller, required this.debugLabel, required this.child});
+  const _ActivatableSlider({
+    required this.controller,
+    required this.debugLabel,
+    required this.theme,
+    required this.child,
+  });
 
   @override
   State<_ActivatableSlider> createState() => _ActivatableSliderState();
@@ -819,7 +812,7 @@ class _ActivatableSliderState extends State<_ActivatableSlider> {
         }
         return KeyEventResult.ignored;
       },
-      child: FFocusedOutline(focused: _focused && !active, child: widget.child),
+      child: widget.theme.widgets.focusedBuilder(focused: _focused && !active, child: widget.child, context: context),
     );
   }
 }

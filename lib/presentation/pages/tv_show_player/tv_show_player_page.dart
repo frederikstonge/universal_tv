@@ -9,7 +9,9 @@ import '../../../blocs/tv_show_details/tv_show_details_cubit.dart';
 import '../../../blocs/tv_show_details/tv_show_details_state.dart';
 import '../../../models/episode_details.dart';
 import '../../../models/tv_show_details.dart';
-import '../../components/custom_video_controls.dart';
+import '../../components/video_controls/custom_video_controls.dart';
+import '../../components/video_controls/forui_themes.dart';
+import '../../components/video_controls/video_controls_theme.dart';
 
 class TvShowPlayerPage extends StatefulWidget {
   const TvShowPlayerPage({super.key});
@@ -56,6 +58,7 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
           ? Video(
               controller: videoController,
               controls: (state) => CustomVideoControls(
+                theme: VideoControlsTheme(icons: ForuiIconsTheme(), widgets: ForuiWidgetsTheme()),
                 state: state,
                 isLive: false,
                 title: tvShowState.selectedEpisode!.title,
