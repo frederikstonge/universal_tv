@@ -9,7 +9,8 @@ import '../../../blocs/live/live_state.dart';
 import '../../../models/live_channel.dart';
 import '../../components/tv_guide.dart';
 import '../../components/video_controls/custom_video_controls.dart';
-import '../../components/video_controls/forui/forui_themes.dart';
+import '../../components/video_controls/forui/forui_icons_theme.dart';
+import '../../components/video_controls/forui/forui_widgets_theme.dart';
 import '../../components/video_controls/video_controls_theme.dart';
 
 class LivePlayerPage extends StatefulWidget {
