@@ -8,7 +8,9 @@ import '../../../blocs/movie_details/movie_details_cubit.dart';
 import '../../../blocs/movie_details/movie_details_state.dart';
 import '../../../blocs/state_status.dart';
 import '../../../models/movie_details.dart';
-import '../../components/custom_video_controls.dart';
+import '../../components/video_controls/custom_video_controls.dart';
+import '../../components/video_controls/forui_themes.dart';
+import '../../components/video_controls/video_controls_theme.dart';
 
 class MoviePlayerPage extends StatefulWidget {
   const MoviePlayerPage({super.key});
@@ -52,6 +54,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
           ? Video(
               controller: videoController,
               controls: (state) => CustomVideoControls(
+                theme: VideoControlsTheme(icons: ForuiIconsTheme(), widgets: ForuiWidgetsTheme()),
                 state: state,
                 isLive: false,
                 title: movieState.movie!.name,
