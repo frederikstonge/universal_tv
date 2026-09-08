@@ -10,7 +10,7 @@ import '../../../blocs/tv_show_details/tv_show_details_state.dart';
 import '../../../models/episode_details.dart';
 import '../../../models/tv_show_details.dart';
 import '../../components/video_controls/custom_video_controls.dart';
-import '../../components/video_controls/forui_themes.dart';
+import '../../components/video_controls/forui/forui_themes.dart';
 import '../../components/video_controls/video_controls_theme.dart';
 
 class TvShowPlayerPage extends StatefulWidget {

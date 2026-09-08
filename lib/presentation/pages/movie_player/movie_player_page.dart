@@ -9,7 +9,7 @@ import '../../../blocs/movie_details/movie_details_state.dart';
 import '../../../blocs/state_status.dart';
 import '../../../models/movie_details.dart';
 import '../../components/video_controls/custom_video_controls.dart';
-import '../../components/video_controls/forui_themes.dart';
+import '../../components/video_controls/forui/forui_themes.dart';
 import '../../components/video_controls/video_controls_theme.dart';
 
 class MoviePlayerPage extends StatefulWidget {

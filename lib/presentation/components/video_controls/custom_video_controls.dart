@@ -368,16 +368,16 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                   unawaited(Navigator.of(context).maybePop());
                 }
               },
-              child: Icon(theme.icons.back, size: theme.iconSizes.back, color: theme.colors.foreground),
+              child: Icon(theme.icons.back, size: theme.iconSizing.back, color: theme.colors.foreground),
             ),
           if (widget.logoUrl != null) ...[
             SizedBox(width: theme.spacing.controlsGap),
             ClipRRect(
-              borderRadius: BorderRadius.circular(theme.sizes.logoBorderRadius),
+              borderRadius: BorderRadius.circular(theme.sizing.logoBorderRadius),
               child: Image.network(
                 widget.logoUrl!,
-                width: theme.sizes.logo,
-                height: theme.sizes.logo,
+                width: theme.sizing.logo,
+                height: theme.sizing.logo,
                 fit: BoxFit.contain,
                 errorBuilder: (_, _, _) => const SizedBox.shrink(),
               ),
@@ -408,7 +408,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
         child: AnimatedBuilder(
           animation: _spinController,
           builder: (_, child) => Transform.rotate(angle: _spinController.value * 2 * pi, child: child),
-          child: Icon(theme.icons.loading, size: theme.iconSizes.spinner, color: theme.colors.foregroundDim),
+          child: Icon(theme.icons.loading, size: theme.iconSizing.loading, color: theme.colors.foregroundDim),
         ),
       );
     }
@@ -425,7 +425,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                 player.seek(target < Duration.zero ? Duration.zero : target);
                 _resetHideTimer();
               },
-              child: Icon(theme.icons.skipBack, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(theme.icons.skipBack, size: theme.iconSizing.skip, color: theme.colors.foreground),
             ),
             SizedBox(width: theme.spacing.skipButtonGap),
           ],
@@ -439,7 +439,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             },
             child: Icon(
               _playing ? theme.icons.pause : theme.icons.play,
-              size: theme.iconSizes.playPause,
+              size: _playing ? theme.iconSizing.pause : theme.iconSizing.play,
               color: theme.colors.foreground,
             ),
           ),
@@ -452,7 +452,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                 player.seek(target > _duration ? _duration : target);
                 _resetHideTimer();
               },
-              child: Icon(theme.icons.skipForward, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(theme.icons.skipForward, size: theme.iconSizing.skip, color: theme.colors.foreground),
             ),
           ],
         ],
@@ -529,7 +529,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
           DecoratedBox(
             decoration: BoxDecoration(
               color: theme.colors.liveBadge,
-              borderRadius: BorderRadius.all(Radius.circular(theme.sizes.liveBadgeBorderRadius)),
+              borderRadius: BorderRadius.all(Radius.circular(theme.sizing.liveBadgeBorderRadius)),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -555,7 +555,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
           },
           child: Icon(
             _volume > 0 ? theme.icons.volume : theme.icons.volumeMuted,
-            size: theme.iconSizes.control,
+            size: theme.iconSizing.control,
             color: theme.colors.foreground,
           ),
         ),
@@ -564,14 +564,14 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
           debugLabel: 'VolumeSlider',
           theme: theme,
           child: SizedBox(
-            width: theme.sizes.volumeSliderWidth,
+            width: theme.sizing.volumeSliderWidth,
             child: theme.widgets.sliderBuilder(
               value: _volume,
               onMove: (value) {
                 player.setVolume(value);
                 _resetHideTimer();
               },
-              thumbSize: theme.sizes.volumeThumbSize,
+              thumbSize: theme.sizing.volumeThumbSize,
               childPadding: EdgeInsets.symmetric(horizontal: theme.spacing.volumeSliderHorizontal),
               tooltipBuilder: (value) => Text('${(value * 100).round()}%'),
             ),
@@ -596,7 +596,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             },
             child: Icon(
               isFullscreen(context) ? theme.icons.minimize : theme.icons.maximize,
-              size: theme.iconSizes.control,
+              size: theme.iconSizing.control,
               color: theme.colors.foreground,
             ),
           ),
@@ -608,7 +608,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
 
   Widget _buildBottomPanel(BuildContext context) {
     final fullHeight = MediaQuery.sizeOf(context).height;
-    final topBarBottom = theme.spacing.topBarInset * 2 + theme.iconSizes.back;
+    final topBarBottom = theme.spacing.topBarInset * 2 + theme.iconSizing.back;
     final maxHeight = fullHeight - topBarBottom;
 
     return AnimatedBuilder(
@@ -695,7 +695,7 @@ class _SubtitleButton extends StatelessWidget {
                         ),
                       ),
                       if (track == active)
-                        Icon(theme.icons.selected, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
+                        Icon(theme.icons.selected, size: theme.iconSizing.selected, color: theme.colors.foreground),
                     ],
                   ),
                 ),

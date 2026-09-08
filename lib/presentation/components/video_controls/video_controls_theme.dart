@@ -1,193 +1,20 @@
-import 'package:flutter/widgets.dart';
-
-class VideoControlsColorTheme {
-  final Color overlayBackground;
-  final Color transparentColor;
-  final Color foreground;
-  final Color foregroundDim;
-  final Color liveBadge;
-
-  const VideoControlsColorTheme({
-    this.overlayBackground = const Color(0xBB000000),
-    this.transparentColor = const Color(0x00000000),
-    this.foreground = const Color(0xFFFFFFFF),
-    this.foregroundDim = const Color(0x99FFFFFF),
-    this.liveBadge = const Color(0xFFEF4444),
-  });
-}
-
-class VideoControlsIconSizeTheme {
-  final double back;
-  final double playPause;
-  final double skip;
-  final double control;
-  final double subtitleCheck;
-  final double spinner;
-
-  const VideoControlsIconSizeTheme({
-    this.back = 24,
-    this.playPause = 48,
-    this.skip = 32,
-    this.control = 20,
-    this.subtitleCheck = 16,
-    this.spinner = 48,
-  });
-}
-
-class VideoControlsSizeTheme {
-  final double logo;
-  final double logoBorderRadius;
-  final double volumeSliderWidth;
-  final double volumeThumbSize;
-  final double liveBadgeBorderRadius;
-
-  const VideoControlsSizeTheme({
-    this.logo = 32,
-    this.logoBorderRadius = 4,
-    this.volumeSliderWidth = 100,
-    this.volumeThumbSize = 12,
-    this.liveBadgeBorderRadius = 4,
-  });
-}
-
-class VideoControlsFontSizeTheme {
-  final double title;
-  final double time;
-  final double live;
-  final double subtitle;
-
-  const VideoControlsFontSizeTheme({this.title = 16, this.time = 12, this.live = 12, this.subtitle = 13});
-}
-
-class VideoControlsSpacingTheme {
-  final double topBarInset;
-  final double bottomBarInset;
-  final double controlsGap;
-  final double skipButtonGap;
-  final double subtitleItemVertical;
-  final double subtitleItemHorizontal;
-  final double liveBadgeHorizontal;
-  final double liveBadgeVertical;
-  final double subtitleListVertical;
-  final double volumeSliderHorizontal;
-
-  const VideoControlsSpacingTheme({
-    this.topBarInset = 8,
-    this.bottomBarInset = 16,
-    this.controlsGap = 8,
-    this.skipButtonGap = 24,
-    this.subtitleItemVertical = 6,
-    this.subtitleItemHorizontal = 12,
-    this.liveBadgeHorizontal = 8,
-    this.liveBadgeVertical = 2,
-    this.subtitleListVertical = 4,
-    this.volumeSliderHorizontal = 6,
-  });
-}
-
-class VideoControlsConstraintsTheme {
-  final double subtitlePopoverMaxWidth;
-  final double subtitlePopoverMaxHeight;
-  final double swipeVelocityThreshold;
-
-  const VideoControlsConstraintsTheme({
-    this.subtitlePopoverMaxWidth = 200,
-    this.subtitlePopoverMaxHeight = 300,
-    this.swipeVelocityThreshold = 100,
-  });
-}
-
-class VideoControlsTimingTheme {
-  final int hideDelay;
-  final int animationDuration;
-  final int panelAnimationDuration;
-
-  const VideoControlsTimingTheme({
-    this.hideDelay = 3000,
-    this.animationDuration = 300,
-    this.panelAnimationDuration = 300,
-  });
-}
-
-class VideoControlsIconsTheme {
-  final IconData back;
-  final IconData loading;
-  final IconData skipBack;
-  final IconData skipForward;
-  final IconData play;
-  final IconData pause;
-  final IconData chevronDown;
-  final IconData chevronUp;
-  final IconData volume;
-  final IconData volumeMuted;
-  final IconData minimize;
-  final IconData maximize;
-  final IconData selected;
-  final IconData captions;
-
-  const VideoControlsIconsTheme({
-    required this.back,
-    required this.loading,
-    required this.skipBack,
-    required this.skipForward,
-    required this.play,
-    required this.pause,
-    required this.chevronDown,
-    required this.chevronUp,
-    required this.volume,
-    required this.volumeMuted,
-    required this.minimize,
-    required this.maximize,
-    required this.selected,
-    required this.captions,
-  });
-}
-
-class VideoControlsWidgetsTheme {
-  final Widget Function({
-    required BuildContext context,
-    required void Function() onTap,
-    required Widget child,
-    bool? autoFocus,
-    FocusNode? focusNode,
-  })
-  buttonBuilder;
-
-  final Widget Function({
-    required double value,
-    required void Function(double value) onMove,
-    void Function(double value)? onMoveEnd,
-    Widget Function(double value)? tooltipBuilder,
-    double? thumbSize,
-    EdgeInsets? childPadding,
-  })
-  sliderBuilder;
-
-  final Widget Function({
-    required BuildContext context,
-    required Widget Function(void Function() close) builder,
-    required double maxHeight,
-    required double maxWidth,
-  })
-  popoverBuilder;
-
-  final Widget Function({required BuildContext context, required bool focused, required Widget child}) focusedBuilder;
-
-  const VideoControlsWidgetsTheme({
-    required this.buttonBuilder,
-    required this.sliderBuilder,
-    required this.popoverBuilder,
-    required this.focusedBuilder,
-  });
-}
+import 'video_controls_colors_theme.dart';
+import 'video_controls_constraints_theme.dart';
+import 'video_controls_font_sizing_theme.dart';
+import 'video_controls_icon_sizing_theme.dart';
+import 'video_controls_icons_theme.dart';
+import 'video_controls_sizing_theme.dart';
+import 'video_controls_spacing_theme.dart';
+import 'video_controls_timing_theme.dart';
+import 'video_controls_widgets_theme.dart';
 
 class VideoControlsTheme {
   final VideoControlsWidgetsTheme widgets;
   final VideoControlsIconsTheme icons;
-  final VideoControlsColorTheme colors;
-  final VideoControlsIconSizeTheme iconSizes;
-  final VideoControlsSizeTheme sizes;
-  final VideoControlsFontSizeTheme fontSizes;
+  final VideoControlsColorsTheme colors;
+  final VideoControlsIconSizingTheme iconSizing;
+  final VideoControlsSizingTheme sizing;
+  final VideoControlsFontSizingTheme fontSizes;
   final VideoControlsSpacingTheme spacing;
   final VideoControlsConstraintsTheme constraints;
   final VideoControlsTimingTheme timing;
@@ -195,10 +22,10 @@ class VideoControlsTheme {
   const VideoControlsTheme({
     required this.icons,
     required this.widgets,
-    this.colors = const VideoControlsColorTheme(),
-    this.iconSizes = const VideoControlsIconSizeTheme(),
-    this.sizes = const VideoControlsSizeTheme(),
-    this.fontSizes = const VideoControlsFontSizeTheme(),
+    this.colors = const VideoControlsColorsTheme(),
+    this.iconSizing = const VideoControlsIconSizingTheme(),
+    this.sizing = const VideoControlsSizingTheme(),
+    this.fontSizes = const VideoControlsFontSizingTheme(),
     this.spacing = const VideoControlsSpacingTheme(),
     this.constraints = const VideoControlsConstraintsTheme(),
     this.timing = const VideoControlsTimingTheme(),
