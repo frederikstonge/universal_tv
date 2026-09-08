@@ -11,7 +11,7 @@ class AppBar extends StatelessWidget {
     final canPop = GoRouter.of(context).canPop();
     return FHeader.nested(
       prefixes: [
-        if (canPop) FButton.icon(onPress: () => GoRouter.of(context).pop(), child: const Icon(FIcons.chevronLeft)),
+        if (canPop) FButton.icon(onPress: () => GoRouter.of(context).pop(), child: const Icon(FLucideIcons.chevronLeft)),
       ],
       title: title,
       suffixes: [
@@ -19,14 +19,14 @@ class AppBar extends StatelessWidget {
           onPress: () {
             GoRouter.of(context).pushNamed('cast');
           },
-          child: const Icon(FIcons.cast),
+          child: const Icon(FLucideIcons.cast),
         ),
         const SizedBox(width: 4),
         FButton.icon(
           onPress: () {
             GoRouter.of(context).pushNamed('search');
           },
-          child: const Icon(FIcons.search),
+          child: const Icon(FLucideIcons.search),
         ),
       ],
     );

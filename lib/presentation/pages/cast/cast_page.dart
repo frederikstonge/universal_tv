@@ -31,7 +31,7 @@ class _CastPageState extends State<CastPage> {
   Widget build(BuildContext context) {
     return FScaffold(
       header: FHeader.nested(
-        prefixes: [FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: Icon(FIcons.x))],
+        prefixes: [FButton.icon(onPress: () => Navigator.of(context).maybePop(), child: Icon(FLucideIcons.x))],
         title: Text('Cast'),
       ),
       child: BlocBuilder<CastCubit, CastState>(
@@ -53,7 +53,7 @@ class _CastPageState extends State<CastPage> {
               final device = state.devices[index];
               final isSelected = device.id == state.selectedDevice?.id && state.session != null;
               return FTile(
-                suffix: isSelected ? Icon(FIcons.check) : null,
+                suffix: isSelected ? Icon(FLucideIcons.check) : null,
                 title: Text(device.name),
                 subtitle: Text(device.protocol.name.toUpperCase()),
                 onPress: () => isSelected ? castCubit.disconnect(state.session!) : castCubit.connect(device),

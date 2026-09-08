@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 
 import '../../../../blocs/settings/iptv_provider.dart';
+import '../../../components/card.dart';
 
 class EditXtreamProvider extends StatefulWidget {
   final XtreamIptvProvider provider;
@@ -57,7 +58,7 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return FCard(
+    return Card(
       title: Text('Add provider'),
       subtitle: Text('Add a new IPTV provider'),
       child: Form(
@@ -141,7 +142,7 @@ class _EditXtreamProviderState extends State<EditXtreamProvider> {
             SizedBox(height: 16),
             FButton(
               variant: FButtonVariant.destructive,
-              prefix: Icon(FIcons.trash),
+              prefix: Icon(FLucideIcons.trash),
               onPress: () async {
                 widget.onDelete(widget.provider);
               },

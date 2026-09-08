@@ -46,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> with TickerProviderStateMix
               scrollable: true,
               children: [
                 FTabEntry(
-                  label: Icon(FIcons.plus),
+                  label: Icon(FLucideIcons.plus),
                   child: AddProvider(onAdd: onAdd),
                 ),
                 ...settingsState.providers.map(

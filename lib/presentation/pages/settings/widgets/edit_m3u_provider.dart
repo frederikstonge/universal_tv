@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:forui/forui.dart';
 
 import '../../../../blocs/settings/iptv_provider.dart';
+import '../../../components/card.dart';
 
 class EditM3uProvider extends StatefulWidget {
   final M3uIptvProvider provider;
@@ -42,7 +43,7 @@ class _EditM3uProviderState extends State<EditM3uProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return FCard(
+    return Card(
       title: Text('Edit M3U provider'),
       subtitle: Text('Edit an M3U provider'),
       child: Form(
@@ -111,7 +112,7 @@ class _EditM3uProviderState extends State<EditM3uProvider> {
             SizedBox(height: 16),
             FButton(
               variant: FButtonVariant.destructive,
-              prefix: Icon(FIcons.trash),
+              prefix: Icon(FLucideIcons.trash),
               onPress: () async {
                 widget.onDelete(widget.provider);
               },

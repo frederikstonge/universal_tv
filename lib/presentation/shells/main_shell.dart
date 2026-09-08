@@ -15,9 +15,9 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   final tabs = [
-    NavigationItem(label: 'Movies', icon: FIcons.tvMinimal, page: const MoviesPage()),
-    NavigationItem(label: 'TV Shows', icon: FIcons.tvMinimalPlay, page: const TvShowsPage()),
-    NavigationItem(label: 'Live TV', icon: FIcons.tv, page: const LivePage()),
+    NavigationItem(label: 'Movies', icon: FLucideIcons.tvMinimal, page: const MoviesPage()),
+    NavigationItem(label: 'TV Shows', icon: FLucideIcons.tvMinimalPlay, page: const TvShowsPage()),
+    NavigationItem(label: 'Live TV', icon: FLucideIcons.tv, page: const LivePage()),
   ];
 
   int index = 0;
@@ -68,7 +68,7 @@ class _MainShellState extends State<MainShell> {
           FButton.icon(
             variant: FButtonVariant.ghost,
             onPress: () => GoRouter.of(context).pushNamed('settings'),
-            child: FAvatar.raw(size: 32, child: const Icon(FIcons.user)),
+            child: FAvatar.raw(size: 32, child: const Icon(FLucideIcons.user)),
           ),
         ],
         title: isMobile
@@ -89,9 +89,9 @@ class _MainShellState extends State<MainShell> {
                 ],
               ),
         suffixes: [
-          FButton.icon(onPress: () => GoRouter.of(context).pushNamed('cast'), child: const Icon(FIcons.cast)),
+          FButton.icon(onPress: () => GoRouter.of(context).pushNamed('cast'), child: const Icon(FLucideIcons.cast)),
           const SizedBox(width: 4),
-          FButton.icon(onPress: () => GoRouter.of(context).pushNamed('search'), child: const Icon(FIcons.search)),
+          FButton.icon(onPress: () => GoRouter.of(context).pushNamed('search'), child: const Icon(FLucideIcons.search)),
         ],
       ),
       footer: isMobile
