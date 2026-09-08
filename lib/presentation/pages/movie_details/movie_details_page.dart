@@ -16,7 +16,7 @@ class MovieDetailsPage extends StatelessWidget {
         return FScaffold(
           childPad: false,
           header: FHeader.nested(
-            prefixes: [FButton.icon(child: Icon(FIcons.arrowLeft), onPress: () => Navigator.of(context).pop())],
+            prefixes: [FButton.icon(child: Icon(FLucideIcons.arrowLeft), onPress: () => Navigator.of(context).pop())],
             title: Text(state.movie?.name ?? 'Loading...'),
           ),
           child: state.movie != null
@@ -57,7 +57,7 @@ class MovieDetailsPage extends StatelessWidget {
                                     Flexible(
                                       child: FButton(
                                         mainAxisSize: MainAxisSize.min,
-                                        prefix: Icon(FIcons.play),
+                                        prefix: Icon(FLucideIcons.play),
                                         onPress: () {
                                           GoRouter.of(context).pushNamed(
                                             'moviePlayer',

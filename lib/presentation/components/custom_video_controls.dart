@@ -369,7 +369,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                   unawaited(Navigator.of(context).maybePop());
                 }
               },
-              child: Icon(FIcons.arrowLeft, size: theme.iconSizes.back, color: theme.colors.foreground),
+              child: Icon(FLucideIcons.arrowLeft, size: theme.iconSizes.back, color: theme.colors.foreground),
             ),
           if (widget.logoUrl != null) ...[
             SizedBox(width: theme.spacing.controlsGap),
@@ -409,7 +409,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
         child: AnimatedBuilder(
           animation: _spinController,
           builder: (_, child) => Transform.rotate(angle: _spinController.value * 2 * pi, child: child),
-          child: Icon(FIcons.loader, size: theme.iconSizes.spinner, color: theme.colors.foregroundDim),
+          child: Icon(FLucideIcons.loader, size: theme.iconSizes.spinner, color: theme.colors.foregroundDim),
         ),
       );
     }
@@ -426,7 +426,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                 player.seek(target < Duration.zero ? Duration.zero : target);
                 _resetHideTimer();
               },
-              child: Icon(FIcons.skipBack, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(FLucideIcons.skipBack, size: theme.iconSizes.skip, color: theme.colors.foreground),
             ),
             SizedBox(width: theme.spacing.skipButtonGap),
           ],
@@ -439,7 +439,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               _resetHideTimer();
             },
             child: Icon(
-              _playing ? FIcons.pause : FIcons.play,
+              _playing ? FLucideIcons.pause : FLucideIcons.play,
               size: theme.iconSizes.playPause,
               color: theme.colors.foreground,
             ),
@@ -453,7 +453,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                 player.seek(target > _duration ? _duration : target);
                 _resetHideTimer();
               },
-              child: Icon(FIcons.skipForward, size: theme.iconSizes.skip, color: theme.colors.foreground),
+              child: Icon(FLucideIcons.skipForward, size: theme.iconSizes.skip, color: theme.colors.foreground),
             ),
           ],
         ],
@@ -479,7 +479,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               onTap: _openPanel,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Icon(FIcons.chevronDown, size: 16, color: theme.colors.foregroundDim),
+                child: Icon(FLucideIcons.chevronDown, size: 16, color: theme.colors.foregroundDim),
               ),
             ),
         ],
@@ -555,7 +555,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
             _resetHideTimer();
           },
           child: Icon(
-            _volume > 0 ? FIcons.volume2 : FIcons.volumeX,
+            _volume > 0 ? FLucideIcons.volume2 : FLucideIcons.volumeX,
             size: theme.iconSizes.control,
             color: theme.colors.foreground,
           ),
@@ -602,7 +602,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
               _resetHideTimer();
             },
             child: Icon(
-              isFullscreen(context) ? FIcons.minimize : FIcons.maximize,
+              isFullscreen(context) ? FLucideIcons.minimize : FLucideIcons.maximize,
               size: theme.iconSizes.control,
               color: theme.colors.foreground,
             ),
@@ -641,7 +641,7 @@ class _CustomVideoControlsState extends State<CustomVideoControls> with TickerPr
                         onTap: _closePanel,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Icon(FIcons.chevronUp, size: 16, color: theme.colors.foregroundDim),
+                          child: Icon(FLucideIcons.chevronUp, size: 16, color: theme.colors.foregroundDim),
                         ),
                       ),
                       Expanded(child: widget.bottomWidget!),
@@ -703,7 +703,7 @@ class _SubtitleButton extends StatelessWidget {
                         ),
                       ),
                       if (track == active)
-                        Icon(FIcons.check, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
+                        Icon(FLucideIcons.check, size: theme.iconSizes.subtitleCheck, color: theme.colors.foreground),
                     ],
                   ),
                 ),
@@ -712,7 +712,7 @@ class _SubtitleButton extends StatelessWidget {
         ),
       ),
       child: Icon(
-        FIcons.captions,
+        FLucideIcons.captions,
         size: theme.iconSizes.control,
         color: active.id != 'no' ? theme.colors.foreground : theme.colors.foregroundDim,
       ),

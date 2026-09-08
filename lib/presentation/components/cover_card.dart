@@ -26,6 +26,8 @@ class _CoverCardState extends State<CoverCard> {
   bool isFocused = false;
   @override
   Widget build(BuildContext context) {
+    final style = context.theme.cardStyle;
+    final displayTitle = isFocused || widget.iconUrl != null;
     return FTappable(
       onFocusChange: (value) => setState(() => isFocused = value),
       onHoverChange: (value) => setState(() => isFocused = value),
@@ -43,36 +45,58 @@ class _CoverCardState extends State<CoverCard> {
                 backgroundBlendMode: widget.posterUrl != null ? () => BlendMode.darken : null,
               ),
             ),
-            image: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
+            child: Column(
+              crossAxisAlignment: .start,
+              mainAxisSize: .min,
               children: [
-                Align(
-                  alignment: AlignmentGeometry.centerEnd,
-                  child: FBadge(child: Text(widget.providerName, style: const TextStyle(fontSize: 10))),
-                ),
-                if (widget.iconUrl != null) ...[
-                  Center(
-                    child: CachedNetworkImage(
-                      height: 40,
-                      width: 40,
-                      cacheKey: widget.iconUrl!,
-                      imageUrl: widget.iconUrl!,
-                      alignment: Alignment.center,
-                      progressIndicatorBuilder: (context, url, downloadProgress) => downloadProgress.progress != null
-                          ? FDeterminateProgress(value: downloadProgress.progress!)
-                          : FProgress(),
-                      errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Align(
+                      alignment: AlignmentGeometry.centerEnd,
+                      child: FBadge(child: Text(widget.providerName, style: const TextStyle(fontSize: 10))),
                     ),
+                    if (widget.iconUrl != null) ...[
+                      Center(
+                        child: CachedNetworkImage(
+                          height: 40,
+                          width: 40,
+                          cacheKey: widget.iconUrl!,
+                          imageUrl: widget.iconUrl!,
+                          alignment: Alignment.center,
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              downloadProgress.progress != null
+                              ? FDeterminateProgress(value: downloadProgress.progress!)
+                              : FProgress(),
+                          errorWidget: (context, error, stackTrace) => SizedBox.shrink(),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                if (displayTitle) ...[
+                  DefaultTextStyle.merge(
+                    textHeightBehavior: const TextHeightBehavior(
+                      applyHeightToFirstAscent: false,
+                      applyHeightToLastDescent: false,
+                    ),
+                    style: style.titleTextStyle,
+                    child: Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ),
+                  const SizedBox(height: 2),
+                  DefaultTextStyle.merge(
+                    textHeightBehavior: const TextHeightBehavior(
+                      applyHeightToFirstAscent: false,
+                      applyHeightToLastDescent: false,
+                    ),
+                    style: style.subtitleTextStyle,
+                    child: const Icon(FLucideIcons.play),
                   ),
                 ],
               ],
             ),
-            title: isFocused || widget.iconUrl != null
-                ? Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis)
-                : null,
-            subtitle: isFocused || widget.iconUrl != null ? const Icon(FIcons.play) : null,
           ),
         ),
       ),

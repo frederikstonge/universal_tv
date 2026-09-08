@@ -17,7 +17,7 @@ class TvShowDetailsPage extends StatelessWidget {
         return FScaffold(
           childPad: false,
           header: FHeader.nested(
-            prefixes: [FButton.icon(child: Icon(FIcons.arrowLeft), onPress: () => Navigator.of(context).pop())],
+            prefixes: [FButton.icon(child: Icon(FLucideIcons.arrowLeft), onPress: () => Navigator.of(context).pop())],
             title: Text(state.tvShow?.name ?? 'Loading...'),
           ),
           child: state.tvShow != null
@@ -62,26 +62,35 @@ class TvShowDetailsPage extends StatelessWidget {
                                       children: [
                                         Flexible(
                                           child: FSelect<int>(
-                                            control: .managed(initial: state.selectedSeason, onChange: (value) {
-                                              if (value == null) {
-                                                return;
-                                              }
+                                            control: .managed(
+                                              initial: state.selectedSeason,
+                                              onChange: (value) {
+                                                if (value == null) {
+                                                  return;
+                                                }
 
-                                              context.read<TvShowDetailsCubit>().selectSeason(value);
-                                            }), items: state.tvShow!.seasons.map((i, e) => MapEntry('Season $i', i)),
+                                                context.read<TvShowDetailsCubit>().selectSeason(value);
+                                              },
+                                            ),
+                                            items: state.tvShow!.seasons.map((i, e) => MapEntry('Season $i', i)),
                                           ),
                                         ),
                                         const SizedBox(width: 8),
                                         Flexible(
                                           child: FSelect<EpisodeDetails>(
-                                            control: .managed(initial: state.selectedEpisode ??
-                                                state.tvShow!.seasons[state.selectedSeason]!.first, onChange: (value) {
-                                              if (value == null) {
-                                                return;
-                                              }
+                                            control: .managed(
+                                              initial:
+                                                  state.selectedEpisode ??
+                                                  state.tvShow!.seasons[state.selectedSeason]!.first,
+                                              onChange: (value) {
+                                                if (value == null) {
+                                                  return;
+                                                }
 
-                                              context.read<TvShowDetailsCubit>().selectEpisode(value);
-                                            }), items: state.tvShow!.seasons[state.selectedSeason]!.asMap().map(
+                                                context.read<TvShowDetailsCubit>().selectEpisode(value);
+                                              },
+                                            ),
+                                            items: state.tvShow!.seasons[state.selectedSeason]!.asMap().map(
                                               (i, e) => MapEntry('Episode ${e.episode}', e),
                                             ),
                                           ),
@@ -95,7 +104,7 @@ class TvShowDetailsPage extends StatelessWidget {
                                       Flexible(
                                         child: FButton(
                                           mainAxisSize: MainAxisSize.min,
-                                          prefix: Icon(FIcons.play),
+                                          prefix: Icon(FLucideIcons.play),
                                           onPress: () {
                                             GoRouter.of(context).pushNamed(
                                               'tvShowPlayer',

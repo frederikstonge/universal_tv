@@ -46,3 +46,6 @@ app.*.map.json
 
 # Secrets
 /config/
+
+# Widget Preview related
+.widget_preview/
