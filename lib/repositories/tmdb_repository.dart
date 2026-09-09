@@ -35,23 +35,34 @@ class TmdbRepository {
       return null;
     }
 
-    final imdbId = entry.imdbId ?? entry.tvgId;
-    final tmdbId = entry.tmdbId ?? entry.tvgId;
+    final cacheKey = switch (entry.type) {
+      IptvType.movies => 'movie_${entry.id}',
+      IptvType.tvshows => 'tvshow_${entry.groupTitleTvShowName?.toLowerCase() ?? entry.groupTitle?.toLowerCase()}',
+      _ => throw ArgumentError('Unsupported type: ${entry.type}'),
+    };
 
-    if (imdbId != null && imdbId.startsWith('tt')) {
-      return await _find(imdbId, 'imdb_id', entry.type);
-    } else if (tmdbId != null) {
-      return await _getByTmdbId(tmdbId, entry.type);
+    if (_tmdbCache.containsKey(cacheKey)) {
+      return _tmdbCache[cacheKey];
     }
 
-    return null;
+    final imdbId = entry.imdbId ?? entry.tvgId;
+    final tmdbId = entry.tmdbId ?? entry.tvgId;
+    TmdbEntry? tmdbEntry;
+
+    if (imdbId != null && imdbId.startsWith('tt')) {
+      tmdbEntry = await _find(imdbId, 'imdb_id', entry.type);
+    } else if (tmdbId != null) {
+      tmdbEntry = await _getByTmdbId(tmdbId, entry.type);
+    }
+
+    if (tmdbEntry != null) {
+      _tmdbCache[cacheKey] = tmdbEntry;
+    }
+
+    return tmdbEntry;
   }
 
   Future<TmdbEntry?> _find(String externalId, String externalSource, IptvType type) async {
-    if (_tmdbCache.containsKey(externalId)) {
-      return _tmdbCache[externalId]!;
-    }
-
     final response = await _throttledGet<String>(
       'https://api.themoviedb.org/3/find/$externalId',
       queryParameters: {'external_source': externalSource},
@@ -66,18 +77,10 @@ class TmdbRepository {
         tmdbFindResponse.tvSeasonResults.firstOrNull ??
         tmdbFindResponse.tvEpisodeResults.firstOrNull;
 
-    if (tmdbEntry != null) {
-      _tmdbCache[externalId] = tmdbEntry;
-    }
-
     return tmdbEntry;
   }
 
   Future<TmdbEntry?> _getByTmdbId(String tmdbId, IptvType type) async {
-    if (_tmdbCache.containsKey(tmdbId)) {
-      return _tmdbCache[tmdbId]!;
-    }
-
     final typePath = switch (type) {
       IptvType.movies => 'movie',
       IptvType.tvshows => 'tv',
@@ -93,7 +96,6 @@ class TmdbRepository {
     );
 
     final tmdbEntry = TmdbEntryMapper.fromJson(response.data!);
-    _tmdbCache[tmdbId] = tmdbEntry;
     return tmdbEntry;
   }
 
@@ -150,11 +152,7 @@ class TmdbRepository {
     _requestTimestamps.add(DateTime.now());
   }
 
-  Future<Response<T>> _throttledGet<T>(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response<T>> _throttledGet<T>(String path, {Map<String, dynamic>? queryParameters, Options? options}) async {
     await _waitForRateLimit();
     return dio.get<T>(path, queryParameters: queryParameters, options: options);
   }

@@ -34,7 +34,7 @@ extension M3uEntryExtensions on M3uEntry {
   String? get groupTitleTvShowCategory {
     final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
     if (split != null && split.length > 1) {
-      return split.first;
+      return split.first.trim();
     }
 
     return null;
@@ -43,7 +43,7 @@ extension M3uEntryExtensions on M3uEntry {
   String? get groupTitleTvShowName {
     final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
     if (split != null && split.length > 1) {
-      return split.last;
+      return split.last.trim();
     }
 
     return null;
