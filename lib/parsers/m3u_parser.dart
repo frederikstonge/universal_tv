@@ -21,7 +21,7 @@ class M3uParser {
       }
 
       if (trimmed.startsWith('#EXTINF')) {
-        final comma = trimmed.indexOf(',');
+        final comma = trimmed.lastIndexOf(',');
         final info = comma >= 0 ? trimmed.substring(0, comma) : trimmed;
         final title = comma >= 0 ? trimmed.substring(comma + 1).trim() : null;
         pendingName = title;
