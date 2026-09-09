@@ -3,11 +3,12 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'm3u/m3u_entry.dart';
+import 'playable_base.dart';
 
 part 'live_channel.mapper.dart';
 
 @MappableClass()
-class LiveChannel with LiveChannelMappable {
+class LiveChannel extends PlayableBase with LiveChannelMappable {
   final String streamId;
   final String name;
   final String? logoUrl;
@@ -20,6 +21,7 @@ class LiveChannel with LiveChannelMappable {
     required this.name,
     required this.categoryId,
     required this.providerName,
+    super.httpRequestHeaders,
     this.logoUrl,
     this.epgChannelId,
   });
@@ -43,6 +45,7 @@ class LiveChannel with LiveChannelMappable {
       logoUrl: entry.logoUrl,
       epgChannelId: entry.epgChannelId ?? entry.tvgId,
       providerName: entry.providerName,
+      httpRequestHeaders: entry.httpHeaders,
     );
   }
 }

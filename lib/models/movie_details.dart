@@ -3,12 +3,13 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'm3u/m3u_entry.dart';
+import 'playable_base.dart';
 import 'tmdb/tmdb_entry.dart';
 
 part 'movie_details.mapper.dart';
 
 @MappableClass()
-class MovieDetails with MovieDetailsMappable {
+class MovieDetails extends PlayableBase with MovieDetailsMappable {
   final String streamId;
   final String name;
   final String? plot;
@@ -22,6 +23,7 @@ class MovieDetails with MovieDetailsMappable {
     required this.streamId,
     required this.name,
     required this.providerName,
+    super.httpRequestHeaders,
     this.plot,
     this.rating,
     this.year,
@@ -52,6 +54,7 @@ class MovieDetails with MovieDetailsMappable {
       duration: entry.duration,
       posterUrl: tmdbPosterUrl ?? entry.posterUrl,
       providerName: entry.providerName,
+      httpRequestHeaders: entry.httpHeaders,
     );
   }
 }

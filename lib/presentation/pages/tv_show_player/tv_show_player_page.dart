@@ -73,7 +73,7 @@ class _TvShowPlayerPageState extends State<TvShowPlayerPage> {
   Future<void> _playTvShow(TvShowDetails tvShow, EpisodeDetails episode) async {
     final url = await context.read<IptvServiceCubit>().getTvShowUrl(tvShow.providerName, episode.id);
     if (url != null) {
-      await player.open(Media(url));
+      await player.open(Media(url, httpHeaders: episode.httpRequestHeaders));
     }
   }
 }

@@ -69,7 +69,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   Future<void> _playMovie(MovieDetails movie) async {
     final url = await context.read<IptvServiceCubit>().getMovieUrl(movie.providerName, movie.streamId);
     if (url != null) {
-      await player.open(Media(url));
+      await player.open(Media(url, httpHeaders: movie.httpRequestHeaders));
     }
   }
 }

@@ -39,6 +39,10 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
     'providerName',
     _$providerName,
   );
+  static Map<String, String>? _$httpRequestHeaders(LiveChannel v) =>
+      v.httpRequestHeaders;
+  static const Field<LiveChannel, Map<String, String>> _f$httpRequestHeaders =
+      Field('httpRequestHeaders', _$httpRequestHeaders, opt: true);
   static String? _$logoUrl(LiveChannel v) => v.logoUrl;
   static const Field<LiveChannel, String> _f$logoUrl = Field(
     'logoUrl',
@@ -58,6 +62,7 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
     #name: _f$name,
     #categoryId: _f$categoryId,
     #providerName: _f$providerName,
+    #httpRequestHeaders: _f$httpRequestHeaders,
     #logoUrl: _f$logoUrl,
     #epgChannelId: _f$epgChannelId,
   };
@@ -68,6 +73,7 @@ class LiveChannelMapper extends ClassMapperBase<LiveChannel> {
       name: data.dec(_f$name),
       categoryId: data.dec(_f$categoryId),
       providerName: data.dec(_f$providerName),
+      httpRequestHeaders: data.dec(_f$httpRequestHeaders),
       logoUrl: data.dec(_f$logoUrl),
       epgChannelId: data.dec(_f$epgChannelId),
     );
@@ -133,11 +139,14 @@ extension LiveChannelValueCopy<$R, $Out>
 
 abstract class LiveChannelCopyWith<$R, $In extends LiveChannel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders;
   $R call({
     String? streamId,
     String? name,
     String? categoryId,
     String? providerName,
+    Map<String, String>? httpRequestHeaders,
     String? logoUrl,
     String? epgChannelId,
   });
@@ -153,11 +162,21 @@ class _LiveChannelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LiveChannel> $mapper =
       LiveChannelMapper.ensureInitialized();
   @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders => $value.httpRequestHeaders != null
+      ? MapCopyWith(
+          $value.httpRequestHeaders!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(httpRequestHeaders: v),
+        )
+      : null;
+  @override
   $R call({
     String? streamId,
     String? name,
     String? categoryId,
     String? providerName,
+    Object? httpRequestHeaders = $none,
     Object? logoUrl = $none,
     Object? epgChannelId = $none,
   }) => $apply(
@@ -166,6 +185,7 @@ class _LiveChannelCopyWithImpl<$R, $Out>
       if (name != null) #name: name,
       if (categoryId != null) #categoryId: categoryId,
       if (providerName != null) #providerName: providerName,
+      if (httpRequestHeaders != $none) #httpRequestHeaders: httpRequestHeaders,
       if (logoUrl != $none) #logoUrl: logoUrl,
       if (epgChannelId != $none) #epgChannelId: epgChannelId,
     }),
@@ -176,6 +196,10 @@ class _LiveChannelCopyWithImpl<$R, $Out>
     name: data.get(#name, or: $value.name),
     categoryId: data.get(#categoryId, or: $value.categoryId),
     providerName: data.get(#providerName, or: $value.providerName),
+    httpRequestHeaders: data.get(
+      #httpRequestHeaders,
+      or: $value.httpRequestHeaders,
+    ),
     logoUrl: data.get(#logoUrl, or: $value.logoUrl),
     epgChannelId: data.get(#epgChannelId, or: $value.epgChannelId),
   );
