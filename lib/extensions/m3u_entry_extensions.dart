@@ -31,6 +31,24 @@ extension M3uEntryExtensions on M3uEntry {
 
   String? get groupTitle => attributes.safeGet(M3uTags.groupTitle);
 
+  String? get groupTitleTvShowCategory {
+    final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
+    if (split != null && split.length > 1) {
+      return split.first;
+    }
+
+    return null;
+  }
+
+  String? get groupTitleTvShowName {
+    final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
+    if (split != null && split.length > 1) {
+      return split.last;
+    }
+
+    return null;
+  }
+
   String? get logoUrl => attributes.safeGet(M3uTags.tvgLogo);
 
   String? get imdbId => attributes.safeGet(M3uTags.imdbId) ?? tvgId;
