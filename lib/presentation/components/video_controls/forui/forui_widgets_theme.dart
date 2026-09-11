@@ -46,10 +46,12 @@ class ForuiWidgetsTheme extends VideoControlsWidgetsTheme {
         popoverBuilder:
             ({
               required BuildContext context,
+              required Widget Function(void Function() open) buttonBuilder,
               required Widget Function(void Function() close) builder,
               required double maxHeight,
               required double maxWidth,
             }) => FPopover(
+              builder: (context, value, child) => buttonBuilder(() => value.show()),
               popoverBuilder: (context, controller) => ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
                 child: builder(() => controller.hide()),
