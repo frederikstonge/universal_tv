@@ -3,11 +3,12 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 
 import '../extensions/m3u_entry_extensions.dart';
 import 'm3u/m3u_entry.dart';
+import 'playable_base.dart';
 
 part 'episode_details.mapper.dart';
 
 @MappableClass()
-class EpisodeDetails with EpisodeDetailsMappable {
+class EpisodeDetails extends PlayableBase with EpisodeDetailsMappable {
   final String id;
   final String title;
   final int season;
@@ -22,6 +23,7 @@ class EpisodeDetails with EpisodeDetailsMappable {
     required this.season,
     required this.episode,
     required this.providerName,
+    super.httpRequestHeaders,
     this.duration,
     this.plot,
   });
@@ -47,6 +49,7 @@ class EpisodeDetails with EpisodeDetailsMappable {
       duration: entry.duration,
       plot: entry.plot,
       providerName: entry.providerName,
+      httpRequestHeaders: entry.httpHeaders,
     );
   }
 }

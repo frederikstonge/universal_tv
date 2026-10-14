@@ -22,6 +22,7 @@ class VideoControlsWidgetsTheme {
 
   final Widget Function({
     required BuildContext context,
+    required Widget Function(void Function() open) buttonBuilder,
     required Widget Function(void Function() close) builder,
     required double maxHeight,
     required double maxWidth,

@@ -666,6 +666,13 @@ class _SubtitleButton extends StatelessWidget {
       context: context,
       maxWidth: theme.constraints.subtitlePopoverMaxWidth,
       maxHeight: theme.constraints.subtitlePopoverMaxHeight,
+      buttonBuilder: (open) {
+        return theme.widgets.buttonBuilder(
+          context: context,
+          onTap: open,
+          child: Icon(theme.icons.captions, size: theme.iconSizing.control, color: theme.colors.foreground),
+        );
+      },
       builder: (close) {
         return ListView(
           shrinkWrap: true,

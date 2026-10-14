@@ -442,6 +442,8 @@ class M3uTags {
   /// Specifies the HTTP User-Agent header for the stream request
   static const userAgent = 'user-agent';
 
+  static const httpUserAgent = 'http-user-agent';
+
   /// Specifies the HTTP Referrer header for the stream request
   static const referrer = 'referrer';
 }

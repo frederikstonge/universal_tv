@@ -78,7 +78,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
     final url = await iptvServiceCubit.getLiveUrl(selectedChannel.providerName, selectedChannel.streamId);
 
     if (url != null) {
-      await player.open(Media(url));
+      await player.open(Media(url, httpHeaders: selectedChannel.httpRequestHeaders));
     }
   }
 }

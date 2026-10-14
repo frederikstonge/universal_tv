@@ -38,6 +38,10 @@ class TvShowDetailsMapper extends ClassMapperBase<TvShowDetails> {
     'providerName',
     _$providerName,
   );
+  static Map<String, String>? _$httpRequestHeaders(TvShowDetails v) =>
+      v.httpRequestHeaders;
+  static const Field<TvShowDetails, Map<String, String>> _f$httpRequestHeaders =
+      Field('httpRequestHeaders', _$httpRequestHeaders, opt: true);
   static String? _$plot(TvShowDetails v) => v.plot;
   static const Field<TvShowDetails, String> _f$plot = Field(
     'plot',
@@ -57,6 +61,7 @@ class TvShowDetailsMapper extends ClassMapperBase<TvShowDetails> {
     #name: _f$name,
     #seasons: _f$seasons,
     #providerName: _f$providerName,
+    #httpRequestHeaders: _f$httpRequestHeaders,
     #plot: _f$plot,
     #posterUrl: _f$posterUrl,
   };
@@ -67,6 +72,7 @@ class TvShowDetailsMapper extends ClassMapperBase<TvShowDetails> {
       name: data.dec(_f$name),
       seasons: data.dec(_f$seasons),
       providerName: data.dec(_f$providerName),
+      httpRequestHeaders: data.dec(_f$httpRequestHeaders),
       plot: data.dec(_f$plot),
       posterUrl: data.dec(_f$posterUrl),
     );
@@ -141,11 +147,14 @@ abstract class TvShowDetailsCopyWith<$R, $In extends TvShowDetails, $Out>
     ObjectCopyWith<$R, List<EpisodeDetails>, List<EpisodeDetails>>
   >
   get seasons;
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders;
   $R call({
     String? seriesId,
     String? name,
     Map<int, List<EpisodeDetails>>? seasons,
     String? providerName,
+    Map<String, String>? httpRequestHeaders,
     String? plot,
     String? posterUrl,
   });
@@ -173,11 +182,21 @@ class _TvShowDetailsCopyWithImpl<$R, $Out>
     (v) => call(seasons: v),
   );
   @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders => $value.httpRequestHeaders != null
+      ? MapCopyWith(
+          $value.httpRequestHeaders!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(httpRequestHeaders: v),
+        )
+      : null;
+  @override
   $R call({
     String? seriesId,
     String? name,
     Map<int, List<EpisodeDetails>>? seasons,
     String? providerName,
+    Object? httpRequestHeaders = $none,
     Object? plot = $none,
     Object? posterUrl = $none,
   }) => $apply(
@@ -186,6 +205,7 @@ class _TvShowDetailsCopyWithImpl<$R, $Out>
       if (name != null) #name: name,
       if (seasons != null) #seasons: seasons,
       if (providerName != null) #providerName: providerName,
+      if (httpRequestHeaders != $none) #httpRequestHeaders: httpRequestHeaders,
       if (plot != $none) #plot: plot,
       if (posterUrl != $none) #posterUrl: posterUrl,
     }),
@@ -196,6 +216,10 @@ class _TvShowDetailsCopyWithImpl<$R, $Out>
     name: data.get(#name, or: $value.name),
     seasons: data.get(#seasons, or: $value.seasons),
     providerName: data.get(#providerName, or: $value.providerName),
+    httpRequestHeaders: data.get(
+      #httpRequestHeaders,
+      or: $value.httpRequestHeaders,
+    ),
     plot: data.get(#plot, or: $value.plot),
     posterUrl: data.get(#posterUrl, or: $value.posterUrl),
   );

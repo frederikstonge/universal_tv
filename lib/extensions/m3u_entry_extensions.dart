@@ -31,6 +31,24 @@ extension M3uEntryExtensions on M3uEntry {
 
   String? get groupTitle => attributes.safeGet(M3uTags.groupTitle);
 
+  String? get groupTitleTvShowCategory {
+    final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
+    if (split != null && split.length > 1) {
+      return split.first.trim();
+    }
+
+    return null;
+  }
+
+  String? get groupTitleTvShowName {
+    final split = attributes.safeGet(M3uTags.groupTitle)?.split('|');
+    if (split != null && split.length > 1) {
+      return split.last.trim();
+    }
+
+    return null;
+  }
+
   String? get logoUrl => attributes.safeGet(M3uTags.tvgLogo);
 
   String? get imdbId => attributes.safeGet(M3uTags.imdbId) ?? tvgId;
@@ -114,8 +132,27 @@ extension M3uEntryExtensions on M3uEntry {
   }
 
   // ── HTTP / Stream ─────────────────────────────────────────────────────
+  String? get extVlcOpt => attributes.safeGet(M3uTags.extVlcOpt);
+
+  String? get httpUserAgent => attributes.safeGet(M3uTags.httpUserAgent);
 
   String? get userAgent => attributes.safeGet(M3uTags.userAgent);
 
   String? get referrer => attributes.safeGet(M3uTags.referrer);
+
+  Map<String, String> get httpHeaders {
+    final headers = <String, String>{};
+    if (httpUserAgent != null) headers[M3uTags.httpUserAgent] = httpUserAgent!;
+    if (userAgent != null) headers[M3uTags.userAgent] = userAgent!;
+    if (referrer != null) headers[M3uTags.referrer] = referrer!;
+    if (extVlcOpt != null) {
+      final split = extVlcOpt!.indexOf('=');
+      if (split != -1) {
+        final key = extVlcOpt!.substring(0, split);
+        final value = extVlcOpt!.substring(split + 1);
+        headers[key] = value;
+      }
+    }
+    return headers;
+  }
 }

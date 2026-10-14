@@ -157,7 +157,9 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   @override
   Future<List<MovieItem>> getMovies({String? categoryId}) async {
     final movieEntries = _entries
-        .where((e) => e.type == IptvType.movies && (categoryId == null || e.groupTitle == categoryId))
+        .where(
+          (e) => e.type == IptvType.live && (categoryId == null || e.groupTitle == categoryId || e.genre == categoryId),
+        )
         .toList();
 
     final vodItems = await Future.wait(
@@ -173,11 +175,15 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   @override
   Future<List<TvShowItem>> getTvShows({String? categoryId}) async {
     final tvShowEntries = _entries
-        .where((e) => e.type == IptvType.tvshows && (categoryId == null || e.groupTitle == categoryId))
+        .where(
+          (e) =>
+              e.type == IptvType.tvshows &&
+              (categoryId == null || e.groupTitleTvShowCategory == categoryId || e.genre == categoryId),
+        )
         .toList();
 
     final seriesItems = await Future.wait(
-      tvShowEntries.groupListsBy((e) => e.groupTitle).entries.map((e) async {
+      tvShowEntries.groupListsBy((e) => e.groupTitleTvShowName ?? e.groupTitle).entries.map((e) async {
         final first = e.value.first;
         final tmdbEntry = await tmdbRepository.getM3u(first);
         return TvShowItem.fromM3uEntry(first, tmdbEntry: tmdbEntry, tmdbPosterUrl: _tmdbPosterUrl(tmdbEntry));
@@ -190,7 +196,9 @@ class M3uRepository implements StreamBaseRepository, XmltvBaseRepository {
   @override
   Future<List<LiveChannel>> getLiveStreams({String? categoryId}) async {
     final liveEntries = _entries
-        .where((e) => e.type == IptvType.live && (categoryId == null || e.groupTitle == categoryId))
+        .where(
+          (e) => e.type == IptvType.live && (categoryId == null || e.groupTitle == categoryId || e.genre == categoryId),
+        )
         .toList();
 
     final liveChannels = liveEntries.map((e) => LiveChannel.fromM3uEntry(e)).toList();

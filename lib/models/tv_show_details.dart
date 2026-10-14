@@ -4,12 +4,13 @@ import 'package:xtream_code_client/xtream_code_client.dart';
 import '../extensions/m3u_entry_extensions.dart';
 import 'episode_details.dart';
 import 'm3u/m3u_entry.dart';
+import 'playable_base.dart';
 import 'tmdb/tmdb_entry.dart';
 
 part 'tv_show_details.mapper.dart';
 
 @MappableClass()
-class TvShowDetails with TvShowDetailsMappable {
+class TvShowDetails extends PlayableBase with TvShowDetailsMappable {
   final String seriesId;
   final String name;
   final String? plot;
@@ -22,6 +23,7 @@ class TvShowDetails with TvShowDetailsMappable {
     required this.name,
     required this.seasons,
     required this.providerName,
+    super.httpRequestHeaders,
     this.plot,
     this.posterUrl,
   });
@@ -49,6 +51,7 @@ class TvShowDetails with TvShowDetailsMappable {
       final season = entry.seasonNumber;
       episodesBySeasons.putIfAbsent(season, () => []).add(EpisodeDetails.fromM3uEntry(entry));
     }
+
     return TvShowDetails(
       seriesId: first.id,
       name: tmdbEntry?.title ?? first.seriesName ?? first.name,
@@ -56,6 +59,7 @@ class TvShowDetails with TvShowDetailsMappable {
       seasons: episodesBySeasons,
       posterUrl: tmdbPosterUrl ?? first.posterUrl,
       providerName: first.providerName,
+      httpRequestHeaders: first.httpHeaders,
     );
   }
 }

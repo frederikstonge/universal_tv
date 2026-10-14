@@ -34,6 +34,10 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
     'providerName',
     _$providerName,
   );
+  static Map<String, String>? _$httpRequestHeaders(MovieDetails v) =>
+      v.httpRequestHeaders;
+  static const Field<MovieDetails, Map<String, String>> _f$httpRequestHeaders =
+      Field('httpRequestHeaders', _$httpRequestHeaders, opt: true);
   static String? _$plot(MovieDetails v) => v.plot;
   static const Field<MovieDetails, String> _f$plot = Field(
     'plot',
@@ -70,6 +74,7 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
     #streamId: _f$streamId,
     #name: _f$name,
     #providerName: _f$providerName,
+    #httpRequestHeaders: _f$httpRequestHeaders,
     #plot: _f$plot,
     #rating: _f$rating,
     #year: _f$year,
@@ -82,6 +87,7 @@ class MovieDetailsMapper extends ClassMapperBase<MovieDetails> {
       streamId: data.dec(_f$streamId),
       name: data.dec(_f$name),
       providerName: data.dec(_f$providerName),
+      httpRequestHeaders: data.dec(_f$httpRequestHeaders),
       plot: data.dec(_f$plot),
       rating: data.dec(_f$rating),
       year: data.dec(_f$year),
@@ -152,10 +158,13 @@ extension MovieDetailsValueCopy<$R, $Out>
 
 abstract class MovieDetailsCopyWith<$R, $In extends MovieDetails, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders;
   $R call({
     String? streamId,
     String? name,
     String? providerName,
+    Map<String, String>? httpRequestHeaders,
     String? plot,
     double? rating,
     int? year,
@@ -174,10 +183,20 @@ class _MovieDetailsCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MovieDetails> $mapper =
       MovieDetailsMapper.ensureInitialized();
   @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>?
+  get httpRequestHeaders => $value.httpRequestHeaders != null
+      ? MapCopyWith(
+          $value.httpRequestHeaders!,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(httpRequestHeaders: v),
+        )
+      : null;
+  @override
   $R call({
     String? streamId,
     String? name,
     String? providerName,
+    Object? httpRequestHeaders = $none,
     Object? plot = $none,
     Object? rating = $none,
     Object? year = $none,
@@ -188,6 +207,7 @@ class _MovieDetailsCopyWithImpl<$R, $Out>
       if (streamId != null) #streamId: streamId,
       if (name != null) #name: name,
       if (providerName != null) #providerName: providerName,
+      if (httpRequestHeaders != $none) #httpRequestHeaders: httpRequestHeaders,
       if (plot != $none) #plot: plot,
       if (rating != $none) #rating: rating,
       if (year != $none) #year: year,
@@ -200,6 +220,10 @@ class _MovieDetailsCopyWithImpl<$R, $Out>
     streamId: data.get(#streamId, or: $value.streamId),
     name: data.get(#name, or: $value.name),
     providerName: data.get(#providerName, or: $value.providerName),
+    httpRequestHeaders: data.get(
+      #httpRequestHeaders,
+      or: $value.httpRequestHeaders,
+    ),
     plot: data.get(#plot, or: $value.plot),
     rating: data.get(#rating, or: $value.rating),
     year: data.get(#year, or: $value.year),

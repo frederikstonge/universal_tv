@@ -39,6 +39,7 @@ class TvShowItem with TvShowItemMappable {
       name: tmdbEntry?.title ?? entry.seriesName ?? entry.name,
       categoryIds: [
         ...?tmdbEntry?.genreIds?.map((id) => id.toString()),
+        if (entry.groupTitleTvShowCategory != null) entry.groupTitleTvShowCategory!,
         if (entry.groupTitle != null) entry.groupTitle!,
       ],
       posterUrl: tmdbPosterUrl ?? entry.posterUrl,
